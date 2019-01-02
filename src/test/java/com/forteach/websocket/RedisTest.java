@@ -23,7 +23,6 @@ public class RedisTest {
 
     @Test
     public void redisTest() {
-
         stringRedisTemplate.opsForValue().set("1Test", "redis ok");
 
         System.out.println(stringRedisTemplate.opsForValue().get("1Test"));
