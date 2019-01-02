@@ -12,10 +12,23 @@
     <artifactId>websocket</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>websocket</name>
+    <packaging>jar</packaging>
     <description>Demo project for Spring Boot</description>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.tomcat.uriEncoding>UTF-8</maven.tomcat.uriEncoding>
+        <maven.test.skip>false</maven.test.skip>
+        <project.deploy.directory>./target</project.deploy.directory>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
+        <file.encoding>utf-8</file.encoding>
+        <docker.image.prefix>ang00</docker.image.prefix>
     </properties>
 
     <dependencies>
@@ -65,6 +78,27 @@
                 <configuration>
                     <executable>true</executable>
                     <fork>true</fork>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>1.2.0</version>
+                <configuration>
+                    <imageName>${docker.image.prefix}/${project.name}</imageName>
+                    <dockerDirectory>src/main/docker</dockerDirectory>
+                    <forceTags>true</forceTags>
+                    <imageTags>
+                        <imageTag>${project.version}</imageTag>
+                        <imageTag>latest</imageTag>
+                    </imageTags>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
                 </configuration>
             </plugin>
         </plugins>
