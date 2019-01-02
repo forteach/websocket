@@ -3,18 +3,18 @@ package com.forteach.websocket.service.impl;
 import com.forteach.websocket.domain.*;
 import com.forteach.websocket.repository.BigQuestionRepository;
 import com.forteach.websocket.service.InteractService;
+import com.forteach.websocket.service.RedisInteract;
 import com.forteach.websocket.service.StudentsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.time.Duration;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.forteach.websocket.common.Dic.*;
@@ -31,13 +31,6 @@ import static com.forteach.websocket.service.WsService.SESSION_MAP;
 @Service
 public class InteractServiceImpl implements InteractService {
 
-
-    @Resource
-    private HashOperations<String, String, String> hashOperations;
-
-    @Resource
-    private StringRedisTemplate stringRedisTemplate;
-
     @Resource
     private BigQuestionRepository bigQuestionRepository;
 
@@ -47,6 +40,9 @@ public class InteractServiceImpl implements InteractService {
     @Resource
     private StudentsService studentsService;
 
+    @Resource
+    private RedisInteract interact;
+
     /**
      * 获取课堂交互信息
      *
@@ -55,7 +51,7 @@ public class InteractServiceImpl implements InteractService {
     @Override
     public List<ToPush> obtain() {
 
-        Set<String> uid = getSets(INTERACTION_UID_SET_PREFIX);
+        Set<String> uid = interact.getSets(INTERACTION_UID_SET_PREFIX);
         if (uid != null && uid.size() > 0) {
             return uid.stream()
                     .filter(id -> null != SESSION_MAP.get(id))
@@ -73,7 +69,7 @@ public class InteractServiceImpl implements InteractService {
      * @return
      */
     private ToPush buildToPush(String uid) {
-        String uType = uidType(uid);
+        String uType = interact.uidType(uid);
         if (SUBSCRIBE_USER_STUDENT.equals(uType)) {
             return ToPush.builder().uid(uid).askQuestion(achieveQuestion(uid)).build();
         } else {
@@ -94,20 +90,20 @@ public class InteractServiceImpl implements InteractService {
      */
     private AskQuestion achieveQuestion(String uid) {
 
-        String uCircle = uidCircle(uid);
+        String uCircle = interact.uidCircle(uid);
         String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(uCircle);
-        String questionId = askQuestionId(askKey);
+        String questionId = interact.askQuestionId(askKey);
         if (questionId == null) {
             return null;
         }
-        String uRandom = uidRandom(uid);
+        String uRandom = interact.uidRandom(uid);
         String uDistinctKey = askQuDistinctKey(uCircle, uid, questionId, uRandom);
-        String cut = askQuestionCut(askKey);
-        String category = askCategoryType(askKey);
-        String interactive = askInteractiveType(askKey);
+        String cut = interact.askQuestionCut(askKey);
+        String category = interact.askCategoryType(askKey);
+        String interactive = interact.askInteractiveType(askKey);
 
         OptBigQuestion optBigQuestion = getQuestion(askKey, uid, category, interactive);
-        if (optBigQuestion != null && distinctKeyIsEmpty(uDistinctKey, askKey, optBigQuestion.getSelected())) {
+        if (optBigQuestion != null && interact.distinctKeyIsEmpty(uDistinctKey, askKey, optBigQuestion.getSelected())) {
             return buildAskQuestion(cut, optBigQuestion, interactive);
         } else {
             return null;
@@ -122,26 +118,32 @@ public class InteractServiceImpl implements InteractService {
      */
     private AchieveRaise achieveRaise(String uid) {
 
-        String uCircle = uidCircle(uid);
-        String uRandom = uidRandom(uid);
+        String uCircle = interact.uidCircle(uid);
+        String uRandom = interact.uidRandom(uid);
         String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(uCircle);
 
         List<Students> uids = interactStudents(uCircle);
-        if (uids.size() > 0 && raiseDistinct(raiseDistinctKey(uCircle, uRandom), askKey, uids.size())) {
+        if (uids.size() > 0 && interact.raiseDistinct(raiseDistinctKey(uCircle, uRandom), askKey, uids.size())) {
             return buildAchieveRaise(uids);
         } else {
             return null;
         }
     }
 
+    /**
+     * 主动推送 加入课堂的学生
+     *
+     * @param uid
+     * @return
+     */
     private AchieveJoin achieveInteractiveStudents(String uid) {
 
-        String uCircle = uidCircle(uid);
-        String uRandom = uidRandom(uid);
+        String uCircle = interact.uidCircle(uid);
+        String uRandom = interact.uidRandom(uid);
         String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(uCircle);
 
         List<Students> uids = findInteractiveStudents(uCircle);
-        if (uids.size() > 0 && joinDistinct(joinDistinctKey(uCircle, uRandom), askKey, uids.size())) {
+        if (uids.size() > 0 && interact.joinDistinct(joinDistinctKey(uCircle, uRandom), askKey, uids.size())) {
             return buildAchieveJoin(uids);
         } else {
             return null;
@@ -157,18 +159,18 @@ public class InteractServiceImpl implements InteractService {
      */
     private AchieveAnswer achieveAnswer(String uid) {
 
-        String uCircle = uidCircle(uid);
-        String uRandom = uidRandom(uid);
+        String uCircle = interact.uidCircle(uid);
+        String uRandom = interact.uidRandom(uid);
         String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(uCircle);
-        String questionId = askQuestionId(askKey);
+        String questionId = interact.askQuestionId(askKey);
         if (questionId == null) {
             return null;
         }
-        if (!untitled(askKey)) {
+        if (!interact.untitled(askKey)) {
             return null;
         }
 
-        if (answerDistinct(getAnswDistinctKey(uCircle, uRandom), examineeIsReplyKey(uCircle), askKey)) {
+        if (interact.answerDistinct(getAnswDistinctKey(uCircle, uRandom), examineeIsReplyKey(uCircle), askKey)) {
             List<Students> students = peopleAnswer(uCircle, questionId, askKey);
             return buildAchieveAnswer(students);
         } else {
@@ -177,9 +179,16 @@ public class InteractServiceImpl implements InteractService {
 
     }
 
+    /**
+     * 获取回答的学生情况
+     * @param uCircle
+     * @param questionId
+     * @param askKey
+     * @return
+     */
     private List<Students> peopleAnswer(String uCircle, String questionId, String askKey) {
-        return getAnswerStudent(askKey).stream().map(id -> {
-            boolean flag = isMember(examineeIsReplyKey(uCircle), id);
+        return interact.getAnswerStudent(askKey).stream().map(id -> {
+            boolean flag = interact.isMember(examineeIsReplyKey(uCircle), id);
             AskAnswer answ = findAskAnswer(uCircle, id, questionId);
             Students student = studentsService.findStudentsBrief(id);
             if (flag) {
@@ -188,16 +197,6 @@ public class InteractServiceImpl implements InteractService {
                 return new CircleAnswer(student, ASK_CIRCLE_ANSWER_ALREADY, new AskAnswer());
             }
         }).collect(Collectors.toList());
-    }
-
-    /**
-     * 获取回答的学生id
-     *
-     * @param askKey
-     * @return
-     */
-    private List<String> getAnswerStudent(String askKey) {
-        return Arrays.asList(askSelected(askKey).split(","));
     }
 
 
@@ -251,25 +250,42 @@ public class InteractServiceImpl implements InteractService {
      * @return
      */
     private BigQuestion selectQuestion(String askKey, String uid) {
-        if (selectVerify(askKey, uid)) {
+        if (interact.selectVerify(askKey, uid)) {
             return findBigQuestion(askKey);
         } else {
             return null;
         }
     }
 
+    /**
+     * 封装是否能够回答
+     * @param bigQuestion
+     * @return
+     */
     private OptBigQuestion selected(BigQuestion bigQuestion) {
         return new OptBigQuestion(ASK_QUESTIONS_SELECTED, bigQuestion);
     }
 
+    /**
+     * 封装是否能够回答
+     * @param bigQuestion
+     * @return
+     */
     private OptBigQuestion raiseSelected(String askKey, String uid, BigQuestion bigQuestion) {
-        if (selectVerify(askKey, uid)) {
+        if (interact.selectVerify(askKey, uid)) {
             return new OptBigQuestion(ASK_QUESTIONS_SELECTED, bigQuestion);
         } else {
             return new OptBigQuestion(ASK_QUESTIONS_UN_SELECTED, bigQuestion);
         }
     }
 
+    /**
+     * 构建提问问题返回值
+     * @param cut
+     * @param optBigQuestion
+     * @param interactive
+     * @return
+     */
     private AskQuestion buildAskQuestion(String cut, OptBigQuestion optBigQuestion, String interactive) {
         if (optBigQuestion != null) {
             return new AskQuestion<BigQuestion>(cut, optBigQuestion, interactive);
@@ -278,105 +294,33 @@ public class InteractServiceImpl implements InteractService {
         }
     }
 
+    /**
+     * 构建举手的推送信息
+     * @param students
+     * @return
+     */
     private AchieveRaise buildAchieveRaise(List<Students> students) {
         return new AchieveRaise(students);
     }
 
+    /**
+     * 构建加入学生的推送信息
+     * @param students
+     * @return
+     */
     private AchieveJoin buildAchieveJoin(List<Students> students) {
         return new AchieveJoin(students);
     }
 
+    /**
+     * 构建学生回答的推送信息
+     * @param students
+     * @return
+     */
     private AchieveAnswer buildAchieveAnswer(List<Students> students) {
         return new AchieveAnswer(students);
     }
 
-    /**
-     * 获取uid的身份 老师 学生...
-     *
-     * @param uid
-     * @return
-     */
-    private String uidType(String uid) {
-        return hashOperations.get(actionPropertyKey(uid), "type");
-    }
-
-    /**
-     * 获取uid当前的课堂
-     *
-     * @param uid
-     * @return
-     */
-    private String uidCircle(String uid) {
-        return hashOperations.get(actionPropertyKey(uid), "circle");
-    }
-
-    /**
-     * 获取uid当前的去重随机数
-     *
-     * @param uid
-     * @return
-     */
-    private String uidRandom(final String uid) {
-        return hashOperations.get(actionPropertyKey(uid), "random");
-    }
-
-    /**
-     * 获取提问类型
-     *
-     * @param askKey
-     * @return
-     */
-    private String askCategoryType(final String askKey) {
-        return hashOperations.get(askKey, "category");
-    }
-
-    /**
-     * 获取提问交互类型
-     *
-     * @param askKey
-     * @return
-     */
-    private String askInteractiveType(final String askKey) {
-        return hashOperations.get(askKey, "interactive");
-    }
-
-    /**
-     * 获取问题id
-     *
-     * @param askKey
-     * @return
-     */
-    private String askQuestionId(final String askKey) {
-        return hashOperations.get(askKey, "questionId");
-    }
-
-    /**
-     * 获取课堂提问的切换值
-     *
-     * @return
-     */
-    private String askQuestionCut(final String askKey) {
-        return hashOperations.get(askKey, "cut");
-    }
-
-    /**
-     * 通过 提问key,判断是否是选择
-     *
-     * @param askKey
-     * @return
-     */
-    private Boolean selectVerify(final String askKey, final String examineeId) {
-        return isSelected(Objects.requireNonNull(hashOperations.get(askKey, "selected")), examineeId);
-    }
-
-    /**
-     * 判断学生是否被选中
-     *
-     * @return
-     */
-    private Boolean isSelected(final String selectId, final String examineeId) {
-        return Arrays.asList(selectId.split(",")).contains(examineeId);
-    }
 
     /**
      * 获得当前课堂的问题
@@ -386,85 +330,13 @@ public class InteractServiceImpl implements InteractService {
      */
     private BigQuestion findBigQuestion(final String askKey) {
 
-        String questionId = askQuestionId(askKey);
+        String questionId = interact.askQuestionId(askKey);
         if (questionId == null) {
             return null;
         }
         return bigQuestionRepository.findById(questionId).get();
     }
 
-    /**
-     * 判断是否已经推送过该题
-     * 如果没有拉取过 给予正确 存入课堂题目的cut
-     * 如果一致 代表已经拉取过 不再给予
-     * 如果不一致 代表同题但是不同提问方式 重新发送
-     *
-     * @return true 没有推送过该题   false  有推送过该题
-     */
-    private boolean distinctKeyIsEmpty(final String distinctKey, final String askKey, final String selected) {
-
-        String distinct = stringRedisTemplate.opsForValue().get(distinctKey);
-        String cut = askQuestionCut(askKey);
-        stringRedisTemplate.opsForValue().set(distinctKey, cut.concat(selected), Duration.ofSeconds(60 * 60 * 2));
-        if (distinct == null) {
-            return true;
-        } else if (Objects.equals(distinct, cut.concat(selected))) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    private boolean answerDistinct(final String distinctKey, final String setKey, final String askKey) {
-        String distinct = stringRedisTemplate.opsForValue().get(distinctKey);
-        String findAnswerFlag = findAnswerFlag(askKey);
-        Long answSize = stringRedisTemplate.opsForSet().size(setKey);
-
-        if (answSize == null) {
-            return false;
-        }
-
-        if (String.valueOf(answSize.intValue()).equals(distinct) && String.valueOf(answSize.intValue()).equals(findAnswerFlag)) {
-            //如果等于 排除
-            return false;
-        }
-
-        stringRedisTemplate.opsForValue().set(distinctKey, String.valueOf(answSize.intValue()), Duration.ofSeconds(60 * 60 * 2));
-        hashOperations.put(askKey, "answerFlag", String.valueOf(answSize.intValue()));
-        return true;
-    }
-
-    private boolean raiseDistinct(final String distinctKey, final String askKey, int size) {
-
-        String distinct = stringRedisTemplate.opsForValue().get(distinctKey);
-        String cut = askQuestionCut(askKey);
-        stringRedisTemplate.opsForValue().set(distinctKey, String.valueOf(size).concat(cut), Duration.ofSeconds(60 * 60 * 2));
-        if (distinct == null) {
-            return true;
-        } else if (distinct.equals(String.valueOf(size).concat(cut))) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    private boolean joinDistinct(final String distinctKey, final String askKey, int size) {
-
-        String distinct = stringRedisTemplate.opsForValue().get(distinctKey);
-        stringRedisTemplate.opsForValue().set(distinctKey, String.valueOf(size), Duration.ofSeconds(60 * 60 * 2));
-        if (distinct == null) {
-            return true;
-        } else if (distinct.equals(String.valueOf(size))) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-
-    private Set<String> getSets(String key) {
-        return stringRedisTemplate.opsForSet().members(key);
-    }
 
     /**
      * 获取互动的课堂学生信息
@@ -473,44 +345,33 @@ public class InteractServiceImpl implements InteractService {
      * @return
      */
     private List<Students> interactStudents(String uCircle) {
-        return getSets(raiseKey(uCircle))
+        return interact.getSets(raiseKey(uCircle))
                 .stream()
                 .map(studentsService::findStudentsBrief)
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 查找互动学生信息
+     * @param uCircle
+     * @return
+     */
     private List<Students> findInteractiveStudents(String uCircle) {
 
-        return getSets(interactiveClassKey(uCircle))
+        return interact.getSets(interactiveClassKey(uCircle))
                 .stream()
                 .map(id -> studentsService.findStudentsBrief(id))
                 .collect(Collectors.toList());
     }
 
-    /**
-     * 查询没有题的情况
-     *
-     * @param askKey
-     * @return
-     */
-    private boolean untitled(final String askKey) {
-        return hashOperations.hasKey(askKey, "questionId");
-    }
 
     /**
-     * 获取选择信息
-     *
-     * @param askKey
+     * 查找学生的回答信息
+     * @param circleId
+     * @param examineeId
+     * @param questionId
      * @return
      */
-    private String askSelected(final String askKey) {
-        return hashOperations.get(askKey, "selected");
-    }
-
-    private boolean isMember(final String redisKey, final String examineeId) {
-        return stringRedisTemplate.opsForSet().isMember(redisKey, examineeId);
-    }
-
     private AskAnswer findAskAnswer(final String circleId, final String examineeId, final String questionId) {
 
         Query query = Query.query(
@@ -521,13 +382,5 @@ public class InteractServiceImpl implements InteractService {
         return mongoTemplate.findOne(query, AskAnswer.class);
     }
 
-    /**
-     * 查看回答标志
-     *
-     * @param askKey
-     * @return
-     */
-    private String findAnswerFlag(final String askKey) {
-        return hashOperations.get(askKey, "answerFlag");
-    }
+
 }
