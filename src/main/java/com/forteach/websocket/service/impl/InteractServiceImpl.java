@@ -103,9 +103,10 @@ public class InteractServiceImpl implements InteractService {
         String uRandom = uidRandom(uid);
         String uDistinctKey = askQuDistinctKey(uCircle, uid, questionId, uRandom);
         String cut = askQuestionCut(askKey);
-        String interactive = askCategoryType(askKey);
+        String category = askCategoryType(askKey);
+        String interactive = askInteractiveType(askKey);
 
-        OptBigQuestion optBigQuestion = getQuestion(askKey, uid, interactive);
+        OptBigQuestion optBigQuestion = getQuestion(askKey, uid, category, interactive);
         if (optBigQuestion != null && distinctKeyIsEmpty(uDistinctKey, askKey, optBigQuestion.getSelected())) {
             return buildAskQuestion(cut, optBigQuestion, interactive);
         } else {
@@ -208,10 +209,10 @@ public class InteractServiceImpl implements InteractService {
      * @param interactive
      * @return
      */
-    private OptBigQuestion getQuestion(String askKey, String uid, String interactive) {
-        switch (interactive) {
+    private OptBigQuestion getQuestion(String askKey, String uid, String category, String interactive) {
+        switch (category) {
             case CATEGORY_PEOPLE:
-                return askPeople(askKey, uid);
+                return askPeople(askKey, uid, interactive);
             case CATEGORY_TEAM:
                 return null;
             default:
@@ -226,8 +227,8 @@ public class InteractServiceImpl implements InteractService {
      * @param uid
      * @return
      */
-    private OptBigQuestion askPeople(String askKey, String uid) {
-        switch (askInteractiveType(askKey)) {
+    private OptBigQuestion askPeople(String askKey, String uid, String interactive) {
+        switch (interactive) {
             case ASK_INTERACTIVE_RACE:
                 return selected(selectQuestion(askKey, uid));
             case ASK_INTERACTIVE_RAISE:
@@ -328,7 +329,6 @@ public class InteractServiceImpl implements InteractService {
     private String askCategoryType(final String askKey) {
         return hashOperations.get(askKey, "category");
     }
-
 
     /**
      * 获取提问交互类型
