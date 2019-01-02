@@ -24,7 +24,6 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.tomcat.uriEncoding>UTF-8</maven.tomcat.uriEncoding>
-        <maven.test.skip>false</maven.test.skip>
         <project.deploy.directory>./target</project.deploy.directory>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
