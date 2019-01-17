@@ -1,10 +1,9 @@
 package com.forteach.websocket;
 
+import com.forteach.websocket.domain.QuestionType;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 
@@ -14,7 +13,7 @@ import javax.annotation.Resource;
  * @version: V1.0
  * @date: 2018/12/26  10:49
  */
-@RunWith(SpringRunner.class)
+//@RunWith(SpringRunner.class)
 @SpringBootTest
 public class RedisTest {
 
@@ -23,9 +22,11 @@ public class RedisTest {
 
     @Test
     public void redisTest() {
-        stringRedisTemplate.opsForValue().set("1Test", "redis ok");
-
-        System.out.println(stringRedisTemplate.opsForValue().get("1Test"));
+        QuestionType questionType = QuestionType.BigQuestion;
+        System.out.println(questionType.name());
+//        stringRedisTemplate.opsForValue().set("1Test", "redis ok");
+//
+//        System.out.println(stringRedisTemplate.opsForValue().get("1Test"));
 
     }
 

@@ -1,5 +1,7 @@
 package com.forteach.websocket.common;
 
+import com.forteach.websocket.domain.QuestionType;
+
 import static com.forteach.websocket.common.Dic.CLASSROOM_ASK_QUESTIONS_ID;
 
 /**
@@ -31,13 +33,23 @@ public class KeyStorage {
      * @return
      */
     public static String getAskKey(String circle) {
-        return CLASSROOM_ASK_QUESTIONS_ID.concat(circle);
+        return CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.BigQuestion.name()).concat(circle);
     }
 
-    public static String askQuDistinctKey(String circleId, String examineeId, String questions, String random) {
+    /**
+     * 获取学生 获取big question 的去重key
+     *
+     * @param circleId
+     * @param examineeId
+     * @param questions
+     * @param random
+     * @return
+     */
+    public static String askQuDistinctKey(String circleId, String examineeId, String questions, String random, QuestionType questionType) {
         return CLASSROOM_ASK_QUESTIONS_DISTINCT
                 .concat(circleId)
                 .concat(examineeId)
+                .concat(questionType.name())
                 .concat(questions)
                 .concat(random);
     }

@@ -18,9 +18,6 @@ public class AskQuestion<T> {
      */
     private String cut;
 
-    /**
-     * 提交答案所需随机数
-     */
     private T bigQuestion;
 
     /**

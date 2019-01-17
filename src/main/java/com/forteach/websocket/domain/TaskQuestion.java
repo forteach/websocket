@@ -8,13 +8,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * @Description:
  * @author: liu zhenming
  * @version: V1.0
- * @date: 2018/11/15  11:04
+ * @date: 2019/1/10  11:16
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Document(collection = "bigQuestion")
-public class BigQuestion extends QuestionExamEntity {
-
-    public BigQuestion() {
-    }
+@Document(collection = "taskQuestion")
+public class TaskQuestion extends QuestionExamEntity {
 }

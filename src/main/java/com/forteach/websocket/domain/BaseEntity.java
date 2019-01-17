@@ -4,8 +4,11 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Description:
@@ -26,7 +29,7 @@ public abstract class BaseEntity {
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-class AbstractExamEntity extends BaseEntity {
+class QuestionExamEntity<T> extends BaseEntity {
 
     protected Double score;
 
@@ -34,4 +37,37 @@ class AbstractExamEntity extends BaseEntity {
      * 创作老师
      */
     protected String teacherId;
+
+    protected String paperInfo;
+
+    protected List<T> examChildren;
+
+    protected String type;
+
+    protected String chapterId;
+
+    /**
+     * 是否修改应用到所有的练习册
+     * 1 : 应用到所有练习册    0  :  只修改本题
+     */
+    @Transient
+    private int relate;
+
+    /**
+     * 难易度id
+     */
+    private String levelId;
+
+    /**
+     * 知识点id
+     */
+    private String knowledgeId;
+
+    /**
+     * 关键词
+     */
+    @Indexed
+    private List<String> keyword;
+
+
 }

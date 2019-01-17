@@ -12,15 +12,15 @@ import org.springframework.beans.BeanUtils;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class OptBigQuestion extends BigQuestion {
+public class OptQuestion extends QuestionExamEntity {
 
     private String selected;
 
-    public OptBigQuestion() {
+    public OptQuestion() {
     }
 
-    public OptBigQuestion(String selected, BigQuestion bigQuestion) {
+    public OptQuestion(String selected, QuestionExamEntity question) {
         this.selected = selected;
-        BeanUtils.copyProperties(bigQuestion, this);
+        BeanUtils.copyProperties(question, this);
     }
 }

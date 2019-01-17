@@ -27,5 +27,12 @@ public class ToPush {
 
     private AchieveAnswer achieveAnswer;
 
+    private AskSurvey askSurvey;
+
+    private AskTask askTask;
+
+    private AskBrainstorm askBrainstorm;
+
+
 
 }
