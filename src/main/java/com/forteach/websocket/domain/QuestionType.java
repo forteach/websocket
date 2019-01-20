@@ -23,5 +23,9 @@ public enum QuestionType {
     /**
      * 问卷题库
      */
-    SurveyQuestion
+    SurveyQuestion,
+    /**
+     * 练习册
+     */
+    ExerciseBook
 }

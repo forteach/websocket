@@ -406,6 +406,35 @@ public class StudentToPush {
     }
 
     /**
+     * 获取需要推送的任务
+     *
+     * @param uid
+     * @return
+     */
+    public AskBook achieveBook(String uid) {
+        //获取
+        String uCircle = interact.uidCircle(uid);
+        String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.ExerciseBook.name()).concat(uCircle);
+        String questionId = interact.askQuestionId(askKey);
+        if (questionId == null) {
+            return null;
+        }
+        String[] questionIds = questionId.split(",");
+        String uRandom = interact.uidRandom(uid);
+        String uDistinctKey = askQuDistinctKey(uCircle, uid, questionId, uRandom, QuestionType.ExerciseBook);
+        String cut = interact.askQuestionCut(askKey);
+        String category = interact.askCategoryType(askKey);
+
+        OptQuestionList<BigQuestion> questionList = getBigQuestionList(askKey, uid, category, questionIds);
+
+        if (questionList != null && interact.distinctKeyIsEmpty(uDistinctKey, askKey, questionList.getSelected())) {
+            return buildAskBook(cut, questionList);
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * 获取uid的问题
      *
      * @param askKey
@@ -417,6 +446,26 @@ public class StudentToPush {
         switch (category) {
             case CATEGORY_PEOPLE:
                 return selectedTaskOptListPeople(askKey, uid, questionIds);
+            case CATEGORY_TEAM:
+                return null;
+            default:
+                log.error("获取 getTaskQuestionList 信息错误 非法参数 错误的数据类型");
+                return null;
+        }
+    }
+
+    /**
+     * 获取uid的问题
+     *
+     * @param askKey
+     * @param uid
+     * @param
+     * @return
+     */
+    private OptQuestionList<BigQuestion> getBigQuestionList(String askKey, String uid, String category, String[] questionIds) {
+        switch (category) {
+            case CATEGORY_PEOPLE:
+                return selectedBigQuestionOptListPeople(askKey, uid, questionIds);
             case CATEGORY_TEAM:
                 return null;
             default:
@@ -443,6 +492,23 @@ public class StudentToPush {
     }
 
     /**
+     * 个人对象 返回题目集
+     *
+     * @param uid
+     * @return
+     */
+    private OptQuestionList<BigQuestion> selectedBigQuestionOptListPeople(String askKey, String uid, String[] questionIds) {
+
+        List<BigQuestion> list = selectBigQuestion(askKey, uid, questionIds);
+        if (list == null) {
+            return null;
+        } else {
+            return new OptQuestionList<>(ASK_QUESTIONS_SELECTED, list);
+        }
+
+    }
+
+    /**
      * 被选中的学生获得问卷
      *
      * @param askKey
@@ -458,6 +524,21 @@ public class StudentToPush {
     }
 
     /**
+     * 被选中的学生获得练习册
+     *
+     * @param askKey
+     * @param uid
+     * @return
+     */
+    private List<BigQuestion> selectBigQuestion(String askKey, String uid, String[] questionIds) {
+        if (interact.selectVerify(askKey, uid)) {
+            return (List<BigQuestion>) bigQuestionRepository.findAllById(Arrays.asList(questionIds));
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * 构建任务返回值
      *
      * @param cut
@@ -467,6 +548,21 @@ public class StudentToPush {
     private AskTask buildAskTask(String cut, OptQuestionList<TaskQuestion> questionList) {
         if (questionList != null) {
             return new AskTask<>(cut, questionList.getList(), questionList.getSelected());
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 构建任务返回值
+     *
+     * @param cut
+     * @param questionList
+     * @return
+     */
+    private AskBook buildAskBook(String cut, OptQuestionList<BigQuestion> questionList) {
+        if (questionList != null) {
+            return new AskBook<>(cut, questionList.getList(), questionList.getSelected());
         } else {
             return null;
         }

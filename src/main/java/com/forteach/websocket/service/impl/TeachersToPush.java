@@ -116,6 +116,25 @@ public class TeachersToPush {
         }
     }
 
+    public AchieveBookAnswer achieveBookAnswer(String uid) {
+        String uCircle = interact.uidCircle(uid);
+        String uRandom = interact.uidRandom(uid);
+        String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.ExerciseBook.name()).concat(uCircle);
+        String questionId = interact.askQuestionId(askKey);
+        if (questionId == null) {
+            return null;
+        }
+        if (!interact.untitled(askKey)) {
+            return null;
+        }
+        if (interact.answerDistinct(getAnswDistinctKey(uCircle, uRandom), examineeIsReplyKey(QuestionType.ExerciseBook, uCircle), askKey)) {
+            List<Students> students = peopleAnswer(uCircle, questionId, askKey, QuestionType.ExerciseBook);
+            return buildAchieveBookAnswer(students);
+        } else {
+            return null;
+        }
+    }
+
     /**
      * 获取回答的学生情况
      *
@@ -196,6 +215,16 @@ public class TeachersToPush {
      */
     private AchieveTaskAnswer buildAchieveTaskAnswer(List<Students> students) {
         return new AchieveTaskAnswer(students);
+    }
+
+    /**
+     * 构建学生回答的推送信息
+     *
+     * @param students
+     * @return
+     */
+    private AchieveBookAnswer buildAchieveBookAnswer(List<Students> students) {
+        return new AchieveBookAnswer(students);
     }
 
 

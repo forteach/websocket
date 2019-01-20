@@ -69,6 +69,7 @@ public class InteractServiceImpl implements InteractService {
                     .askSurvey(studentToPush.achieveSurvey(uid))
                     .askBrainstorm(studentToPush.achieveBrainstorm(uid))
                     .askTask(studentToPush.achieveTask(uid))
+                    .askBook(studentToPush.achieveBook(uid))
                     .build();
         } else {
             return ToPush.builder()
@@ -79,6 +80,7 @@ public class InteractServiceImpl implements InteractService {
                     .achieveSurveyAnswer(teachersToPush.achieveSurveyAnswer(uid))
                     .achieveBrainstormAnswer(teachersToPush.achieveBrainstormAnswer(uid))
                     .achieveTaskAnswer(teachersToPush.achieveTaskAnswer(uid))
+                    .achieveBookAnswer(teachersToPush.achieveBookAnswer(uid))
                     .build();
         }
     }
