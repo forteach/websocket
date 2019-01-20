@@ -19,15 +19,15 @@ public class CircleAnswer extends Students {
 
     private String state;
 
-    private AskAnswer askAnswer;
+    private Object askAnswer;
 
-    public CircleAnswer(String state, AskAnswer askAnswer) {
+    public CircleAnswer(String state, Object askAnswer) {
         this.state = state;
         this.askAnswer = askAnswer;
     }
 
 
-    public CircleAnswer(Students students, String state, AskAnswer askAnswer) {
+    public CircleAnswer(Students students, String state, Object askAnswer) {
         BeanUtils.copyProperties(students, this);
         this.state = state;
         this.askAnswer = askAnswer;

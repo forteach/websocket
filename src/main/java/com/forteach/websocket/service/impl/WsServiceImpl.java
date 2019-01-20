@@ -130,6 +130,9 @@ public class WsServiceImpl implements WsService {
             if (effective && toPush.getAskSurvey() != null) {
                 session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAskSurvey()));
             }
+            if (effective && toPush.getAchieveSurveyAnswer() != null) {
+                session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAchieveSurveyAnswer()));
+            }
 
         } catch (IOException e) {
             log.error(">>> sendMessage 时失败，{}", e.getMessage());

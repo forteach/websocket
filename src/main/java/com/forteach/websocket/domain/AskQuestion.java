@@ -25,10 +25,16 @@ public class AskQuestion<T> {
      */
     private String participate;
 
+    /**
+     * 小组或个人
+     */
+    private String category;
+
     public AskQuestion() {
     }
 
-    public AskQuestion(String cut, T bigQuestion, String participate) {
+    public AskQuestion(String cut, T bigQuestion, String participate, String category) {
+        this.category = category;
         this.cut = cut;
         this.bigQuestion = bigQuestion;
         this.participate = participate;

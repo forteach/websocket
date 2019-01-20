@@ -198,7 +198,7 @@ public class RedisInteractImpl implements RedisInteract {
     /**
      * 获取回答去重
      *
-     * @param distinctKey
+     * @param distinctKey 去重key
      * @param setKey
      * @param askKey
      * @return

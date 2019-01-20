@@ -70,8 +70,8 @@ public class KeyStorage {
         return RAISE_HAND_STUDENT_JOIN_DISTINCT.concat(circle).concat(random);
     }
 
-    public static String examineeIsReplyKey(String circle) {
-        return EXAMINEE_IS_REPLY_KEY.concat(circle);
+    public static String examineeIsReplyKey(QuestionType type, String circle) {
+        return EXAMINEE_IS_REPLY_KEY.concat(type.name()).concat(circle);
     }
 
     public static String getAnswDistinctKey(String circle, String random) {
