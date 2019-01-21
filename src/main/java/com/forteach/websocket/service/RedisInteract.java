@@ -33,14 +33,43 @@ public interface RedisInteract {
 
     boolean raiseDistinct(final String distinctKey, final String askKey, int size);
 
+    /**
+     * 学生加入信息去重
+     * @param distinctKey
+     * @param askKey
+     * @param size
+     * @return
+     */
     boolean joinDistinct(final String distinctKey, final String askKey, int size);
 
+    /**
+     * 查询没有题的情况
+     * @param askKey
+     * @return
+     */
     boolean untitled(final String askKey);
 
+    /**
+     * 获取回答的学生id
+     * @param askKey
+     * @return
+     */
     List<String> getAnswerStudent(String askKey);
 
+    /**
+     * 查询是否存在
+     * @param redisKey
+     * @param examineeId
+     * @return
+     */
     boolean isMember(final String redisKey, final String examineeId);
 
+    /**
+     * 通过 提问key,判断是否是选择
+     * @param askKey
+     * @param examineeId
+     * @return
+     */
     Boolean selectVerify(final String askKey, final String examineeId);
 
 

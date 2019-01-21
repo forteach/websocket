@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
- * @Description:
+ * @Description: 问卷题对象
  * @author: liu zhenming
  * @version: V1.0
  * @date: 2019/1/10  11:27

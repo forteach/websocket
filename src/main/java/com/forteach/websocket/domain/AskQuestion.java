@@ -11,6 +11,9 @@ import lombok.Data;
 @Data
 public class AskQuestion<T> {
 
+    /**
+     * 问题
+     */
     private String model = "questions";
 
     /**

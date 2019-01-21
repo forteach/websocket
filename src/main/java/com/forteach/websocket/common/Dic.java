@@ -8,22 +8,49 @@ package com.forteach.websocket.common;
  */
 public class Dic {
 
+    /**
+     * 班级提问问题id
+     */
     public static final String CLASSROOM_ASK_QUESTIONS_ID = "classAsk";
 
+    /**
+     * 类别个人
+     */
     public static final String CATEGORY_PEOPLE = "people";
 
+    /**
+     * 类别小组
+     */
     public static final String CATEGORY_TEAM = "team";
 
+    /**
+     * 提问交互
+     */
     public static final String ASK_INTERACTIVE_RACE = "race";
 
+    /**
+     *
+     */
     public static final String ASK_INTERACTIVE_RAISE = "raise";
 
+    /**
+     * 选中的
+     */
     public static final String ASK_INTERACTIVE_SELECT = "select";
 
+    /**
+     * 提问交互类型
+     */
     public static final String ASK_INTERACTIVE_VOTE = "vote";
 
+    /**
+     *　加入的是教师
+     */
     public static final String SUBSCRIBE_USER_TEACHER = "teacher";
 
+    /**
+     * 加入课堂情况是学生
+     */
     public static final String SUBSCRIBE_USER_STUDENT = "student";
 
     /**

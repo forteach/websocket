@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @Description:
+ * @Description: 问题
  * @author: liu zhenming
  * @version: V1.0
  * @date: 2018/11/15  16:57
@@ -42,8 +42,14 @@ class QuestionExamEntity<T> extends BaseEntity {
 
     protected List<T> examChildren;
 
+    /**
+     * 类型
+     */
     protected String type;
 
+    /**
+     * 章节id
+     */
     protected String chapterId;
 
     /**

@@ -13,6 +13,9 @@ import java.util.List;
 @Data
 public class AchieveJoin {
 
+    /**
+     * 互动学生
+     */
     private String model = "interactiveStudents";
 
     private List<Students> students;

@@ -103,6 +103,10 @@ public class WsServiceImpl implements WsService {
         return true;
     }
 
+    /**
+     * 循环处理推送信息
+     * @param list
+     */
     @Override
     public void process(List<ToPush> list) {
         list.forEach(toPush -> {
@@ -113,41 +117,54 @@ public class WsServiceImpl implements WsService {
 
 
     private void sendMessage(ToPush toPush, Session session) {
+        //必须session 存在并且是开启状态才能推送
         boolean effective = effective(session);
         try {
+            //提问问题(BigQuestion)
             if (effective && toPush.getAskQuestion() != null) {
                 session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAskQuestion()));
             }
+            //学生举手信息
             if (effective && toPush.getAchieveRaise() != null) {
                 session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAchieveRaise()));
             }
+            //实时学生问卷答案
             if (effective && toPush.getAchieveAnswer() != null) {
                 session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAchieveAnswer()));
             }
+            //头脑风暴答案
             if (effective && toPush.getAchieveJoin() != null) {
                 session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAchieveJoin()));
             }
+            //学生获取问卷问题
             if (effective && toPush.getAskSurvey() != null) {
                 session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAskSurvey()));
             }
+            //实时学生问卷答案
             if (effective && toPush.getAchieveSurveyAnswer() != null) {
                 session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAchieveSurveyAnswer()));
             }
+            //头脑风暴答案
             if (effective && toPush.getAchieveBrainstormAnswer() != null) {
                 session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAchieveBrainstormAnswer()));
             }
+            //任务答案
             if (effective && toPush.getAchieveTaskAnswer() != null) {
                 session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAchieveTaskAnswer()));
             }
+            //学生习题任务
             if (effective && toPush.getAskTask() != null) {
                 session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAskTask()));
             }
+            //习题册(练习册)
             if (effective && toPush.getAskBook() != null) {
                 session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAskBook()));
             }
+            //头脑风暴
             if (effective && toPush.getAskBrainstorm() != null) {
                 session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAskBrainstorm()));
             }
+            //习题答案
             if (effective && toPush.getAchieveBookAnswer() != null) {
                 session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAchieveBookAnswer()));
             }
