@@ -177,7 +177,9 @@ public class RedisInteractImpl implements RedisInteract {
      * 如果没有拉取过 给予正确 存入课堂题目的cut
      * 如果一致 代表已经拉取过 不再给予
      * 如果不一致 代表同题但是不同提问方式 重新发送
-     *
+     * @param distinctKey
+     * @param askKey
+     * @param selected
      * @return true 没有推送过该题   false  有推送过该题
      */
     @Override

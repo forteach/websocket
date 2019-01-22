@@ -29,10 +29,20 @@ public class StudentsServiceImpl implements StudentsService {
         return Students.builder().id(id).name(findStudentsName(id)).portrait(findStudentsPortrait(id)).build();
     }
 
+    /**
+     * 根据用户id 从redis 取出名字信息
+     * @param id
+     * @return
+     */
     private String findStudentsName(final String id) {
         return hashOperations.get(STUDENT_ADO.concat(id), "name");
     }
 
+    /**
+     * 从redis 取出头像信息
+     * @param id
+     * @return
+     */
     private String findStudentsPortrait(final String id) {
         return hashOperations.get(STUDENT_ADO.concat(id), "portrait");
     }

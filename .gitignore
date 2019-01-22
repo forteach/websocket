@@ -18,6 +18,7 @@
 /.vscode/
 *.sh
 *.yml
+*.html
 ### NetBeans ###
 /nbproject/private/
 /build/

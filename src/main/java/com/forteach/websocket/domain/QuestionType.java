@@ -1,7 +1,7 @@
 package com.forteach.websocket.domain;
 
 /**
- * @Description:
+ * @Description:　问题类型
  * @author: liu zhenming
  * @version: V1.0
  * @date: 2019/1/15  10:26

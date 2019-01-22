@@ -4,7 +4,7 @@ import com.forteach.websocket.domain.SurveyQuestion;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**
- * @Description:
+ * @Description: 问卷题对象
  * @author: liu zhenming
  * @version: V1.0
  * @date: 2019/1/15  16:19
