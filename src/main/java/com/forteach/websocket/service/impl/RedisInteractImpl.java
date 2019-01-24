@@ -1,6 +1,7 @@
 package com.forteach.websocket.service.impl;
 
 import com.forteach.websocket.service.RedisInteract;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import static com.forteach.websocket.common.KeyStorage.actionPropertyKey;
  * @version: V1.0
  * @date: 2019/1/2  15:12
  */
+@Slf4j
 @Service
 public class RedisInteractImpl implements RedisInteract {
 
@@ -184,7 +186,9 @@ public class RedisInteractImpl implements RedisInteract {
      */
     @Override
     public boolean distinctKeyIsEmpty(final String distinctKey, final String askKey, final String selected) {
-
+        if(log.isDebugEnabled()){
+            log.debug("判断是否已经推送过该题 参数 ==> distinctKey : {}, askKey : {}, selected : {}", distinctKey, askKey, selected);
+        }
         String distinct = stringRedisTemplate.opsForValue().get(distinctKey);
         String cut = askQuestionCut(askKey);
         stringRedisTemplate.opsForValue().set(distinctKey, cut.concat(selected), Duration.ofSeconds(60 * 60 * 2));
@@ -207,6 +211,9 @@ public class RedisInteractImpl implements RedisInteract {
      */
     @Override
     public boolean answerDistinct(final String distinctKey, final String setKey, final String askKey) {
+        if(log.isDebugEnabled()){
+            log.debug("获取回答去重 参数 ==> distinctKey : {}, setKey : {}, askKey : {}", distinctKey, setKey, askKey);
+        }
         String distinct = stringRedisTemplate.opsForValue().get(distinctKey);
         String findAnswerFlag = findAnswerFlag(askKey);
         Long answSize = stringRedisTemplate.opsForSet().size(setKey);
@@ -235,7 +242,9 @@ public class RedisInteractImpl implements RedisInteract {
      */
     @Override
     public boolean raiseDistinct(final String distinctKey, final String askKey, int size) {
-
+        if(log.isDebugEnabled()){
+            log.debug("获取举手去重 参数 ==> distinctKey : {}, askKey : {}, size : {}", distinctKey, askKey, size);
+        }
         String distinct = stringRedisTemplate.opsForValue().get(distinctKey);
         String cut = askQuestionCut(askKey);
         stringRedisTemplate.opsForValue().set(distinctKey, String.valueOf(size).concat(cut), Duration.ofSeconds(60 * 60 * 2));
@@ -258,7 +267,9 @@ public class RedisInteractImpl implements RedisInteract {
      */
     @Override
     public boolean joinDistinct(final String distinctKey, final String askKey, int size) {
-
+        if(log.isDebugEnabled()){
+            log.debug("学生加入信息去重 参数 ==> distinctKey : {}, askKey : {}, size : {}", distinctKey, askKey, size);
+        }
         String distinct = stringRedisTemplate.opsForValue().get(distinctKey);
         stringRedisTemplate.opsForValue().set(distinctKey, String.valueOf(size), Duration.ofSeconds(60 * 60 * 2));
         if (distinct == null) {

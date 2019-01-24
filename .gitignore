@@ -19,6 +19,8 @@
 *.sh
 *.yml
 *.html
+### logs
+logs/
 ### NetBeans ###
 /nbproject/private/
 /build/

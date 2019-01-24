@@ -3,6 +3,7 @@ package com.forteach.websocket.service.impl;
 import com.forteach.websocket.domain.*;
 import com.forteach.websocket.service.RedisInteract;
 import com.forteach.websocket.service.StudentsService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -21,6 +22,7 @@ import static com.forteach.websocket.common.KeyStorage.*;
  * @version: V1.0
  * @date: 2019/1/20  14:30
  */
+@Slf4j
 @Component
 public class TeachersToPush {
 
@@ -145,6 +147,9 @@ public class TeachersToPush {
      * @return
      */
     private List<Students> peopleAnswer(String uCircle, String questionId, String askKey, final QuestionType type) {
+        if (log.isDebugEnabled()){
+            log.debug("获取回答的学生情况 参数 ==> uCircle : {}, questionId : {}, askKey :{}, type : {}", uCircle, questionId, askKey, type);
+        }
         return interact.getAnswerStudent(askKey).stream().map(id -> {
             //查询redis 筛选是否回答情况
             boolean flag = interact.isMember(examineeIsReplyKey(type, uCircle), id);
