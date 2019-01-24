@@ -42,6 +42,9 @@ public class TeachersToPush {
 
         String uCircle = interact.uidCircle(uid);
         String uRandom = interact.uidRandom(uid);
+        if (uCircle == null || uRandom == null) {
+            return null;
+        }
         String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.BigQuestion.name()).concat(uCircle);
         String questionId = interact.askQuestionId(askKey);
         if (questionId == null) {
@@ -62,6 +65,9 @@ public class TeachersToPush {
     public AchieveSurveyAnswer achieveSurveyAnswer(String uid) {
         String uCircle = interact.uidCircle(uid);
         String uRandom = interact.uidRandom(uid);
+        if (uCircle == null || uRandom == null) {
+            return null;
+        }
         String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.SurveyQuestion.name()).concat(uCircle);
         String questionId = interact.askQuestionId(askKey);
         if (questionId == null) {
@@ -82,6 +88,9 @@ public class TeachersToPush {
     public AchieveBrainstormAnswer achieveBrainstormAnswer(String uid) {
         String uCircle = interact.uidCircle(uid);
         String uRandom = interact.uidRandom(uid);
+        if (uCircle == null || uRandom == null) {
+            return null;
+        }
         String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.BrainstormQuestion.name()).concat(uCircle);
         String questionId = interact.askQuestionId(askKey);
         if (questionId == null) {
@@ -101,6 +110,9 @@ public class TeachersToPush {
     public AchieveTaskAnswer achieveTaskAnswer(String uid) {
         String uCircle = interact.uidCircle(uid);
         String uRandom = interact.uidRandom(uid);
+        if (uCircle == null || uRandom == null) {
+            return null;
+        }
         String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.TaskQuestion.name()).concat(uCircle);
         String questionId = interact.askQuestionId(askKey);
         if (questionId == null) {
@@ -120,6 +132,9 @@ public class TeachersToPush {
     public AchieveBookAnswer achieveBookAnswer(String uid) {
         String uCircle = interact.uidCircle(uid);
         String uRandom = interact.uidRandom(uid);
+        if (uCircle == null || uRandom == null) {
+            return null;
+        }
         String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.ExerciseBook.name()).concat(uCircle);
         String questionId = interact.askQuestionId(askKey);
         if (questionId == null) {
@@ -294,6 +309,9 @@ public class TeachersToPush {
 
         String uCircle = interact.uidCircle(uid);
         String uRandom = interact.uidRandom(uid);
+        if (uCircle == null || uRandom == null) {
+            return null;
+        }
         String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.BigQuestion.name()).concat(uCircle);
 
         List<Students> uids = interactStudents(uCircle);
@@ -314,6 +332,9 @@ public class TeachersToPush {
 
         String uCircle = interact.uidCircle(uid);
         String uRandom = interact.uidRandom(uid);
+        if (uCircle == null || uRandom == null) {
+            return null;
+        }
         String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.BigQuestion.name()).concat(uCircle);
         //查找互动学生信息
         List<Students> uids = findInteractiveStudents(uCircle);

@@ -48,25 +48,34 @@ public class StudentToPush {
      * @return
      */
     public AskQuestion achieveQuestion(String uid) {
-        //班级信息
-        String uCircle = interact.uidCircle(uid);
-        String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.BigQuestion.name()).concat(uCircle);
-        String questionId = interact.askQuestionId(askKey);
-        if (questionId == null) {
-            return null;
-        }
-        String uRandom = interact.uidRandom(uid);
-        String uDistinctKey = askQuDistinctKey(uCircle, uid, questionId, uRandom, QuestionType.BigQuestion);
-        String cut = interact.askQuestionCut(askKey);
-        String category = interact.askCategoryType(askKey);
-        String interactive = interact.askInteractiveType(askKey);
+      
+        try {
+          //班级信息
+            String uCircle = interact.uidCircle(uid);
+            String uRandom = interact.uidRandom(uid);
+            if (uCircle == null || uRandom == null) {
+                return null;
+            }
+            String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.BigQuestion.name()).concat(uCircle);
+            String questionId = interact.askQuestionId(askKey);
+            if (questionId == null) {
+                return null;
+            }
+            String uDistinctKey = askQuDistinctKey(uCircle, uid, questionId, uRandom, QuestionType.BigQuestion);
+            String cut = interact.askQuestionCut(askKey);
+            String category = interact.askCategoryType(askKey);
+            String interactive = interact.askInteractiveType(askKey);
 
-        OptQuestion optQuestion = getQuestion(askKey, uid, category, interactive);
+            OptQuestion optQuestion = getQuestion(askKey, uid, category, interactive);
 
-        if (optQuestion != null && interact.distinctKeyIsEmpty(uDistinctKey, askKey, optQuestion.getSelected())) {
-            return buildAskQuestion(cut, optQuestion, interactive, category);
-        } else {
-            return null;
+            if (optQuestion != null && interact.distinctKeyIsEmpty(uDistinctKey, askKey, optQuestion.getSelected())) {
+                return buildAskQuestion(cut, optQuestion, interactive, category);
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            log.error("achieveQuestion {}", e.getMessage());
+            throw new RuntimeException("achieveQuestion error" + e.getMessage());
         }
     }
 
@@ -195,13 +204,17 @@ public class StudentToPush {
     public AskSurvey achieveSurvey(String uid) {
         //获取
         String uCircle = interact.uidCircle(uid);
+        String uRandom = interact.uidRandom(uid);
+
+        if (uCircle == null || uRandom == null) {
+            return null;
+        }
         String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.SurveyQuestion.name()).concat(uCircle);
         String questionId = interact.askQuestionId(askKey);
         if (questionId == null) {
             return null;
         }
         String[] questionIds = questionId.split(",");
-        String uRandom = interact.uidRandom(uid);
         String uDistinctKey = askQuDistinctKey(uCircle, uid, questionId, uRandom, QuestionType.SurveyQuestion);
         String cut = interact.askQuestionCut(askKey);
         String category = interact.askCategoryType(askKey);
@@ -291,13 +304,17 @@ public class StudentToPush {
     public AskBrainstorm achieveBrainstorm(String uid) {
         //获取
         String uCircle = interact.uidCircle(uid);
+        String uRandom = interact.uidRandom(uid);
+
+        if (uCircle == null || uRandom == null) {
+            return null;
+        }
         String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.BrainstormQuestion.name()).concat(uCircle);
         String questionId = interact.askQuestionId(askKey);
         if (questionId == null) {
             return null;
         }
         String[] questionIds = questionId.split(",");
-        String uRandom = interact.uidRandom(uid);
         String uDistinctKey = askQuDistinctKey(uCircle, uid, questionId, uRandom, QuestionType.BrainstormQuestion);
         String cut = interact.askQuestionCut(askKey);
         String category = interact.askCategoryType(askKey);
@@ -388,13 +405,17 @@ public class StudentToPush {
     public AskTask achieveTask(String uid) {
         //获取
         String uCircle = interact.uidCircle(uid);
+        String uRandom = interact.uidRandom(uid);
+
+        if (uCircle == null || uRandom == null) {
+            return null;
+        }
         String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.TaskQuestion.name()).concat(uCircle);
         String questionId = interact.askQuestionId(askKey);
         if (questionId == null) {
             return null;
         }
         String[] questionIds = questionId.split(",");
-        String uRandom = interact.uidRandom(uid);
         String uDistinctKey = askQuDistinctKey(uCircle, uid, questionId, uRandom, QuestionType.TaskQuestion);
         String cut = interact.askQuestionCut(askKey);
         String category = interact.askCategoryType(askKey);
@@ -417,13 +438,16 @@ public class StudentToPush {
     public AskBook achieveBook(String uid) {
         //获取
         String uCircle = interact.uidCircle(uid);
+        String uRandom = interact.uidRandom(uid);
+        if (uCircle == null || uRandom == null) {
+            return null;
+        }
         String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.ExerciseBook.name()).concat(uCircle);
         String questionId = interact.askQuestionId(askKey);
         if (questionId == null) {
             return null;
         }
         String[] questionIds = questionId.split(",");
-        String uRandom = interact.uidRandom(uid);
         String uDistinctKey = askQuDistinctKey(uCircle, uid, questionId, uRandom, QuestionType.ExerciseBook);
         String cut = interact.askQuestionCut(askKey);
         String category = interact.askCategoryType(askKey);
