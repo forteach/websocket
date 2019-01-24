@@ -5,22 +5,52 @@ import com.forteach.websocket.domain.QuestionType;
 import static com.forteach.websocket.common.Dic.CLASSROOM_ASK_QUESTIONS_ID;
 
 /**
- * @Description:
+ * @Description: redis 前缀变量和构造需要的key信息
  * @author: liu zhenming
  * @version: V1.0
  * @date: 2018/12/27  11:02
  */
 public class KeyStorage {
 
+    /**
+     *
+     */
     public static final String INTERACTION_UID_SET_PREFIX = "c.f.w.c.actionUidSet";
+    /**
+     * 学生信息前缀
+     */
     public static final String STUDENT_ADO = "studentsData$";
+    /**
+     *
+     */
     private static final String INTERACTION_PROPERTY_PREFIX = "c.f.w.c.actionProperty";
+    /**
+     * 课堂问题
+     */
     private static final String CLASSROOM_ASK_QUESTIONS_DISTINCT = "distinctAsk";
+    /**
+     *
+     */
     private static final String ASK_RAISE_HAND = "askRaiseHand";
+    /**
+     *
+     */
     private static final String RAISE_HAND_STUDENT_DISTINCT = "distinctRaiseHand";
+    /**
+     *
+     */
     private static final String RAISE_HAND_STUDENT_JOIN_DISTINCT = "distinctJoinHand";
+    /**
+     *
+     */
     private static final String EXAMINEE_IS_REPLY_KEY = "askExamineeIsReply";
+    /**
+     *　举手的学生信息前缀
+     */
     private static final String ANSW_HAND_STUDENT_DISTINCT = "distinctAnswHand";
+    /**
+     * 交互课堂的学生信息前缀
+     */
     private static final String INTERACTIVE_CLASSROOM_STUDENTS = "ICStudents";
 
     public static String actionPropertyKey(String uid) {
@@ -29,7 +59,7 @@ public class KeyStorage {
 
     /**
      * 获取redis 提问 key
-     *
+     * @param circle　加入课堂需要的id
      * @return
      */
     public static String getAskKey(String circle) {

@@ -8,7 +8,7 @@ import javax.websocket.Session;
 /**
  * Created with IntelliJ IDEA.
  *
- * @Description:
+ * @Description: 开启线程推送
  * @author: liu zhenming
  * @version: V1.0
  * @date: 2018/3/11 16:14

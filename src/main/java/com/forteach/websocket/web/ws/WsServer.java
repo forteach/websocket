@@ -38,11 +38,31 @@ public class WsServer {
     @Resource
     private ThreadPoolExecutor subExecutor;
 
+    /**
+     * 用户班级
+     */
     private String circle;
+    /**
+     * 用户id
+     */
     private String uid;
+    /**
+     * 加入类型　teacher
+     */
     private String type;
+    /**
+     * 随机数
+     */
     private String random;
 
+    /**
+     * 接受参数建立连接
+     * @param session　用户session
+     * @param circle　课堂小组id
+     * @param uid 用户id
+     * @param type
+     * @param random 随机数
+     */
     @OnOpen
     public void onOpen(Session session, @PathParam("circle") String circle, @PathParam("uid") String uid, @PathParam("type") String type, @PathParam("random") String random) {
         //属性赋值

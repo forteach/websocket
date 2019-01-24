@@ -15,6 +15,9 @@ import java.util.concurrent.ConcurrentMap;
  */
 public interface WsService {
 
+    /**
+     * 保存session集合
+     */
     ConcurrentMap<String, Session> SESSION_MAP = new ConcurrentHashMap<>();
 
     /**

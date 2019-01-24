@@ -16,7 +16,7 @@ import static com.forteach.websocket.common.Dic.*;
 import static com.forteach.websocket.common.KeyStorage.*;
 
 /**
- * @Description:
+ * @Description: 推送教师相关信息
  * @author: liu zhenming
  * @version: V1.0
  * @date: 2019/1/20  14:30
@@ -77,6 +77,7 @@ public class TeachersToPush {
             return null;
         }
         if (interact.answerDistinct(getAnswDistinctKey(uCircle, uRandom), examineeIsReplyKey(QuestionType.SurveyQuestion, uCircle), askKey)) {
+            //获取学生回答情况信息列表
             List<Students> students = peopleAnswer(uCircle, questionId, askKey, QuestionType.SurveyQuestion);
             return buildAchieveSurveyAnswer(students);
         } else {
@@ -160,6 +161,7 @@ public class TeachersToPush {
      */
     private List<Students> peopleAnswer(String uCircle, String questionId, String askKey, final QuestionType type) {
         return interact.getAnswerStudent(askKey).stream().map(id -> {
+            //查询redis 筛选是否回答情况
             boolean flag = interact.isMember(examineeIsReplyKey(type, uCircle), id);
             Object answ = findAskAnswer(uCircle, id, questionId, type);
             Students student = studentsService.findStudentsBrief(id);
@@ -334,9 +336,11 @@ public class TeachersToPush {
             return null;
         }
         String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.BigQuestion.name()).concat(uCircle);
-
+        //查找互动学生信息
         List<Students> uids = findInteractiveStudents(uCircle);
-        if (uids.size() > 0 && interact.joinDistinct(joinDistinctKey(uCircle, uRandom), askKey, uids.size())) {
+        if (uids.size() > 0 &&
+                //学生加入信息去重
+                interact.joinDistinct(joinDistinctKey(uCircle, uRandom), askKey, uids.size())) {
             return buildAchieveJoin(uids);
         } else {
             return null;
