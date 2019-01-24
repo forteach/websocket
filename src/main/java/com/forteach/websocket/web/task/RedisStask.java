@@ -26,7 +26,7 @@ public class RedisStask {
     @Resource
     private WsService wsService;
 
-    @Scheduled(initialDelay = 1000 * 10, fixedDelay = 1000)
+    @Scheduled(initialDelay = 1000 * 10, fixedDelay = 100)
     public void refreshInfo() {
         try {
             List<ToPush> pushList = interactService.obtain();
