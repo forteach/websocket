@@ -78,7 +78,7 @@ public class WsServer {
 
     @OnError
     public void onError(Session session, Throwable throwable) {
-        log.error("onError: " + throwable.getMessage());
+        log.error("ws : onError: " + throwable.getMessage() + " / " + throwable);
     }
 
     private void evaluation(String circle, String uid, String type, String random) {

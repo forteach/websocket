@@ -34,7 +34,7 @@ public class RedisStask {
                 wsService.process(pushList);
             }
         } catch (Exception e) {
-            log.error(" refreshInfo Task error {}", e.getMessage());
+            log.error(" refreshInfo Task error {} {}", e.getMessage(), e);
         }
     }
 

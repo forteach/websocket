@@ -25,3 +25,6 @@
 /dist/
 /nbdist/
 /.nb-gradle/
+mvnw
+mvnw.cmd
+src/main/resources/static/
