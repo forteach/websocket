@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
 
 /**
- * @Description:
+ * @Description: 学生答题情况
  * @author: liu zhenming
  * @version: V1.0
  * @date: 2018/12/7  15:38
@@ -17,6 +17,11 @@ import org.springframework.beans.BeanUtils;
 public class CircleAnswer extends Students {
 
 
+    /**
+     * 回答状态
+     * １未回答
+     * ２已回答
+     */
     private String state;
 
     private Object askAnswer;

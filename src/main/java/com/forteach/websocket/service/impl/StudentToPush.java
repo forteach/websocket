@@ -48,8 +48,9 @@ public class StudentToPush {
      * @return
      */
     public AskQuestion achieveQuestion(String uid) {
-
+      
         try {
+          //班级信息
             String uCircle = interact.uidCircle(uid);
             String uRandom = interact.uidRandom(uid);
             if (uCircle == null || uRandom == null) {
@@ -117,7 +118,9 @@ public class StudentToPush {
     /**
      * 个人对象 返回题目
      *
+     * @param askKey
      * @param uid
+     * @param interactive
      * @return
      */
     private OptQuestion askPeople(String askKey, String uid, String interactive) {
@@ -315,7 +318,7 @@ public class StudentToPush {
         String uDistinctKey = askQuDistinctKey(uCircle, uid, questionId, uRandom, QuestionType.BrainstormQuestion);
         String cut = interact.askQuestionCut(askKey);
         String category = interact.askCategoryType(askKey);
-
+        //获取uid的问题
         OptQuestionList<BrainstormQuestion> questionList = getBrainstormQuestionList(askKey, uid, category, questionIds);
 
         if (questionList != null && interact.distinctKeyIsEmpty(uDistinctKey, askKey, questionList.getSelected())) {
@@ -367,7 +370,7 @@ public class StudentToPush {
      * @return
      */
     private OptQuestionList<BrainstormQuestion> selectedBrainstormOptListPeople(String askKey, String uid, String[] questionIds) {
-
+        //被选中的学生获得问卷
         List<BrainstormQuestion> list = selectBrainstormQuestion(askKey, uid, questionIds);
         if (list == null) {
             return null;
@@ -386,6 +389,7 @@ public class StudentToPush {
      */
     private List<BrainstormQuestion> selectBrainstormQuestion(String askKey, String uid, String[] questionIds) {
         if (interact.selectVerify(askKey, uid)) {
+            //
             return (List<BrainstormQuestion>) brainstormQuestionRepository.findAllById(Arrays.asList(questionIds));
         } else {
             return null;

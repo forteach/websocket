@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * @Description:
+ * @Description: 学生举手信息
  * @author: liu zhenming
  * @version: V1.0
  * @date: 2018/12/29  11:16
@@ -13,6 +13,9 @@ import java.util.List;
 @Data
 public class AchieveRaise {
 
+    /**
+     * 举手
+     */
     private String model = "raise";
 
     private List<Students> students;

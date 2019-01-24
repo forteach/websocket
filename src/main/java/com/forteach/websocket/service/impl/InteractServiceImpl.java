@@ -42,9 +42,10 @@ public class InteractServiceImpl implements InteractService {
      */
     @Override
     public List<ToPush> obtain() {
-
+        // 从redis取出加入的学生信息
         Set<String> uid = interact.getSets(INTERACTION_UID_SET_PREFIX);
         if (uid != null && uid.size() > 0) {
+            //构建推送对象信息集合
             return uid.stream()
                     .filter(id -> null != SESSION_MAP.get(id))
                     .filter(id -> SESSION_MAP.get(id).isOpen())
@@ -61,25 +62,40 @@ public class InteractServiceImpl implements InteractService {
      * @return
      */
     private ToPush buildToPush(String uid) {
+        // 获取要推送的用户身份信息 teacher student
         String uType = interact.uidType(uid);
         if (SUBSCRIBE_USER_STUDENT.equals(uType)) {
+            //是学生推送学生信息
             return ToPush.builder()
                     .uid(uid)
+                    //提问问题
                     .askQuestion(studentToPush.achieveQuestion(uid))
+                    //学生习题任务
                     .askSurvey(studentToPush.achieveSurvey(uid))
+                    //头脑风暴
                     .askBrainstorm(studentToPush.achieveBrainstorm(uid))
+                    //学生习题任务
                     .askTask(studentToPush.achieveTask(uid))
+                    //习题册(练习册)
                     .askBook(studentToPush.achieveBook(uid))
                     .build();
         } else {
+            //不是学生推送老师信息
             return ToPush.builder()
                     .uid(uid)
+                    //学生回答信息(BigQuestion)
                     .achieveAnswer(teachersToPush.achieveAnswer(uid))
+                    //学生举手信息
                     .achieveRaise(teachersToPush.achieveRaise(uid))
+                    //学生加入课堂信息
                     .achieveJoin(teachersToPush.achieveInteractiveStudents(uid))
+                    //实时学生问卷答案
                     .achieveSurveyAnswer(teachersToPush.achieveSurveyAnswer(uid))
+                    //头脑风暴答案
                     .achieveBrainstormAnswer(teachersToPush.achieveBrainstormAnswer(uid))
+                    //任务答案
                     .achieveTaskAnswer(teachersToPush.achieveTaskAnswer(uid))
+                    //习题答案
                     .achieveBookAnswer(teachersToPush.achieveBookAnswer(uid))
                     .build();
         }

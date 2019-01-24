@@ -26,11 +26,17 @@ public class RedisStask {
     @Resource
     private WsService wsService;
 
+    /**
+     * 每隔１秒遍历发送一次在redis 推送的信息
+     */
+    @Scheduled(initialDelay = 1000 * 10, fixedDelay = 1000)
     @Scheduled(initialDelay = 1000 * 10, fixedDelay = 100)
     public void refreshInfo() {
         try {
+            // 获取redis中待推送的数据
             List<ToPush> pushList = interactService.obtain();
             if (pushList != null && pushList.size() != 0) {
+                //处理推送
                 wsService.process(pushList);
             }
         } catch (Exception e) {

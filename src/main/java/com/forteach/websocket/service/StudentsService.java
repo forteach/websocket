@@ -9,5 +9,10 @@ import com.forteach.websocket.domain.Students;
  * @date: 2018/12/29  10:11
  */
 public interface StudentsService {
+    /**
+     * 通过学生id从redis取出学生对象信息
+     * @param id
+     * @return
+     */
     Students findStudentsBrief(final String id);
 }
