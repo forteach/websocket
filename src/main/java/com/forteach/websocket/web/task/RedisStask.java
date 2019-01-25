@@ -30,6 +30,7 @@ public class RedisStask {
      * 每隔１秒遍历发送一次在redis 推送的信息
      */
     @Scheduled(initialDelay = 1000 * 10, fixedDelay = 1000)
+    @Scheduled(initialDelay = 1000 * 10, fixedDelay = 100)
     public void refreshInfo() {
         try {
             // 获取redis中待推送的数据
@@ -39,7 +40,7 @@ public class RedisStask {
                 wsService.process(pushList);
             }
         } catch (Exception e) {
-            log.error(" refreshInfo Task error {}", e.getMessage());
+            log.error(" refreshInfo Task error {} {}", e.getMessage(), e);
         }
     }
 
