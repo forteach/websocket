@@ -1,5 +1,7 @@
 package com.forteach.websocket.domain;
 
+import lombok.Data;
+
 import java.util.List;
 
 /**
@@ -8,6 +10,7 @@ import java.util.List;
  * @version: V1.0
  * @date: 2019/1/20  17:53
  */
+@Data
 public class AskBook<T> {
 
     private String model = "bookQuestion";
