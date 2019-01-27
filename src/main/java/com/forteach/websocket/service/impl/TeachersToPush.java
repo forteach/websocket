@@ -290,9 +290,9 @@ public class TeachersToPush {
 
         if (type.equals(QuestionType.BigQuestion)) {
             Query query = Query.query(
-                    Criteria.where("circleId").in(circleId)
-                            .and("questionId").in(questionId)
-                            .and("examineeId").in(examineeId));
+                    Criteria.where("circleId").is(circleId)
+                            .and("questionId").is(questionId)
+                            .and("examineeId").is(examineeId));
 
             return mongoTemplate.findOne(query, AskAnswer.class);
         }
@@ -300,8 +300,16 @@ public class TeachersToPush {
         Query query = Query.query(
                 Criteria.where("circleId").is(circleId)
                         .and("examineeId").is(examineeId)
-                        .and("libraryType").is(type));
-        return mongoTemplate.findOne(query, ActivityAskAnswer.class).getAnswList();
+                        .and("libraryType").is(type.name()));
+        ActivityAskAnswer activityAskAnswer = mongoTemplate.findOne(query, ActivityAskAnswer.class);
+        return activityAskAnswerResults(activityAskAnswer);
+    }
+
+    private Object activityAskAnswerResults(ActivityAskAnswer activityAskAnswer) {
+        if (activityAskAnswer == null) {
+            return null;
+        }
+        return activityAskAnswer.getAnswList();
     }
 
     /**
