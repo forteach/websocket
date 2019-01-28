@@ -72,5 +72,13 @@ public interface RedisInteract {
      */
     Boolean selectVerify(final String askKey, final String examineeId);
 
+    /**
+     * 通过 提问key,判断是否是选择
+     *
+     * @param askKey
+     * @return
+     */
+    Boolean selectTeamVerify(final String askKey, final String examineeId);
+
 
 }

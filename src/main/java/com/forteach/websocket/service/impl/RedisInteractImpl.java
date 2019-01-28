@@ -1,8 +1,13 @@
 package com.forteach.websocket.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
+import com.forteach.websocket.domain.Students;
+import com.forteach.websocket.domain.Team;
 import com.forteach.websocket.service.RedisInteract;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +17,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.forteach.websocket.common.KeyStorage.actionPropertyKey;
+import static com.forteach.websocket.common.KeyStorage.groupKey;
 
 /**
  * @Description:
@@ -30,6 +37,9 @@ public class RedisInteractImpl implements RedisInteract {
 
     @Resource
     private StringRedisTemplate stringRedisTemplate;
+
+    @Resource
+    private RedisTemplate redisTemplate;
 
     /**
      * 查看回答标志
@@ -166,6 +176,17 @@ public class RedisInteractImpl implements RedisInteract {
     }
 
     /**
+     * 通过 提问key,判断是否是选择
+     *
+     * @param askKey
+     * @return
+     */
+    @Override
+    public Boolean selectTeamVerify(final String askKey, final String examineeId) {
+        return isSelectedTeam(Objects.requireNonNull(hashOperations.get(askKey, "selected")), examineeId, askKey);
+    }
+
+    /**
      * 判断学生是否被选中
      *
      * @return
@@ -174,11 +195,43 @@ public class RedisInteractImpl implements RedisInteract {
         return Arrays.asList(selectId.split(",")).contains(examineeId);
     }
 
+
+    /**
+     * 判断学生是否被选中
+     *
+     * @return
+     */
+    private Boolean isSelectedTeam(final String selectId, final String examineeId, final String askKey) {
+
+        String circle = uidCircle(examineeId);
+        //小组id
+        List<String> ids = Arrays.asList(selectId.split(","));
+
+        //获取课堂当前的team
+        List<Team> teams = JSON.parseObject(JSON.toJSONString(redisTemplate.opsForValue().get(groupKey(circle))), new TypeReference<List<Team>>() {
+        });
+
+        boolean flag = false;
+
+        for (Team team : teams) {
+            if (ids.contains(team.getTeamId())) {
+                List<String> students = team.getStudents().stream().map(Students::getId).collect(Collectors.toList());
+                if (students.contains(examineeId)) {
+                    flag = true;
+                }
+            } else {
+                flag = false;
+            }
+        }
+        return flag;
+    }
+
     /**
      * 判断是否已经推送过该题
      * 如果没有拉取过 给予正确 存入课堂题目的cut
      * 如果一致 代表已经拉取过 不再给予
      * 如果不一致 代表同题但是不同提问方式 重新发送
+     *
      * @param distinctKey
      * @param askKey
      * @param selected
@@ -186,7 +239,7 @@ public class RedisInteractImpl implements RedisInteract {
      */
     @Override
     public boolean distinctKeyIsEmpty(final String distinctKey, final String askKey, final String selected) {
-        if(log.isDebugEnabled()){
+        if (log.isDebugEnabled()) {
             log.debug("判断是否已经推送过该题 参数 ==> distinctKey : {}, askKey : {}, selected : {}", distinctKey, askKey, selected);
         }
         String distinct = stringRedisTemplate.opsForValue().get(distinctKey);
@@ -211,7 +264,7 @@ public class RedisInteractImpl implements RedisInteract {
      */
     @Override
     public boolean answerDistinct(final String distinctKey, final String setKey, final String askKey) {
-        if(log.isDebugEnabled()){
+        if (log.isDebugEnabled()) {
             log.debug("获取回答去重 参数 ==> distinctKey : {}, setKey : {}, askKey : {}", distinctKey, setKey, askKey);
         }
         String distinct = stringRedisTemplate.opsForValue().get(distinctKey);
@@ -242,7 +295,7 @@ public class RedisInteractImpl implements RedisInteract {
      */
     @Override
     public boolean raiseDistinct(final String distinctKey, final String askKey, int size) {
-        if(log.isDebugEnabled()){
+        if (log.isDebugEnabled()) {
             log.debug("获取举手去重 参数 ==> distinctKey : {}, askKey : {}, size : {}", distinctKey, askKey, size);
         }
         String distinct = stringRedisTemplate.opsForValue().get(distinctKey);
@@ -267,7 +320,7 @@ public class RedisInteractImpl implements RedisInteract {
      */
     @Override
     public boolean joinDistinct(final String distinctKey, final String askKey, int size) {
-        if(log.isDebugEnabled()){
+        if (log.isDebugEnabled()) {
             log.debug("学生加入信息去重 参数 ==> distinctKey : {}, askKey : {}, size : {}", distinctKey, askKey, size);
         }
         String distinct = stringRedisTemplate.opsForValue().get(distinctKey);

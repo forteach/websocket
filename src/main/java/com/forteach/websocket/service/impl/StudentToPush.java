@@ -92,7 +92,7 @@ public class StudentToPush {
             case CATEGORY_PEOPLE:
                 return askPeople(askKey, uid, interactive);
             case CATEGORY_TEAM:
-                return null;
+                return askTeam(askKey, uid, interactive);
             default:
                 log.error("获取 getQuestion 信息错误 非法参数 错误的数据类型");
                 return null;
@@ -143,6 +143,30 @@ public class StudentToPush {
     }
 
     /**
+     * 小组对象 返回题目
+     *
+     * @param askKey
+     * @param uid
+     * @param interactive
+     * @return
+     */
+    private OptQuestion askTeam(String askKey, String uid, String interactive) {
+        switch (interactive) {
+            case ASK_INTERACTIVE_RACE:
+                return selected(selectTeamQuestion(askKey, uid));
+            case ASK_INTERACTIVE_RAISE:
+                return raiseSelectedTeam(askKey, uid, findBigQuestion(askKey));
+            case ASK_INTERACTIVE_SELECT:
+                return selected(selectTeamQuestion(askKey, uid));
+            case ASK_INTERACTIVE_VOTE:
+                return null;
+            default:
+                log.error(" askTeam 非法参数 错误的数据类型");
+                return null;
+        }
+    }
+
+    /**
      * 封装是否能够回答
      *
      * @param bigQuestion
@@ -166,6 +190,20 @@ public class StudentToPush {
         }
     }
 
+    /**
+     * 封装是否能够回答
+     *
+     * @param bigQuestion
+     * @return
+     */
+    private OptQuestion raiseSelectedTeam(String askKey, String uid, BigQuestion bigQuestion) {
+        if (interact.selectTeamVerify(askKey, uid)) {
+            return new OptQuestion(ASK_QUESTIONS_SELECTED, bigQuestion);
+        } else {
+            return new OptQuestion(ASK_QUESTIONS_UN_SELECTED, bigQuestion);
+        }
+    }
+
 
     /**
      * 被选中的学生获得问题
@@ -176,6 +214,21 @@ public class StudentToPush {
      */
     private BigQuestion selectQuestion(String askKey, String uid) {
         if (interact.selectVerify(askKey, uid)) {
+            return findBigQuestion(askKey);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 获取提问的team问题
+     *
+     * @param askKey
+     * @param uid
+     * @return
+     */
+    private BigQuestion selectTeamQuestion(String askKey, String uid) {
+        if (interact.selectTeamVerify(askKey, uid)) {
             return findBigQuestion(askKey);
         } else {
             return null;
@@ -244,7 +297,7 @@ public class StudentToPush {
             case CATEGORY_PEOPLE:
                 return selectedSurveyOptListPeople(askKey, uid, questionIds);
             case CATEGORY_TEAM:
-                return null;
+                return selectedSurveyOptListTeam(askKey, uid, questionIds);
             default:
                 log.error("获取 getSurveyQuestionList 信息错误 非法参数 错误的数据类型");
                 return null;
@@ -269,6 +322,23 @@ public class StudentToPush {
     }
 
     /**
+     * 个人对象 返回题目集
+     *
+     * @param uid
+     * @return
+     */
+    private OptQuestionList<SurveyQuestion> selectedSurveyOptListTeam(String askKey, String uid, String[] questionIds) {
+
+        List<SurveyQuestion> list = selectSurveyQuestionTeam(askKey, uid, questionIds);
+        if (list == null) {
+            return null;
+        } else {
+            return new OptQuestionList<>(ASK_QUESTIONS_SELECTED, list);
+        }
+
+    }
+
+    /**
      * 被选中的学生获得问卷
      *
      * @param askKey
@@ -277,6 +347,21 @@ public class StudentToPush {
      */
     private List<SurveyQuestion> selectSurveyQuestion(String askKey, String uid, String[] questionIds) {
         if (interact.selectVerify(askKey, uid)) {
+            return (List<SurveyQuestion>) surveyQuestionRepository.findAllById(Arrays.asList(questionIds));
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 被选中的学生获得问卷
+     *
+     * @param askKey
+     * @param uid
+     * @return
+     */
+    private List<SurveyQuestion> selectSurveyQuestionTeam(String askKey, String uid, String[] questionIds) {
+        if (interact.selectTeamVerify(askKey, uid)) {
             return (List<SurveyQuestion>) surveyQuestionRepository.findAllById(Arrays.asList(questionIds));
         } else {
             return null;
@@ -344,7 +429,7 @@ public class StudentToPush {
             case CATEGORY_PEOPLE:
                 return selectedBrainstormOptListPeople(askKey, uid, questionIds);
             case CATEGORY_TEAM:
-                return null;
+                return selectedBrainstormOptListTeam(askKey, uid, questionIds);
             default:
                 log.error("获取 getBrainstormQuestionList 信息错误 非法参数 错误的数据类型");
                 return null;
@@ -384,6 +469,23 @@ public class StudentToPush {
     }
 
     /**
+     * 个人对象 返回题目集
+     *
+     * @param uid
+     * @return
+     */
+    private OptQuestionList<BrainstormQuestion> selectedBrainstormOptListTeam(String askKey, String uid, String[] questionIds) {
+        //被选中的学生获得问卷
+        List<BrainstormQuestion> list = selectBrainstormQuestionTeam(askKey, uid, questionIds);
+        if (list == null) {
+            return null;
+        } else {
+            return new OptQuestionList<>(ASK_QUESTIONS_SELECTED, list);
+        }
+
+    }
+
+    /**
      * 被选中的学生获得问卷
      *
      * @param askKey
@@ -393,6 +495,21 @@ public class StudentToPush {
     private List<BrainstormQuestion> selectBrainstormQuestion(String askKey, String uid, String[] questionIds) {
         if (interact.selectVerify(askKey, uid)) {
             //
+            return (List<BrainstormQuestion>) brainstormQuestionRepository.findAllById(Arrays.asList(questionIds));
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 被选中的学生获得问卷
+     *
+     * @param askKey
+     * @param uid
+     * @return
+     */
+    private List<BrainstormQuestion> selectBrainstormQuestionTeam(String askKey, String uid, String[] questionIds) {
+        if (interact.selectTeamVerify(askKey, uid)) {
             return (List<BrainstormQuestion>) brainstormQuestionRepository.findAllById(Arrays.asList(questionIds));
         } else {
             return null;
@@ -477,7 +594,7 @@ public class StudentToPush {
             case CATEGORY_PEOPLE:
                 return selectedTaskOptListPeople(askKey, uid, questionIds);
             case CATEGORY_TEAM:
-                return null;
+                return selectedTaskOptListTeam(askKey, uid, questionIds);
             default:
                 log.error("获取 getTaskQuestionList 信息错误 非法参数 错误的数据类型");
                 return null;
@@ -497,7 +614,7 @@ public class StudentToPush {
             case CATEGORY_PEOPLE:
                 return selectedBigQuestionOptListPeople(askKey, uid, questionIds);
             case CATEGORY_TEAM:
-                return null;
+                return selectedBigQuestionOptListTeam(askKey, uid, questionIds);
             default:
                 log.error("获取 getTaskQuestionList 信息错误 非法参数 错误的数据类型");
                 return null;
@@ -527,9 +644,43 @@ public class StudentToPush {
      * @param uid
      * @return
      */
+    private OptQuestionList<TaskQuestion> selectedTaskOptListTeam(String askKey, String uid, String[] questionIds) {
+
+        List<TaskQuestion> list = selectTaskQuestionTeam(askKey, uid, questionIds);
+        if (list == null) {
+            return null;
+        } else {
+            return new OptQuestionList<>(ASK_QUESTIONS_SELECTED, list);
+        }
+
+    }
+
+    /**
+     * 个人对象 返回题目集
+     *
+     * @param uid
+     * @return
+     */
     private OptQuestionList<BigQuestion> selectedBigQuestionOptListPeople(String askKey, String uid, String[] questionIds) {
 
         List<BigQuestion> list = selectBigQuestion(askKey, uid, questionIds);
+        if (list == null) {
+            return null;
+        } else {
+            return new OptQuestionList<>(ASK_QUESTIONS_SELECTED, list);
+        }
+
+    }
+
+    /**
+     * 个人对象 返回题目集
+     *
+     * @param uid
+     * @return
+     */
+    private OptQuestionList<BigQuestion> selectedBigQuestionOptListTeam(String askKey, String uid, String[] questionIds) {
+
+        List<BigQuestion> list = selectBigQuestionTeam(askKey, uid, questionIds);
         if (list == null) {
             return null;
         } else {
@@ -554,6 +705,21 @@ public class StudentToPush {
     }
 
     /**
+     * 被选中的学生获得问卷
+     *
+     * @param askKey
+     * @param uid
+     * @return
+     */
+    private List<TaskQuestion> selectTaskQuestionTeam(String askKey, String uid, String[] questionIds) {
+        if (interact.selectTeamVerify(askKey, uid)) {
+            return (List<TaskQuestion>) taskQuestionRepository.findAllById(Arrays.asList(questionIds));
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * 被选中的学生获得练习册
      *
      * @param askKey
@@ -562,6 +728,21 @@ public class StudentToPush {
      */
     private List<BigQuestion> selectBigQuestion(String askKey, String uid, String[] questionIds) {
         if (interact.selectVerify(askKey, uid)) {
+            return (List<BigQuestion>) bigQuestionRepository.findAllById(Arrays.asList(questionIds));
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 被选中的学生获得练习册
+     *
+     * @param askKey
+     * @param uid
+     * @return
+     */
+    private List<BigQuestion> selectBigQuestionTeam(String askKey, String uid, String[] questionIds) {
+        if (interact.selectTeamVerify(askKey, uid)) {
             return (List<BigQuestion>) bigQuestionRepository.findAllById(Arrays.asList(questionIds));
         } else {
             return null;

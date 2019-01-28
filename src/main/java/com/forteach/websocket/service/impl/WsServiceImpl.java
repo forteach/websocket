@@ -121,9 +121,9 @@ public class WsServiceImpl implements WsService {
         boolean effective = effective(session);
         try {
             //添加日志
-            if (effective && log.isDebugEnabled() && toPush != null){
-                log.debug("发送消息　toPush : {}, session : {}", toPush.toString(), session.toString());
-            }
+//            if (effective && log.isDebugEnabled() && toPush != null){
+//                log.debug("发送消息　toPush : {}, session : {}", toPush.toString(), session.toString());
+//            }
             //提问问题(BigQuestion)
             if (effective && toPush.getAskQuestion() != null) {
                 session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAskQuestion()));

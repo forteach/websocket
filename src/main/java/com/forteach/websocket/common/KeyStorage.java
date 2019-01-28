@@ -53,6 +53,11 @@ public class KeyStorage {
      */
     private static final String INTERACTIVE_CLASSROOM_STUDENTS = "ICStudents";
 
+    /**
+     * 课堂小组
+     */
+    private static final String ASK_GROUP = "askGroup";
+
     public static String actionPropertyKey(String uid) {
         return INTERACTION_PROPERTY_PREFIX.concat(uid);
     }
@@ -107,5 +112,16 @@ public class KeyStorage {
     public static String getAnswDistinctKey(String circle, String random) {
         return ANSW_HAND_STUDENT_DISTINCT.concat(circle).concat(random);
     }
+
+    /**
+     * 获取课堂下team
+     *
+     * @param circleId
+     * @return
+     */
+    public static String groupKey(String circleId) {
+        return ASK_GROUP.concat(circleId);
+    }
+
 
 }
