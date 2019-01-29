@@ -49,7 +49,7 @@ public class StudentToPush {
      */
     public AskQuestion achieveQuestion(String uid) {
         if (log.isDebugEnabled()){
-            log.debug("获取需要推送的获取问题 参数　==> uid : {}", uid);
+//            log.debug("获取需要推送的获取问题 参数　==> uid : {}", uid);
         }
         //班级信息
         String uCircle = interact.uidCircle(uid);
@@ -125,7 +125,7 @@ public class StudentToPush {
      */
     private OptQuestion askPeople(String askKey, String uid, String interactive) {
         if (log.isDebugEnabled()){
-            log.debug("个人对象 返回题目 参数 ==> askKey : {}, uid : {}, interactive : {}", askKey, uid, interactive);
+//            log.debug("个人对象 返回题目 参数 ==> askKey : {}, uid : {}, interactive : {}", askKey, uid, interactive);
         }
         switch (interactive) {
             case ASK_INTERACTIVE_RACE:

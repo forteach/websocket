@@ -81,7 +81,7 @@ public class WsServer {
 
         if (message != null && message.equalsIgnoreCase(HEARTBEAT_PING)) {
             try {
-                log.debug(" onMessage Pong: " + ByteBuffer.wrap("health-check".getBytes()));
+                log.trace(" onMessage Pong: " + ByteBuffer.wrap("health-check".getBytes()));
                 session.getBasicRemote().sendText(JSON.toJSONString(new PongVo()));
             } catch (IOException e) {
                 log.error("onMessage： ERROR ! {}", e.getMessage());

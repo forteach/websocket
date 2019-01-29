@@ -163,7 +163,7 @@ public class TeachersToPush {
      */
     private List<Students> peopleAnswer(String uCircle, String questionId, String askKey, final QuestionType type) {
         if (log.isDebugEnabled()){
-            log.debug("获取回答的学生情况 参数 ==> uCircle : {}, questionId : {}, askKey :{}, type : {}", uCircle, questionId, askKey, type);
+//            log.debug("获取回答的学生情况 参数 ==> uCircle : {}, questionId : {}, askKey :{}, type : {}", uCircle, questionId, askKey, type);
         }
         return interact.getAnswerStudent(askKey).stream().map(id -> {
             //查询redis 筛选是否回答情况

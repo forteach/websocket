@@ -139,7 +139,7 @@ public class WsServiceImpl implements WsService {
                 session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAchieveAnswer()));
                 log.info("推送给老师 学生回答情况 uid {}", toPush.getUid());
             }
-            //头脑风暴答案
+            //头学生加入信息
             if (effective && toPush.getAchieveJoin() != null) {
                 session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAchieveJoin()));
                 log.info("推送给老师 学生加入情况 uid {}", toPush.getUid());
@@ -186,7 +186,7 @@ public class WsServiceImpl implements WsService {
             //习题答案
             if (effective && toPush.getAchieveBookAnswer() != null) {
                 session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAchieveBookAnswer()));
-                log.info("推送给老师 头脑风暴答案 uid {}", toPush.getUid());
+                log.info("推送给老师 习题答案 uid {}", toPush.getUid());
 
             }
 
