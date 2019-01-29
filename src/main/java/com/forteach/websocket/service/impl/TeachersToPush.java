@@ -191,7 +191,7 @@ public class TeachersToPush {
                         throw new RuntimeException("线程休眠异常");
                     }
                 }
-
+                log.debug("peopleAnswer 没有获得数据 重试结束");
                 return new CircleAnswer(student, ASK_CIRCLE_ANSWER_ALREADY, new AskAnswer());
             }
 
