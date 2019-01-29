@@ -171,8 +171,10 @@ public class TeachersToPush {
             Object answ = findAskAnswer(uCircle, id, questionId, type);
             Students student = studentsService.findStudentsBrief(id);
             if (flag) {
+                log.debug("peopleAnswer 获得了数据 推送");
                 return new CircleAnswer(student, ASK_CIRCLE_ANSWER_DID, answ);
             } else {
+                log.debug("peopleAnswer 没有获得数据 推送空数据");
                 return new CircleAnswer(student, ASK_CIRCLE_ANSWER_ALREADY, new AskAnswer());
             }
         }).collect(Collectors.toList());
