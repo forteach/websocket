@@ -162,7 +162,7 @@ public class TeachersToPush {
      * @return
      */
     private List<Students> peopleAnswer(String uCircle, String questionId, String askKey, final QuestionType type) {
-        if (log.isDebugEnabled()){
+        if (log.isDebugEnabled()) {
 //            log.debug("获取回答的学生情况 参数 ==> uCircle : {}, questionId : {}, askKey :{}, type : {}", uCircle, questionId, askKey, type);
         }
         return interact.getAnswerStudent(askKey).stream().map(id -> {
@@ -170,13 +170,31 @@ public class TeachersToPush {
             boolean flag = interact.isMember(examineeIsReplyKey(type, uCircle), id);
             Object answ = findAskAnswer(uCircle, id, questionId, type);
             Students student = studentsService.findStudentsBrief(id);
+
             if (flag) {
                 log.debug("peopleAnswer 获得了数据 推送");
                 return new CircleAnswer(student, ASK_CIRCLE_ANSWER_DID, answ);
             } else {
-                log.debug("peopleAnswer 没有获得数据 推送空数据");
+                log.debug("peopleAnswer 没有获得数据 进行重试");
+
+                for (int i = 0; i < 20; i++) {
+
+                    try {
+                        Thread.sleep(1);
+                        flag = interact.isMember(examineeIsReplyKey(type, uCircle), id);
+                        answ = findAskAnswer(uCircle, id, questionId, type);
+                        if (flag) {
+                            log.debug("通过休眠获得到最新数据 ,共休眠次数 {} 每次 {} millis", i + 1, 1);
+                            return new CircleAnswer(student, ASK_CIRCLE_ANSWER_DID, answ);
+                        }
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException("线程休眠异常");
+                    }
+                }
+
                 return new CircleAnswer(student, ASK_CIRCLE_ANSWER_ALREADY, new AskAnswer());
             }
+
         }).collect(Collectors.toList());
     }
 
