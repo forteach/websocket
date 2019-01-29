@@ -29,7 +29,6 @@ public class RedisStask {
     /**
      * 每隔１秒遍历发送一次在redis 推送的信息
      */
-    @Scheduled(initialDelay = 1000 * 10, fixedDelay = 1000)
     @Scheduled(initialDelay = 1000 * 10, fixedDelay = 100)
     public void refreshInfo() {
         try {
