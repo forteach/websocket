@@ -1,6 +1,7 @@
 package com.forteach.websocket.web.task;
 
-import com.forteach.websocket.domain.ToPush;
+import com.forteach.websocket.domain.ToStudentPush;
+import com.forteach.websocket.domain.ToTeacherPush;
 import com.forteach.websocket.service.InteractService;
 import com.forteach.websocket.service.WsService;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @Description:
@@ -29,14 +31,32 @@ public class RedisStask {
     /**
      * 每隔１秒遍历发送一次在redis 推送的信息
      */
-    @Scheduled(initialDelay = 1000 * 10, fixedDelay = 100)
-    public void refreshInfo() {
+    @Scheduled(initialDelay = 1000 * 10, fixedDelay = 500)
+    public void refreshTeacherInfo() {
         try {
             // 获取redis中待推送的数据
-            List<ToPush> pushList = interactService.obtain();
+            List<ToTeacherPush> pushList = interactService.obtainTeacher();
             if (pushList != null && pushList.size() != 0) {
                 //处理推送
-                wsService.process(pushList);
+                wsService.processTeacher(pushList);
+            }
+        } catch (Exception e) {
+            log.error(" refreshInfo Task error {} {}", e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 每隔１秒遍历发送一次在redis 推送的信息
+     * TODO 会推送多条，需要进行判断去重使用 redis
+     */
+    @Scheduled(initialDelay = 1000 * 10, fixedDelay = 500)
+    public void refreshStudentInfo() {
+        try {
+            // 获取redis中待推送的数据
+            List<ToStudentPush> pushList = interactService.obtainStudent();
+            if (pushList != null && pushList.size() != 0) {
+                //处理推送
+                wsService.processStudent(pushList);
             }
         } catch (Exception e) {
             log.error(" refreshInfo Task error {} {}", e.getMessage(), e);

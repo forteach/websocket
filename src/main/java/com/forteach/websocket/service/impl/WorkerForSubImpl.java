@@ -35,6 +35,9 @@ public class WorkerForSubImpl implements Runnable {
         this.wsSvc = wsSvc;
     }
 
+    /**　TODO
+     * 注释清除redis 重新注册
+     */
     @Override
     public void run() {
         //注册session信息

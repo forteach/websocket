@@ -1,7 +1,8 @@
 package com.forteach.websocket.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.forteach.websocket.domain.ToPush;
+import com.forteach.websocket.domain.ToStudentPush;
+import com.forteach.websocket.domain.ToTeacherPush;
 import com.forteach.websocket.service.WsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.websocket.Session;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -62,8 +64,8 @@ public class WsServiceImpl implements WsService {
     @Override
     public boolean unSubscript(String uid) {
         try {
-            stringRedisTemplate.opsForSet().remove(INTERACTION_UID_SET_PREFIX, uid);
-            stringRedisTemplate.delete(actionPropertyKey(uid));
+//            stringRedisTemplate.opsForSet().remove(INTERACTION_UID_SET_PREFIX, uid);
+//            stringRedisTemplate.delete(actionPropertyKey(uid));
         } catch (Exception e) {
             log.error("unSubscript error {}", e.getMessage());
         }
@@ -108,27 +110,30 @@ public class WsServiceImpl implements WsService {
      * @param list
      */
     @Override
-    public void process(List<ToPush> list) {
+    public void processStudent(List<ToStudentPush> list) {
         list.forEach(toPush -> {
             Session session = SESSION_MAP.get(toPush.getUid());
-            sendMessage(toPush, session);
+            sendStudentMessage(toPush, session);
+        });
+    }
+
+    /**
+     * 循环处理推送信息
+     * @param list
+     */
+    @Override
+    public void processTeacher(List<ToTeacherPush> list) {
+        list.forEach(toPush -> {
+            Session session = SESSION_MAP.get(toPush.getUid());
+            sendTeacherMessage(toPush, session);
         });
     }
 
 
-    private void sendMessage(ToPush toPush, Session session) {
+    private void sendTeacherMessage(ToTeacherPush toPush, Session session) {
         //必须session 存在并且是开启状态才能推送
         boolean effective = effective(session);
         try {
-            //添加日志
-//            if (effective && log.isDebugEnabled() && toPush != null){
-//                log.debug("发送消息　toPush : {}, session : {}", toPush.toString(), session.toString());
-//            }
-            //提问问题(BigQuestion)
-            if (effective && toPush.getAskQuestion() != null) {
-                session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAskQuestion()));
-                log.info("推送给学生 问题 uid {}", toPush.getUid());
-            }
             //学生举手信息
             if (effective && toPush.getAchieveRaise() != null) {
                 session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAchieveRaise()));
@@ -143,12 +148,6 @@ public class WsServiceImpl implements WsService {
             if (effective && toPush.getAchieveJoin() != null) {
                 session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAchieveJoin()));
                 log.info("推送给老师 学生加入情况 uid {}", toPush.getUid());
-
-            }
-            //学生获取问卷问题
-            if (effective && toPush.getAskSurvey() != null) {
-                session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAskSurvey()));
-                log.info("推送给学生 问卷问题 uid {}", toPush.getUid());
             }
             //实时学生问卷答案
             if (effective && toPush.getAchieveSurveyAnswer() != null) {
@@ -164,6 +163,25 @@ public class WsServiceImpl implements WsService {
             if (effective && toPush.getAchieveTaskAnswer() != null) {
                 session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAchieveTaskAnswer()));
                 log.info("推送给老师 学生任务答案 uid {}", toPush.getUid());
+            }
+            //习题答案
+            if (effective && toPush.getAchieveBookAnswer() != null) {
+                session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAchieveBookAnswer()));
+                log.info("推送给老师 习题答案 uid {}", toPush.getUid());
+            }
+        } catch (IOException e) {
+            log.error(">>> sendTeacherMessage 时失败，{}", e.getMessage());
+        }
+    }
+
+    private void sendStudentMessage(ToStudentPush toPush, Session session) {
+        //必须session 存在并且是开启状态才能推送
+        boolean effective = effective(session);
+        try {
+            //提问问题(BigQuestion)
+            if (effective && toPush.getAskQuestion() != null) {
+                session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAskQuestion()));
+                log.info("推送给学生 问题 uid {}", toPush.getUid());
             }
             //学生习题任务
             if (effective && toPush.getAskTask() != null) {
@@ -183,16 +201,13 @@ public class WsServiceImpl implements WsService {
                 log.info("推送给学生 头脑风暴问题 uid {}", toPush.getUid());
 
             }
-            //习题答案
-            if (effective && toPush.getAchieveBookAnswer() != null) {
-                session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAchieveBookAnswer()));
-                log.info("推送给老师 习题答案 uid {}", toPush.getUid());
-
+            //学生获取问卷问题
+            if (effective && toPush.getAskSurvey() != null) {
+                session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAskSurvey()));
+                log.info("推送给学生 问卷问题 uid {}", toPush.getUid());
             }
-
-
         } catch (IOException e) {
-            log.error(">>> sendMessage 时失败，{}", e.getMessage());
+            log.error(">>> sendStudentMessage 时失败，{}", e.getMessage());
         }
     }
 

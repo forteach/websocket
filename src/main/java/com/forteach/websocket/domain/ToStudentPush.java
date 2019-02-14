@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ToPush {
+public class ToStudentPush {
 
     /**
      * 需要推送的用户id,(学生，教师)
@@ -26,36 +26,6 @@ public class ToPush {
      * 提问问题(BigQuestion)
      */
     private AskQuestion askQuestion;
-
-    /**
-     * 学生加入课堂信息
-     */
-    private AchieveJoin achieveJoin;
-
-    /**
-     *　学生举手信息
-     */
-    private AchieveRaise achieveRaise;
-
-    /**
-     *　学生回答信息(BigQuestion)
-     */
-    private AchieveAnswer achieveAnswer;
-
-    /**
-     *　实时学生问卷答案
-     */
-    private AchieveSurveyAnswer achieveSurveyAnswer;
-
-    /**
-     *　头脑风暴答案
-     */
-    private AchieveBrainstormAnswer achieveBrainstormAnswer;
-
-    /**
-     *　任务答案
-     */
-    private AchieveTaskAnswer achieveTaskAnswer;
 
     /**
      * 学生获取问卷问题
@@ -76,12 +46,5 @@ public class ToPush {
      * 头脑风暴
      */
     private AskBrainstorm askBrainstorm;
-
-    /**
-     * 习题答案
-     */
-    private AchieveBookAnswer achieveBookAnswer;
-
-
 
 }

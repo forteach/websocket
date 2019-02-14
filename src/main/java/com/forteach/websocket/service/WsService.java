@@ -1,6 +1,7 @@
 package com.forteach.websocket.service;
 
-import com.forteach.websocket.domain.ToPush;
+import com.forteach.websocket.domain.ToStudentPush;
+import com.forteach.websocket.domain.ToTeacherPush;
 
 import javax.websocket.Session;
 import java.util.List;
@@ -74,6 +75,14 @@ public interface WsService {
      * @param list
      * @return
      */
-    void process(List<ToPush> list);
+    void processStudent(List<ToStudentPush> list);
+
+    /**
+     * 处理
+     *
+     * @param list
+     * @return
+     */
+    void processTeacher(List<ToTeacherPush> list);
 
 }
