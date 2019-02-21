@@ -72,4 +72,18 @@ public class Dic {
      * 未回答
      */
     public static final String ASK_CIRCLE_ANSWER_ALREADY = "1";
+
+    /**
+     * 用户token 认证前缀
+     */
+    public static final String USER_TOKEN = "userToken$";
+    /**
+     * 微信端学生类型
+     */
+    public final static String TOKEN_STUDENT ="student";
+    /**
+     * 登录认证的教师类型
+     */
+    public final static String TOKEN_TEACHER ="teacher";
+
 }

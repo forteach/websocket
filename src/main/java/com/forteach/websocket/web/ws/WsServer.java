@@ -7,6 +7,7 @@ import com.forteach.websocket.service.impl.WorkerForSubImpl;
 import com.forteach.websocket.web.vo.PongVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.WebSocketSession;
 
 import javax.annotation.Resource;
 import javax.websocket.*;
@@ -14,6 +15,7 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.Map;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -59,12 +61,21 @@ public class WsServer {
      * 接受参数建立连接
      * @param session　用户session
      * @param circle　课堂小组id
-     * @param uid 用户id
-     * @param type
+//     * @param uid 用户id
+//     * @param type
      * @param random 随机数
      */
     @OnOpen
-    public void onOpen(Session session, @PathParam("circle") String circle, @PathParam("uid") String uid, @PathParam("type") String type, @PathParam("random") String random) {
+    public void onOpen(Session session, @PathParam("circle") String circle,
+                       @PathParam("uid") String uid, @PathParam("type") String type,
+                       @PathParam("random") String random) {
+//        WebSocketSession webSocketSession = (WebSocketSession)session;
+//        Map<String, Object> map = webSocketSession.getAttributes();
+
+//        String type1 = String.valueOf(map.get("type"));
+//        String uid1 = String.valueOf(map.get("uId"));
+        log.info("type {} : uid : {}", type, uid);
+//        log.info("type1 {} : uid1 : {}", type1, uid1);
         //属性赋值
         evaluation(circle, uid, type, random);
 
