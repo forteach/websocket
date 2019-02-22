@@ -1,6 +1,7 @@
 package com.forteach.websocket.service.impl;
 
-import com.forteach.websocket.domain.ToPush;
+import com.forteach.websocket.domain.ToStudentPush;
+import com.forteach.websocket.domain.ToTeacherPush;
 import com.forteach.websocket.service.InteractService;
 import com.forteach.websocket.service.RedisInteract;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -41,7 +43,7 @@ public class InteractServiceImpl implements InteractService {
      * @return
      */
     @Override
-    public List<ToPush> obtain() {
+    public List<ToTeacherPush> obtainTeacher() {
         // 从redis取出加入的学生信息
         Set<String> uid = interact.getSets(INTERACTION_UID_SET_PREFIX);
         if (uid != null && uid.size() > 0) {
@@ -49,39 +51,44 @@ public class InteractServiceImpl implements InteractService {
             return uid.stream()
                     .filter(id -> null != SESSION_MAP.get(id))
                     .filter(id -> SESSION_MAP.get(id).isOpen())
-                    .map(this::buildToPush)
+                    .map(this::buildTeacherToPush)
+                    .filter(Objects::nonNull)
                     .collect(Collectors.toList());
         }
         return new ArrayList<>();
     }
 
     /**
-     * 构建需要推送的信息
+     * 获取课堂交互信息
+     *
+     * @return
+     */
+    @Override
+    public List<ToStudentPush> obtainStudent() {
+        // 从redis取出加入的学生信息
+        Set<String> uid = interact.getSets(INTERACTION_UID_SET_PREFIX);
+        if (uid != null && uid.size() > 0) {
+            //构建推送对象信息集合
+            return uid.stream()
+                    .filter(id -> null != SESSION_MAP.get(id))
+                    .filter(id -> SESSION_MAP.get(id).isOpen())
+                    .map(this::buildStudentToPush)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+        }
+        return new ArrayList<>();
+    }
+    /**
+     * 构建需要推送的信息(教师端)
      *
      * @param uid
      * @return
      */
-    private ToPush buildToPush(String uid) {
+    private ToTeacherPush buildTeacherToPush(String uid) {
         // 获取要推送的用户身份信息 teacher student
         String uType = interact.uidType(uid);
-        if (SUBSCRIBE_USER_STUDENT.equals(uType)) {
-            //是学生推送学生信息
-            return ToPush.builder()
-                    .uid(uid)
-                    //提问问题
-                    .askQuestion(studentToPush.achieveQuestion(uid))
-                    //学生习题任务
-                    .askSurvey(studentToPush.achieveSurvey(uid))
-                    //头脑风暴
-                    .askBrainstorm(studentToPush.achieveBrainstorm(uid))
-                    //学生习题任务
-                    .askTask(studentToPush.achieveTask(uid))
-                    //习题册(练习册)
-                    .askBook(studentToPush.achieveBook(uid))
-                    .build();
-        } else {
-            //不是学生推送老师信息
-            return ToPush.builder()
+        if (!SUBSCRIBE_USER_STUDENT.equals(uType)) {
+            return ToTeacherPush.builder()
                     .uid(uid)
                     //学生回答信息(BigQuestion)
                     .achieveAnswer(teachersToPush.achieveAnswer(uid))
@@ -99,5 +106,33 @@ public class InteractServiceImpl implements InteractService {
                     .achieveBookAnswer(teachersToPush.achieveBookAnswer(uid))
                     .build();
         }
+        return null;
+    }
+
+    /**
+     * 推送学生数据对象构造
+     * @param uid
+     * @return
+     */
+    private ToStudentPush buildStudentToPush(String uid) {
+        // 获取要推送的用户身份信息 teacher student
+        String uType = interact.uidType(uid);
+        if (SUBSCRIBE_USER_STUDENT.equals(uType)) {
+            //是学生推送学生信息
+            return ToStudentPush.builder()
+                    .uid(uid)
+                    //提问问题
+                    .askQuestion(studentToPush.achieveQuestion(uid))
+                    //学生习题任务
+                    .askSurvey(studentToPush.achieveSurvey(uid))
+                    //头脑风暴
+                    .askBrainstorm(studentToPush.achieveBrainstorm(uid))
+                    //学生习题任务
+                    .askTask(studentToPush.achieveTask(uid))
+                    //习题册(练习册)
+                    .askBook(studentToPush.achieveBook(uid))
+                    .build();
+        }
+        return null;
     }
 }
