@@ -32,8 +32,7 @@ public class TokenServiceImpl implements TokenService {
         this.hashOperations = hashOperations;
     }
 
-
-    private String getUid(String token){
+    private String findUid(String token){
         return JWT.decode(token).getAudience().get(0);
     }
 
@@ -43,14 +42,9 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public String getUid(ServerHttpRequest request) {
-        String token = request.getHeaders().getFirst("token");
-        String type = getType(token);
-        String uId = getUid(token);
-        if (StringUtil.isNotEmpty(type) && TOKEN_STUDENT.equals(type)){
-            return hashOperations.get(USER_TOKEN.concat(uId), "studentId");
-        }
-        return uId;
+    public boolean validate(String token) {
+        verifier(findUid(token));
+        return true;
     }
 
     @Override
@@ -59,7 +53,12 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public String getStudentId(String token) {
-        return hashOperations.get(USER_TOKEN.concat(getUid(token)), "studentId");
+    public String getUid(String token){
+        String type = getType(token);
+        String uId = findUid(token);
+        if (StringUtil.isNotEmpty(type) && TOKEN_STUDENT.equals(type)){
+            return hashOperations.get(USER_TOKEN.concat(uId), "studentId");
+        }
+        return uId;
     }
 }

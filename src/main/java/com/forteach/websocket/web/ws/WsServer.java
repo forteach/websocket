@@ -2,20 +2,19 @@ package com.forteach.websocket.web.ws;
 
 import com.alibaba.fastjson.JSON;
 import com.forteach.websocket.config.WsContextProvider;
+import com.forteach.websocket.service.TokenService;
 import com.forteach.websocket.service.WsService;
 import com.forteach.websocket.service.impl.WorkerForSubImpl;
 import com.forteach.websocket.web.vo.PongVo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.socket.WebSocketSession;
-
 import javax.annotation.Resource;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -27,9 +26,14 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 @Slf4j
 @Component
-@ServerEndpoint(value = "/interactive/{circle}/{uid}/{type}/{random}", configurator = WsContextProvider.class)
+@ServerEndpoint(value = "/interactive/{circle}/{token}/{random}", configurator = WsContextProvider.class)
 public class WsServer {
 
+    private final TokenService tokenService;
+
+    public WsServer(TokenService tokenService){
+        this.tokenService = tokenService;
+    }
 
     public static final String HEARTBEAT_PONG = "pong";
     private static final AtomicLong ONLINE_COUNT = new AtomicLong(0);
@@ -61,21 +65,13 @@ public class WsServer {
      * 接受参数建立连接
      * @param session　用户session
      * @param circle　课堂小组id
-//     * @param uid 用户id
-//     * @param type
+     * @param token 用户token
      * @param random 随机数
      */
     @OnOpen
-    public void onOpen(Session session, @PathParam("circle") String circle,
-                       @PathParam("uid") String uid, @PathParam("type") String type,
-                       @PathParam("random") String random) {
-//        WebSocketSession webSocketSession = (WebSocketSession)session;
-//        Map<String, Object> map = webSocketSession.getAttributes();
-
-//        String type1 = String.valueOf(map.get("type"));
-//        String uid1 = String.valueOf(map.get("uId"));
-        log.info("type {} : uid : {}", type, uid);
-//        log.info("type1 {} : uid1 : {}", type1, uid1);
+    public void onOpen(Session session, @PathParam("circle") String circle, @PathParam("token") String token, @PathParam("random") String random) {
+        String uid = tokenService.getUid(token);
+        String type = tokenService.getType(token);
         //属性赋值
         evaluation(circle, uid, type, random);
 
@@ -89,7 +85,6 @@ public class WsServer {
 
     @OnMessage
     public void onMessage(String message, Session session) {
-
         if (message != null && message.equalsIgnoreCase(HEARTBEAT_PING)) {
             try {
                 log.trace(" onMessage Pong: " + ByteBuffer.wrap("health-check".getBytes()));
