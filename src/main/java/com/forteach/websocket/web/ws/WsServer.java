@@ -5,9 +5,9 @@ import com.forteach.websocket.config.WsContextProvider;
 import com.forteach.websocket.service.TokenService;
 import com.forteach.websocket.service.WsService;
 import com.forteach.websocket.service.impl.WorkerForSubImpl;
+import com.forteach.websocket.util.StringUtil;
 import com.forteach.websocket.web.vo.PongVo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import javax.websocket.*;
@@ -70,6 +70,10 @@ public class WsServer {
      */
     @OnOpen
     public void onOpen(Session session, @PathParam("circle") String circle, @PathParam("token") String token, @PathParam("random") String random) {
+        if (StringUtil.isNotEmpty(token)){
+            //验证token
+            tokenService.validate(token);
+        }
         String uid = tokenService.getUid(token);
         String type = tokenService.getType(token);
         //属性赋值
