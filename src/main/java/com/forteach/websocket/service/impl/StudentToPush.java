@@ -48,15 +48,12 @@ public class StudentToPush {
      * @return
      */
     public AskQuestion achieveQuestion(String uid) {
-        if (log.isDebugEnabled()){
-//            log.debug("获取需要推送的获取问题 参数　==> uid : {}", uid);
-        }
         //班级信息
         String uCircle = interact.uidCircle(uid);
-            String uRandom = interact.uidRandom(uid);
-            if (uCircle == null || uRandom == null) {
-                return null;
-            }
+        String uRandom = interact.uidRandom(uid);
+        if (uCircle == null || uRandom == null) {
+            return null;
+        }
         String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.BigQuestion.name()).concat(uCircle);
         String questionId = interact.askQuestionId(askKey);
         if (questionId == null) {
@@ -67,9 +64,9 @@ public class StudentToPush {
         String category = interact.askCategoryType(askKey);
         String interactive = interact.askInteractiveType(askKey);
 
-            OptQuestion optQuestion = getQuestion(askKey, uid, category, interactive);
+        OptQuestion optQuestion = getQuestion(askKey, uid, category, interactive);
 
-        if (log.isDebugEnabled() && optQuestion != null){
+        if (log.isDebugEnabled() && optQuestion != null) {
             log.debug("optQuestion : {}", optQuestion.toString());
         }
         if (optQuestion != null && interact.distinctKeyIsEmpty(uDistinctKey, askKey, optQuestion.getSelected())) {
@@ -124,7 +121,7 @@ public class StudentToPush {
      * @return
      */
     private OptQuestion askPeople(String askKey, String uid, String interactive) {
-        if (log.isDebugEnabled()){
+        if (log.isDebugEnabled()) {
 //            log.debug("个人对象 返回题目 参数 ==> askKey : {}, uid : {}, interactive : {}", askKey, uid, interactive);
         }
         switch (interactive) {

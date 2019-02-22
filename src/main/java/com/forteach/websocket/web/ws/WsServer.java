@@ -74,14 +74,12 @@ public class WsServer {
             //验证token
             tokenService.validate(token);
         }
-        String uid = tokenService.getUid(token);
-        String type = tokenService.getType(token);
         //属性赋值
-        evaluation(circle, uid, type, random);
+        evaluation(circle, tokenService.getUid(token), tokenService.getType(token), random);
 
         log.info("New session opened , current connections {} / session id {}" +
                         "{circle} {}/{uid} {}/{type} {}/{random} {}", ONLINE_COUNT.incrementAndGet(), session.getId(),
-                circle, uid, type, random);
+                circle, tokenService.getUid(token), tokenService.getType(token), random);
 
         //用户注册 订阅
         subExecutor.execute(new WorkerForSubImpl(this.circle, this.uid, this.type, this.random, session, this.wsSvc));
