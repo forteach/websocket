@@ -74,8 +74,10 @@ public class WsServer {
             //验证token
             tokenService.validate(token);
         }
+        uid = tokenService.getUid(token);
+        type = tokenService.getType(token);
         //属性赋值
-        evaluation(circle, tokenService.getUid(token), tokenService.getType(token), random);
+        evaluation(circle, uid, type, random);
 
         log.info("New session opened , current connections {} / session id {}" +
                         "{circle} {}/{uid} {}/{type} {}/{random} {}", ONLINE_COUNT.incrementAndGet(), session.getId(),
