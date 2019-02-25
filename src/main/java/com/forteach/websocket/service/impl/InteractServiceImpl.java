@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.forteach.websocket.common.Dic.SUBSCRIBE_USER_STUDENT;
+import static com.forteach.websocket.common.Dic.SUBSCRIBE_USER_TEACHER;
 import static com.forteach.websocket.common.KeyStorage.INTERACTION_UID_SET_PREFIX;
 import static com.forteach.websocket.service.WsService.SESSION_MAP;
 
@@ -49,10 +49,9 @@ public class InteractServiceImpl implements InteractService {
         if (uid != null && uid.size() > 0) {
             //构建推送对象信息集合
             return uid.stream()
-                    .filter(id -> null != SESSION_MAP.get(id))
-                    .filter(id -> SESSION_MAP.get(id).isOpen())
+                    .filter(id -> null != SESSION_MAP.get(id) && SESSION_MAP.get(id).isOpen())
+                    .filter(id -> SUBSCRIBE_USER_TEACHER.equals(interact.uidType(id)))
                     .map(this::buildTeacherToPush)
-                    .filter(Objects::nonNull)
                     .collect(Collectors.toList());
         }
         return new ArrayList<>();
@@ -70,43 +69,36 @@ public class InteractServiceImpl implements InteractService {
         if (uid != null && uid.size() > 0) {
             //构建推送对象信息集合
             return uid.stream()
-                    .filter(id -> null != SESSION_MAP.get(id))
-                    .filter(id -> SESSION_MAP.get(id).isOpen())
+                    .filter(id -> null != SESSION_MAP.get(id) && SESSION_MAP.get(id).isOpen())
+                    .filter(id -> SUBSCRIBE_USER_STUDENT.equals(interact.uidType(id)))
                     .map(this::buildStudentToPush)
-                    .filter(Objects::nonNull)
                     .collect(Collectors.toList());
         }
         return new ArrayList<>();
     }
     /**
      * 构建需要推送的信息(教师端)
-     *
      * @param uid
      * @return
      */
     private ToTeacherPush buildTeacherToPush(String uid) {
-        // 获取要推送的用户身份信息 teacher student
-        String uType = interact.uidType(uid);
-        if (!SUBSCRIBE_USER_STUDENT.equals(uType)) {
-            return ToTeacherPush.builder()
-                    .uid(uid)
-                    //学生回答信息(BigQuestion)
-                    .achieveAnswer(teachersToPush.achieveAnswer(uid))
-                    //学生举手信息
-                    .achieveRaise(teachersToPush.achieveRaise(uid))
-                    //学生加入课堂信息
-                    .achieveJoin(teachersToPush.achieveInteractiveStudents(uid))
-                    //实时学生问卷答案
-                    .achieveSurveyAnswer(teachersToPush.achieveSurveyAnswer(uid))
-                    //头脑风暴答案
-                    .achieveBrainstormAnswer(teachersToPush.achieveBrainstormAnswer(uid))
-                    //任务答案
-                    .achieveTaskAnswer(teachersToPush.achieveTaskAnswer(uid))
-                    //习题答案
-                    .achieveBookAnswer(teachersToPush.achieveBookAnswer(uid))
-                    .build();
-        }
-        return null;
+        return ToTeacherPush.builder()
+                .uid(uid)
+                //学生回答信息(BigQuestion)
+                .achieveAnswer(teachersToPush.achieveAnswer(uid))
+                //学生举手信息
+                .achieveRaise(teachersToPush.achieveRaise(uid))
+                //学生加入课堂信息
+                .achieveJoin(teachersToPush.achieveInteractiveStudents(uid))
+                //实时学生问卷答案
+                .achieveSurveyAnswer(teachersToPush.achieveSurveyAnswer(uid))
+                //头脑风暴答案
+                .achieveBrainstormAnswer(teachersToPush.achieveBrainstormAnswer(uid))
+                //任务答案
+                .achieveTaskAnswer(teachersToPush.achieveTaskAnswer(uid))
+                //习题答案
+                .achieveBookAnswer(teachersToPush.achieveBookAnswer(uid))
+                .build();
     }
 
     /**
@@ -115,24 +107,18 @@ public class InteractServiceImpl implements InteractService {
      * @return
      */
     private ToStudentPush buildStudentToPush(String uid) {
-        // 获取要推送的用户身份信息 teacher student
-        String uType = interact.uidType(uid);
-        if (SUBSCRIBE_USER_STUDENT.equals(uType)) {
-            //是学生推送学生信息
-            return ToStudentPush.builder()
-                    .uid(uid)
-                    //提问问题
-                    .askQuestion(studentToPush.achieveQuestion(uid))
-                    //学生习题任务
-                    .askSurvey(studentToPush.achieveSurvey(uid))
-                    //头脑风暴
-                    .askBrainstorm(studentToPush.achieveBrainstorm(uid))
-                    //学生习题任务
-                    .askTask(studentToPush.achieveTask(uid))
-                    //习题册(练习册)
-                    .askBook(studentToPush.achieveBook(uid))
-                    .build();
-        }
-        return null;
+        return ToStudentPush.builder()
+                .uid(uid)
+                //提问问题
+                .askQuestion(studentToPush.achieveQuestion(uid))
+                //学生习题任务
+                .askSurvey(studentToPush.achieveSurvey(uid))
+                //头脑风暴
+                .askBrainstorm(studentToPush.achieveBrainstorm(uid))
+                //学生习题任务
+                .askTask(studentToPush.achieveTask(uid))
+                //习题册(练习册)
+                .askBook(studentToPush.achieveBook(uid))
+                .build();
     }
 }
