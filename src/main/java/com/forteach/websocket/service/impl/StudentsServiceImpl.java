@@ -5,9 +5,7 @@ import com.forteach.websocket.service.StudentsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
-
 import static com.forteach.websocket.common.KeyStorage.STUDENT_ADO;
 
 /**

@@ -7,13 +7,12 @@ import com.forteach.websocket.service.WsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Locale;
 
 /**
- * @Description:
+ * @Description:获得需要推送的REDIS数据
  * @author: liu zhenming
  * @version: V1.0
  * @date: 2018/12/27  14:42
@@ -29,7 +28,7 @@ public class RedisStask {
     private WsService wsService;
 
     /**
-     * 每隔１秒遍历发送一次在redis 推送的信息
+     * 每隔１秒遍历发送一次在redis 推送的教师相关信息
      */
     @Scheduled(initialDelay = 1000 * 10, fixedDelay = 500)
     public void refreshTeacherInfo() {
@@ -46,7 +45,7 @@ public class RedisStask {
     }
 
     /**
-     * 每隔１秒遍历发送一次在redis 推送的信息
+     * 每隔１秒遍历发送一次在redis 推送的学生相关信息
      * TODO 会推送多条，需要进行判断去重使用 redis
      */
     @Scheduled(initialDelay = 1000 * 10, fixedDelay = 500)

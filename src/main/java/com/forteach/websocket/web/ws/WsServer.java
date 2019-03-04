@@ -7,7 +7,6 @@ import com.forteach.websocket.service.impl.WorkerForSubImpl;
 import com.forteach.websocket.web.vo.PongVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-
 import javax.annotation.Resource;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;

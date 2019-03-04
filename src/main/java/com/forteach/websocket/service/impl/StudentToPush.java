@@ -8,16 +8,14 @@ import com.forteach.websocket.repository.TaskQuestionRepository;
 import com.forteach.websocket.service.RedisInteract;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
-
 import static com.forteach.websocket.common.Dic.*;
 import static com.forteach.websocket.common.KeyStorage.askQuDistinctKey;
 
 /**
- * @Description:
+ * @Description:推送给学生
  * @author: liu zhenming
  * @version: V1.0
  * @date: 2019/1/20  14:29
@@ -49,7 +47,7 @@ public class StudentToPush {
      */
     public AskQuestion achieveQuestion(String uid) {
         if (log.isDebugEnabled()){
-//            log.debug("获取需要推送的获取问题 参数　==> uid : {}", uid);
+            log.debug("获取需要推送的获取问题 参数　==> uid : {}", uid);
         }
         //班级信息
         String uCircle = interact.uidCircle(uid);
@@ -57,15 +55,20 @@ public class StudentToPush {
             if (uCircle == null || uRandom == null) {
                 return null;
             }
-        String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.BigQuestion.name()).concat(uCircle);
+            //获得题目提问的Resdis键值
+        String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(uCircle).concat(QuestionType.BigQuestion.name());
+            //获得题目编号
         String questionId = interact.askQuestionId(askKey);
         if (questionId == null) {
+            log.debug("获取需要推送的问题为NULL 参数　==> uid : {}", uid);
             return null;
         }
+        //获取学生 获取big question 的去重key
         String uDistinctKey = askQuDistinctKey(uCircle, uid, questionId, uRandom, QuestionType.BigQuestion);
+        //获得题目的切题值，0不切贴，1是切题
         String cut = interact.askQuestionCut(askKey);
-        String category = interact.askCategoryType(askKey);
-        String interactive = interact.askInteractiveType(askKey);
+        String category = interact.askCategoryType(askKey);//获得个人回答还是组回答
+        String interactive = interact.askInteractiveType(askKey);//获得题目回答方式
 
             OptQuestion optQuestion = getQuestion(askKey, uid, category, interactive);
 
@@ -90,8 +93,10 @@ public class StudentToPush {
     private OptQuestion getQuestion(String askKey, String uid, String category, String interactive) {
         switch (category) {
             case CATEGORY_PEOPLE:
+                //个人回答
                 return askPeople(askKey, uid, interactive);
             case CATEGORY_TEAM:
+                //组回答
                 return askTeam(askKey, uid, interactive);
             default:
                 log.error("获取 getQuestion 信息错误 非法参数 错误的数据类型");

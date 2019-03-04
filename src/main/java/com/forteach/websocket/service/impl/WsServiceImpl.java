@@ -129,7 +129,7 @@ public class WsServiceImpl implements WsService {
         });
     }
 
-
+    //推动给教师信息
     private void sendTeacherMessage(ToTeacherPush toPush, Session session) {
         //必须session 存在并且是开启状态才能推送
         boolean effective = effective(session);
@@ -174,6 +174,7 @@ public class WsServiceImpl implements WsService {
         }
     }
 
+    //推动给学生信息
     private void sendStudentMessage(ToStudentPush toPush, Session session) {
         //必须session 存在并且是开启状态才能推送
         boolean effective = effective(session);

@@ -1,11 +1,10 @@
 package com.forteach.websocket.domain;
 
 import lombok.Data;
-
 import java.util.List;
 
 /**
- * @Description:
+ * @Description:  学生任务
  * @author: liu zhenming
  * @version: V1.0
  * @date: 2019/1/20  14:45

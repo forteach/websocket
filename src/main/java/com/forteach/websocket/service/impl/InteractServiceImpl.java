@@ -6,14 +6,12 @@ import com.forteach.websocket.service.InteractService;
 import com.forteach.websocket.service.RedisInteract;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import static com.forteach.websocket.common.Dic.SUBSCRIBE_USER_STUDENT;
 import static com.forteach.websocket.common.KeyStorage.INTERACTION_UID_SET_PREFIX;
 import static com.forteach.websocket.service.WsService.SESSION_MAP;
@@ -66,7 +64,9 @@ public class InteractServiceImpl implements InteractService {
     @Override
     public List<ToStudentPush> obtainStudent() {
         // 从redis取出加入的学生信息
-        Set<String> uid = interact.getSets(INTERACTION_UID_SET_PREFIX);
+        //Set<String> uid = interact.getSets(INTERACTION_UID_SET_PREFIX);
+
+        Set<String> uid = interact.getSets(ClassRoomKey.CLASS_ROOM_QR_CODE_PREFIX.concat(interactiveId)));
         if (uid != null && uid.size() > 0) {
             //构建推送对象信息集合
             return uid.stream()
