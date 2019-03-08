@@ -46,10 +46,11 @@ public class StudentToPush {
      * @return
      */
     public AskQuestion achieveQuestion(String uid) {
-        if (log.isDebugEnabled()){
-            log.debug("获取需要推送的获取问题 参数　==> uid : {}", uid);
-        }
-        //班级信息
+        //Circleid,questid,studentid
+//        if (log.isDebugEnabled()){
+//            log.debug("获取需要推送的获取问题 参数　==> uid : {}", uid);
+//        }
+        //班级信息ID
         String uCircle = interact.uidCircle(uid);
             String uRandom = interact.uidRandom(uid);
             if (uCircle == null || uRandom == null) {
@@ -63,24 +64,29 @@ public class StudentToPush {
             log.debug("获取需要推送的问题为NULL 参数　==> uid : {}", uid);
             return null;
         }
+        //-------------------------------------------------------
         //获取学生 获取big question 的去重key
         String uDistinctKey = askQuDistinctKey(uCircle, uid, questionId, uRandom, QuestionType.BigQuestion);
-        //获得题目的切题值，0不切贴，1是切题
+
         String cut = interact.askQuestionCut(askKey);
+
         String category = interact.askCategoryType(askKey);//获得个人回答还是组回答
         String interactive = interact.askInteractiveType(askKey);//获得题目回答方式
-
+        //创建题目信息
             OptQuestion optQuestion = getQuestion(askKey, uid, category, interactive);
 
         if (log.isDebugEnabled() && optQuestion != null){
             log.debug("optQuestion : {}", optQuestion.toString());
         }
+        //是否已经推送过该信息
         if (optQuestion != null && interact.distinctKeyIsEmpty(uDistinctKey, askKey, optQuestion.getSelected())) {
+
             return buildAskQuestion(cut, optQuestion, interactive, category);
         } else {
             return null;
         }
     }
+
 
     /**
      * 获取uid的问题

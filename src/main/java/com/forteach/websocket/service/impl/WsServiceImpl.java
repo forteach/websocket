@@ -8,14 +8,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import javax.websocket.Session;
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import static com.forteach.websocket.common.KeyStorage.INTERACTION_UID_SET_PREFIX;
 import static com.forteach.websocket.common.KeyStorage.actionPropertyKey;
 
