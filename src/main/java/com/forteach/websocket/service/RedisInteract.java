@@ -18,6 +18,9 @@ public interface RedisInteract {
     //获得当前提问题目的ID
     public String getNowQuestId(String circleId);
 
+    //获得当前题目的交互类型和参与形式
+    public String getNowQuestType(String circleId, String questId);
+
     //获得提问题目选中的学生
     public  String getQuestStu(String circleId,String questId);
 

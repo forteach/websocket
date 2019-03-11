@@ -34,7 +34,7 @@ public class RedisStask {
     /**
      * 每隔１秒遍历发送一次在redis 推送的教师相关信息
      */
-    //@Scheduled(initialDelay = 1000 * 10, fixedDelay = 500)
+   // @Scheduled(initialDelay = 1000 * 10, fixedDelay = 500)
     public void refreshTeacherInfo() {
         try {
             // 获取redis中待推送的数据
@@ -52,7 +52,7 @@ public class RedisStask {
      * 每隔１秒遍历发送一次在redis 推送的学生相关信息
      * TODO 会推送多条，需要进行判断去重使用 redis
      */
-    @Scheduled(initialDelay = 1000 * 2, fixedDelay = 25000)
+   @Scheduled(initialDelay = 1000 * 2, fixedDelay = 500)
     public void refreshStudentInfo() {
         System.out.println("******************");
             //获得正在开课的课堂ID

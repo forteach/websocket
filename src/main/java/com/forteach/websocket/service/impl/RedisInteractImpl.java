@@ -44,29 +44,35 @@ public class RedisInteractImpl implements RedisInteract {
 
     //获得当前开课课堂教师的编号
     @Override
-    public String getRoomTeacherId(String circleId){
+    public String getRoomTeacherId(String circleId) {
         return stringRedisTemplate.opsForValue().get(ClassRoomKey.getRoomTeacherKey(circleId));
     }
 
     //获得当前开课课堂列表
     @Override
-    public List<String> getOpenRooms(){
+    public List<String> getOpenRooms() {
         return stringRedisTemplate.opsForSet().members(ClassRoomKey.OPEN_CLASSROOM)
                 .stream().collect(Collectors.toList());
     }
 
     @Override
-    public String getNowQuestId(String circleId){
-        return BigQueKey.askTypeQuestionsIdNow(QuestionType.TiWen,new BigQuestionGiveVo(circleId,Dic.ASK_INTERACTIVE_SELECT,""));
+    public String getNowQuestId(String circleId) {
+        String key= BigQueKey.askTypeQuestionsIdNow(QuestionType.TiWen, new BigQuestionGiveVo(circleId, Dic.ASK_INTERACTIVE_SELECT, ""));
+        return stringRedisTemplate.opsForValue().get(key);
     }
 
-
+    //获得当前题目的交互类型和参与形式
+    @Override
+    public String getNowQuestType(String circleId, String questId) {
+        String key=BigQueKey.askTypeQuestionsIdType(circleId, questId);
+        return stringRedisTemplate.opsForValue().get(key);
+    }
 
     //获得当前开课课堂列表
     @Override
-    public String getQuestStu(String circleId,String questId){
+    public String getQuestStu(String circleId, String questId) {
         return stringRedisTemplate.opsForValue()
-                .get(BigQueKey.askTypeQuestionsId(QuestionType.TiWen,new BigQuestionGiveVo(circleId, Dic.ASK_INTERACTIVE_SELECT,""),questId));
+                .get(BigQueKey.askTypeQuestionsId(QuestionType.TiWen, new BigQuestionGiveVo(circleId, Dic.ASK_INTERACTIVE_SELECT, ""), questId));
     }
 
     /**

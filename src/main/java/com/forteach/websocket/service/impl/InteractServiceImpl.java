@@ -105,11 +105,13 @@ public class InteractServiceImpl implements InteractService {
        final String questId=interact.getNowQuestId(circleId);
        //获得当前题目选中的学生
         final String stus= interact.getQuestStu(circleId,questId);
-
+        //获得当前题目的交互类型和参与形式
+        String nowQueType=interact.getNowQuestType(circleId,questId);
+        String[] nowQueTyeps=nowQueType.split(",");
         //暂时设定，需要从redis里面去除该值
-        String interactive=Dic.ASK_INTERACTIVE_SELECT;  //交互方式  选人、举手、抢答
+        String interactive=nowQueTyeps[1];  //交互方式  选人、举手、抢答
         //暂时设定，需要从redis里面去除该值
-        String category=Dic.CATEGORY_PEOPLE;  //小组 个人
+        String category=nowQueTyeps[0];  //小组 个人
 
        //根据所选的学生，对比Session数据是否在线，并获得学生推送详情
         return Arrays.asList(stus.split(",")).stream()
