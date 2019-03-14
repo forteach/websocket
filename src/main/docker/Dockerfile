@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-alpine
+FROM openjdk:8-jre-alpine
 MAINTAINER ang00/websocket zhang10092009@hotmail.com
 VOLUME /tmp
 ADD websocket-0.0.1-SNAPSHOT.jar app.jar
