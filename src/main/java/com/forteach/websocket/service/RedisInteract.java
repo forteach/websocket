@@ -15,13 +15,27 @@ public interface RedisInteract {
 
     public List<String> getOpenRooms();
 
-    //获得当前提问题目的ID
+    /**
+     * 获得当前提问题目的ID
+     * @param circleId
+     * @return
+     */
     public String getNowQuestId(String circleId);
 
-    //获得当前题目的交互类型和参与形式
+    /**
+     * 获得当前题目的交互类型和参与形式
+     * @param circleId
+     * @param questId
+     * @return
+     */
     public String getNowQuestType(String circleId, String questId);
 
-    //获得提问题目选中的学生
+    /**
+     * 获得提问题目选中的学生
+     * @param circleId
+     * @param questId
+     * @return
+     */
     public  String getQuestStu(String circleId,String questId);
 
     Set<String> getSets(String key);

@@ -26,6 +26,10 @@ public interface InteractService {
      */
    // public List<ToStudentPush> obtainStudent(String circleId,String teachId);
 
-    //推送选中学生提问的信息
+    /**
+     * 推送选中学生提问的信息
+     * @param circleId
+     * @return
+     */
     public List<ToStudentPush> tiWenStudent(String circleId);
 }

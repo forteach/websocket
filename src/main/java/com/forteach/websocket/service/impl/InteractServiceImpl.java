@@ -1,6 +1,7 @@
 package com.forteach.websocket.service.impl;
 
-import com.forteach.websocket.common.*;
+import com.forteach.websocket.common.KeyStorage;
+import com.forteach.websocket.common.QuestionType;
 import com.forteach.websocket.domain.ToStudentPush;
 import com.forteach.websocket.domain.ToTeacherPush;
 import com.forteach.websocket.service.InteractService;
@@ -8,15 +9,13 @@ import com.forteach.websocket.service.RedisInteract;
 import com.forteach.websocket.service.student.push.TiWenPush;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 import java.util.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
+
 import static com.forteach.websocket.common.Dic.SUBSCRIBE_USER_STUDENT;
 import static com.forteach.websocket.common.Dic.SUBSCRIBE_USER_TEACHER;
-import static com.forteach.websocket.common.KeyStorage.INTERACTION_UID_SET_PREFIX;
 import static com.forteach.websocket.service.WsService.SESSION_MAP;
 
 /**
@@ -61,87 +60,41 @@ public class InteractServiceImpl implements InteractService {
         }
         return new ArrayList<>();
     }
-
-//    /**
-//     * 获取单个课堂推送给学生交互信息
-//     * @param circleId 课堂编号
-//     * @param teachId 教师ID
-//     * @return
-//     */
-//    @Override
-//    public List<ToStudentPush> obtainStudent(String circleId,String teachId) {
-//        // 从redis取出加入的学生信息
-//       // Set<String> uid = interact.getSets(INTERACTION_UID_SET_PREFIX);
-//        //获得课堂ID，正在上课的学生
-////        final Set<String> uid = interact.getSets(ClassRoomKey.getInteractiveIdQra(circleId))
-//        return interact.getSets(ClassRoomKey.getInteractiveIdQra(circleId))
-//                .stream()
-//                .filter(teachId::equals)//过滤掉班级教师ID
-//                .filter(id -> null != SESSION_MAP.get(id))
-//                .filter(id -> SESSION_MAP.get(id).isOpen())
-//                .map(this::buildStudentToPush)
-//                .filter(Objects::nonNull)
-//                .collect(Collectors.toList());
-//
-////                .collect(Collectors.toSet());
-//
-////        if (uid != null && uid.size() > 0) {
-////            //构建推送对象信息集合
-////            return uid.stream()
-////                    .filter(id -> null != SESSION_MAP.get(id))
-////                    .filter(id -> SESSION_MAP.get(id).isOpen())
-////                    .map(this::buildStudentToPush)
-////                    .filter(Objects::nonNull)
-////                    .collect(Collectors.toList());
-////        }
-////        return new ArrayList<>();
-//    }
-
-
     //根据课堂编号，获得需要推送给学生的提问信息
+
     /**
-     *
      * @param circleId
      * @return
      */
-    public List<ToStudentPush> tiWenStudent(String circleId){
+    @Override
+    public List<ToStudentPush> tiWenStudent(String circleId) {
 
         //获得提问方式的题目编号
-       final String questId=interact.getNowQuestId(circleId);
-       //获得当前题目选中的学生
-        final String stus= interact.getQuestStu(circleId,questId);
+        final String questId = interact.getNowQuestId(circleId);
+        //获得当前题目选中的学生
+        final String stus = interact.getQuestStu(circleId, questId);
         //获得当前题目的交互类型和参与形式
-        String nowQueType=interact.getNowQuestType(circleId,questId);
-        String[] nowQueTyeps=nowQueType.split(",");
+        String nowQueType = interact.getNowQuestType(circleId, questId);
+        String[] nowQueTyeps = nowQueType.split(",");
         //暂时设定，需要从redis里面去除该值
-        String interactive=nowQueTyeps[1];  //交互方式  选人、举手、抢答
+        //交互方式  选人、举手、抢答
+        String interactive = nowQueTyeps[1];
         //暂时设定，需要从redis里面去除该值
-        String category=nowQueTyeps[0];  //小组 个人
+        //小组 个人
+        String category = nowQueTyeps[0];
 
-       //根据所选的学生，对比Session数据是否在线，并获得学生推送详情
+        //根据所选的学生，对比Session数据是否在线，并获得学生推送详情
         return Arrays.asList(stus.split(",")).stream()
-                .filter(id -> null != SESSION_MAP.get(id))
-                .filter(id -> SESSION_MAP.get(id).isOpen())
-
-                .map(uid->buildStudentToPush(uid,questId, interactive, category,QuestionType.TiWen))
+                .filter(id -> null != SESSION_MAP.get(id) && SESSION_MAP.get(id).isOpen())
+                .map(uid -> buildStudentToPush(uid, questId, interactive, category, QuestionType.TiWen))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
-
-//        if (uid != null && uid.size() > 0) {
-//            //构建推送对象信息集合
-//            return uid.stream()
-//                    .filter(id -> null != SESSION_MAP.get(id))
-//                    .filter(id -> SESSION_MAP.get(id).isOpen())
-//                    .map(this::buildStudentToPush)
-//                    .filter(Objects::nonNull)
-//                    .collect(Collectors.toList());
-//        }
-//        return new ArrayList<>();
     }
 
 
     /**
      * 构建需要推送的信息(教师端)
+     *
      * @param uid
      * @return
      */
@@ -172,47 +125,48 @@ public class InteractServiceImpl implements InteractService {
 
     /**
      * 推送学生数据对象构造
-     ** @param uid 学生编号
-     * @param questid 题目编号
-     * @param interactive  交互方式  选人、举手、抢答
-     * @param category  小组 个人
-     * @param type  参与的活动   提问 练习  风暴等
+     * * @param uid 学生编号
+     *
+     * @param questid     题目编号
+     * @param interactive 交互方式  选人、举手、抢答
+     * @param category    小组 个人
+     * @param type        参与的活动   提问 练习  风暴等
      * @return
      */
-    private ToStudentPush buildStudentToPush(String uid,String questid,String interactive,String category,QuestionType type) {
-
-           switch (type){
-               case TiWen:
-               //是学生推送学生信息
-               return ToStudentPush.builder()
-                       .uid(uid)
-                       //提问问题
-                       .askQuestion(tiWenPush.achieveQuestion(questid,interactive,category))
-                       .build();
-               case WenJuan:
-                   return ToStudentPush.builder()
-                           .uid(uid)
-                           //学生习题任务
-                           .askSurvey(studentToPush.achieveSurvey(uid))
-                           .build();
-               case FengBao:
-                   return ToStudentPush.builder()
-                           .uid(uid)
-                           //头脑风暴
-                           .askBrainstorm(studentToPush.achieveBrainstorm(uid))
-                           .build();
-               case RenWu:
-                   return ToStudentPush.builder()
-                           .uid(uid)
-                           .askTask(studentToPush.achieveTask(uid))
-                           .build();
-               case LianXi:
-                   return ToStudentPush.builder()
-                           .uid(uid)
-                           //习题册(练习册)
-                           .askBook(studentToPush.achieveBook(uid))
-                           .build();
-           }
-           return null;
+    private ToStudentPush buildStudentToPush(String uid, String questid, String interactive, String category, QuestionType type) {
+        switch (type) {
+            case TiWen:
+                //是学生推送学生信息
+                return ToStudentPush.builder()
+                        .uid(uid)
+                        //提问问题
+                        .askQuestion(tiWenPush.achieveQuestion(questid, interactive, category))
+                        .build();
+            case WenJuan:
+                return ToStudentPush.builder()
+                        .uid(uid)
+                        //学生习题任务
+                        .askSurvey(studentToPush.achieveSurvey(uid))
+                        .build();
+            case FengBao:
+                return ToStudentPush.builder()
+                        .uid(uid)
+                        //头脑风暴
+                        .askBrainstorm(studentToPush.achieveBrainstorm(uid))
+                        .build();
+            case RenWu:
+                return ToStudentPush.builder()
+                        .uid(uid)
+                        .askTask(studentToPush.achieveTask(uid))
+                        .build();
+            case LianXi:
+                return ToStudentPush.builder()
+                        .uid(uid)
+                        //习题册(练习册)
+                        .askBook(studentToPush.achieveBook(uid))
+                        .build();
+            default:
+                return null;
+        }
     }
 }

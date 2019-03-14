@@ -11,15 +11,10 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
-
 import static com.forteach.websocket.common.KeyStorage.actionPropertyKey;
 import static com.forteach.websocket.common.KeyStorage.groupKey;
 
@@ -42,13 +37,20 @@ public class RedisInteractImpl implements RedisInteract {
     @Resource
     private RedisTemplate redisTemplate;
 
-    //获得当前开课课堂教师的编号
+    /**
+     * 获得当前开课课堂教师的编号
+     * @param circleId
+     * @return
+     */
     @Override
     public String getRoomTeacherId(String circleId) {
         return stringRedisTemplate.opsForValue().get(ClassRoomKey.getRoomTeacherKey(circleId));
     }
 
-    //获得当前开课课堂列表
+    /**
+     * 获得当前开课课堂列表
+     * @return
+     */
     @Override
     public List<String> getOpenRooms() {
         return stringRedisTemplate.opsForSet().members(ClassRoomKey.OPEN_CLASSROOM)
@@ -61,14 +63,24 @@ public class RedisInteractImpl implements RedisInteract {
         return stringRedisTemplate.opsForValue().get(key);
     }
 
-    //获得当前题目的交互类型和参与形式
+    /**
+     * 获得当前题目的交互类型和参与形式
+     * @param circleId
+     * @param questId
+     * @return
+     */
     @Override
     public String getNowQuestType(String circleId, String questId) {
         String key=BigQueKey.askTypeQuestionsIdType(circleId, questId);
         return stringRedisTemplate.opsForValue().get(key);
     }
 
-    //获得当前开课课堂列表
+    /**
+     * 获得当前开课课堂列表
+     * @param circleId
+     * @param questId
+     * @return
+     */
     @Override
     public String getQuestStu(String circleId, String questId) {
         return stringRedisTemplate.opsForValue()

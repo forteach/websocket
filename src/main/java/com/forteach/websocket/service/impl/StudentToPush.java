@@ -48,13 +48,13 @@ public class StudentToPush {
     public AskQuestion achieveQuestion(String uid) {
         //班级信息
         String uCircle = interact.uidCircle(uid);
-            String uRandom = interact.uidRandom(uid);
-            if (uCircle == null || uRandom == null) {
-                return null;
-            }
-            //获得题目提问的Resdis键值
+        String uRandom = interact.uidRandom(uid);
+        if (uCircle == null || uRandom == null) {
+            return null;
+        }
+        //获得题目提问的Resdis键值
         String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(uCircle).concat(QuestionType.BigQuestion.name());
-            //获得题目编号
+        //获得题目编号
         String questionId = interact.askQuestionId(askKey);
         if (questionId == null) {
             log.debug("获取需要推送的问题为NULL 参数　==> uid : {}", uid);
@@ -64,13 +64,12 @@ public class StudentToPush {
         //获取学生 获取big question 的去重key
         String uDistinctKey = askQuDistinctKey(uCircle, uid, questionId, uRandom, QuestionType.BigQuestion);
         String cut = interact.askQuestionCut(askKey);
+        //获得个人回答还是组回答
         String category = interact.askCategoryType(askKey);
+        //获得题目回答方式
         String interactive = interact.askInteractiveType(askKey);
-
-        String category = interact.askCategoryType(askKey);//获得个人回答还是组回答
-        String interactive = interact.askInteractiveType(askKey);//获得题目回答方式
         //创建题目信息
-            OptQuestion optQuestion = getQuestion(askKey, uid, category, interactive);
+        OptQuestion optQuestion = getQuestion(askKey, uid, category, interactive);
 
         if (log.isDebugEnabled() && optQuestion != null) {
             log.debug("optQuestion : {}", optQuestion.toString());
@@ -131,9 +130,6 @@ public class StudentToPush {
      * @return
      */
     private OptQuestion askPeople(String askKey, String uid, String interactive) {
-        if (log.isDebugEnabled()) {
-//            log.debug("个人对象 返回题目 参数 ==> askKey : {}, uid : {}, interactive : {}", askKey, uid, interactive);
-        }
         switch (interactive) {
             case ASK_INTERACTIVE_RACE:
                 return selected(selectQuestion(askKey, uid));
@@ -318,14 +314,8 @@ public class StudentToPush {
      * @return
      */
     private OptQuestionList<SurveyQuestion> selectedSurveyOptListPeople(String askKey, String uid, String[] questionIds) {
-
         List<SurveyQuestion> list = selectSurveyQuestion(askKey, uid, questionIds);
-        if (list == null) {
-            return null;
-        } else {
-            return new OptQuestionList<>(ASK_QUESTIONS_SELECTED, list);
-        }
-
+        return list.isEmpty() ? null : new OptQuestionList(ASK_QUESTIONS_SELECTED, list);
     }
 
     /**

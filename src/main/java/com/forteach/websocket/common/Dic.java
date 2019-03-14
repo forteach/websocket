@@ -74,16 +74,6 @@ public class Dic {
     public static final String ASK_CIRCLE_ANSWER_ALREADY = "1";
 
     /**
-     * 　加入的是教师
-     */
-    public static final String SUBSCRIBE_USER_TEACHER = "teacher";
-
-    /**
-     * 加入课堂情况是学生
-     */
-    public static final String SUBSCRIBE_USER_STUDENT = "student";
-
-    /**
      * 用户token 认证前缀
      */
     public static final String USER_TOKEN = "userToken$";

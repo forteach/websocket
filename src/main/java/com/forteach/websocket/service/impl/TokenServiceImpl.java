@@ -7,9 +7,7 @@ import com.forteach.websocket.service.TokenService;
 import com.forteach.websocket.util.StringUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.HashOperations;
-import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.stereotype.Service;
-
 import static com.forteach.websocket.common.Dic.TOKEN_STUDENT;
 import static com.forteach.websocket.common.Dic.USER_TOKEN;
 
