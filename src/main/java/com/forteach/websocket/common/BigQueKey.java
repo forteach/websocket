@@ -9,6 +9,16 @@ package com.forteach.websocket.common;
 public class BigQueKey {
 
     /**
+     * 互动提问hash前缀(习题库\头脑风暴等。。。)
+     */
+    public static final String CLASSROOM_ASK_NOW= "now";
+
+    /**
+     * 互动提问hash前缀(习题库\头脑风暴等。。。)
+     */
+    public static final String CLASSROOM_ASK_PRVE= "prve";
+
+    /**
      * 课堂提问答案等前缀
      */
     public static final String EXAMINEE_IS_REPLY_KEY = "askReply";
@@ -23,41 +33,82 @@ public class BigQueKey {
      */
     public static final String CLASSROOM_ASK_QUESTIONS_ID = "ask";
 
-
     /**
-     * 课堂互动的hash前缀
+     * 课堂题目当前前缀
      *
-     * @return 问题前缀+课堂+问题类型+回答方式
+     * @return now+课堂Id=map
      */
-    public static String askTypeQuestionsId(final QuestionType type, BigQuestionGiveVo giveVo) {
-        return giveVo.getCircleId().concat(BigQueKey.CLASSROOM_ASK_QUESTIONS_ID).concat(type.name().concat(giveVo.getInteractive()));
+    public static String QuestionsIdNow(String circleId) {
+        return CLASSROOM_ASK_NOW.concat(circleId);
     }
 
     /**
-     * 课堂互动的hash前缀
+     * 课堂题目当前前缀
      *
-     * @return 当前问题前缀+课堂+问题类型+回答方式
+     * @return 当前问题前缀+课堂+问题类型+回答方式=ForValue
      */
-    public static String askTypeQuestionsIdNow(final QuestionType type, BigQuestionGiveVo giveVo) {
-        return askTypeQuestionsId(type,giveVo).concat("now");
+    public static String askTypeQuestionsIdNow(final QuestionType type, String circleId, String interactive) {
+        return CLASSROOM_ASK_NOW+askTypeQuestionsId(type,circleId,interactive);
     }
 
     /**
-     * 课堂互动的hash前缀
+     * 课堂互动前缀
      *
-     * @return 上一次的问题前缀+课堂+问题类型+回答方式
+     * @return 问题前缀+课堂+问题类型+回答方式  题目列表List
      */
-    public static String askTypeQuestionsIdPrve(final QuestionType type, BigQuestionGiveVo giveVo) {
-        return askTypeQuestionsId(type,giveVo).concat("prve");
+    public static String askTypeQuestionsId(final QuestionType type,String circleId, String interactive) {
+        return circleId.concat(BigQueKey.CLASSROOM_ASK_QUESTIONS_ID).concat(type.name().concat(interactive));
     }
 
     /**
-     * 课堂互动的hash前缀
+     * 课堂题目上一题前缀
      *
-     * @return 问题前缀+课堂+问题类型+回答方式+单个题目ID，用于改题目过期判断数据依据
+     * @return 上一次的问题前缀+课堂+问题类型+回答方式=ForValu
      */
-    public static String askTypeQuestionsId(final QuestionType type, BigQuestionGiveVo giveVo,String questionId) {
-        return askTypeQuestionsId(type,giveVo).concat(questionId);
+    public static String askTypeQuestionsIdPrve(final QuestionType type, String circleId, String interactive) {
+        return CLASSROOM_ASK_PRVE.concat(askTypeQuestionsId(type,circleId,interactive));
+    }
+
+    /**
+     * 课堂所选单道题目前缀
+     *
+     * @return 问题前缀+课堂+问题类型+回答方式+单个题目ID=ForSet
+     */
+    public static String askTypeQuestionsId(final QuestionType type, String circleId, String interactive,String questionId) {
+        return askTypeQuestionsId(type,circleId,interactive).concat(questionId);
+    }
+
+    /**
+     * 课堂当前道题目回答前缀
+     * sutId  学生ID
+     * questionId 问题ID
+     * typeName  题目互动方式  提问、联练习。。。。
+     * @return 单个题目ID+前缀+学生编号=题目答案  Hashmap
+     */
+    public static String answerTypeQuestionsId(final String circleId,String questionId,String typeName) {
+        return questionId.concat("answer").concat(typeName).concat(circleId);
+    }
+
+    /**
+     * 课堂当前道题目回答批改前缀
+     * sutId  学生ID
+     * questionId 问题ID
+     * typeName  题目互动方式  提问、联练习。。。。
+     * @return 单个题目ID+前缀+学生编号=题目答案=Hashmap
+     */
+    public static String piGaiTypeQuestionsId(final String circleId,String questionId,String typeName) {
+        return questionId.concat("pigai").concat(typeName).concat(circleId);
+    }
+
+    /**
+     * 课堂当前道题目回答学生列表前缀
+     * sutId  学生ID
+     * questionId 问题ID
+     * typeName  题目互动方式  提问、联练习。。。。
+     * @return 单个题目ID+前缀+学生编号=题目答案=Hashmap
+     */
+    public static String answerTypeQuestStuList(final String circleId,String questionId,String typeName) {
+        return questionId.concat("answerlist").concat(typeName).concat(circleId);
     }
 
     /**
@@ -68,7 +119,6 @@ public class BigQueKey {
     public static String askTypeQuestionsIdType(final String circleId, String questionId) {
         return  circleId.concat("asknow").concat(questionId);
     }
-
 
     /**
      * 课堂互动的hash前缀

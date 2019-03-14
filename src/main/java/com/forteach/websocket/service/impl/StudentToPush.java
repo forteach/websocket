@@ -57,7 +57,7 @@ public class StudentToPush {
                 return null;
             }
             //获得题目提问的Resdis键值
-        String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(uCircle).concat(QuestionType.BigQuestion.name());
+        String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(uCircle).concat(QuestionType.TiWen.name());
             //获得题目编号
         String questionId = interact.askQuestionId(askKey);
         if (questionId == null) {
@@ -66,7 +66,7 @@ public class StudentToPush {
         }
         //-------------------------------------------------------
         //获取学生 获取big question 的去重key
-        String uDistinctKey = askQuDistinctKey(uCircle, uid, questionId, uRandom, QuestionType.BigQuestion);
+        String uDistinctKey = askQuDistinctKey(uCircle, uid, questionId, uRandom, QuestionType.TiWen);
 
         String cut = interact.askQuestionCut(askKey);
 
@@ -276,13 +276,13 @@ public class StudentToPush {
         if (uCircle == null || uRandom == null) {
             return null;
         }
-        String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.SurveyQuestion.name()).concat(uCircle);
+        String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.WenJuan.name()).concat(uCircle);
         String questionId = interact.askQuestionId(askKey);
         if (questionId == null) {
             return null;
         }
         String[] questionIds = questionId.split(",");
-        String uDistinctKey = askQuDistinctKey(uCircle, uid, questionId, uRandom, QuestionType.SurveyQuestion);
+        String uDistinctKey = askQuDistinctKey(uCircle, uid, questionId, uRandom, QuestionType.WenJuan);
         String cut = interact.askQuestionCut(askKey);
         String category = interact.askCategoryType(askKey);
 
@@ -408,13 +408,13 @@ public class StudentToPush {
         if (uCircle == null || uRandom == null) {
             return null;
         }
-        String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.BrainstormQuestion.name()).concat(uCircle);
+        String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.FengBao.name()).concat(uCircle);
         String questionId = interact.askQuestionId(askKey);
         if (questionId == null) {
             return null;
         }
         String[] questionIds = questionId.split(",");
-        String uDistinctKey = askQuDistinctKey(uCircle, uid, questionId, uRandom, QuestionType.BrainstormQuestion);
+        String uDistinctKey = askQuDistinctKey(uCircle, uid, questionId, uRandom, QuestionType.FengBao);
         String cut = interact.askQuestionCut(askKey);
         String category = interact.askCategoryType(askKey);
         //获取uid的问题
@@ -541,13 +541,13 @@ public class StudentToPush {
         if (uCircle == null || uRandom == null) {
             return null;
         }
-        String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.TaskQuestion.name()).concat(uCircle);
+        String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.RenWu.name()).concat(uCircle);
         String questionId = interact.askQuestionId(askKey);
         if (questionId == null) {
             return null;
         }
         String[] questionIds = questionId.split(",");
-        String uDistinctKey = askQuDistinctKey(uCircle, uid, questionId, uRandom, QuestionType.TaskQuestion);
+        String uDistinctKey = askQuDistinctKey(uCircle, uid, questionId, uRandom, QuestionType.RenWu);
         String cut = interact.askQuestionCut(askKey);
         String category = interact.askCategoryType(askKey);
 
@@ -573,13 +573,13 @@ public class StudentToPush {
         if (uCircle == null || uRandom == null) {
             return null;
         }
-        String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.ExerciseBook.name()).concat(uCircle);
+        String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.LianXi.name()).concat(uCircle);
         String questionId = interact.askQuestionId(askKey);
         if (questionId == null) {
             return null;
         }
         String[] questionIds = questionId.split(",");
-        String uDistinctKey = askQuDistinctKey(uCircle, uid, questionId, uRandom, QuestionType.ExerciseBook);
+        String uDistinctKey = askQuDistinctKey(uCircle, uid, questionId, uRandom, QuestionType.LianXi);
         String cut = interact.askQuestionCut(askKey);
         String category = interact.askCategoryType(askKey);
 

@@ -1,15 +1,18 @@
 package com.forteach.websocket.service.student.push;
 
+import com.forteach.websocket.common.Dic;
+import com.forteach.websocket.common.QuestionType;
 import com.forteach.websocket.domain.*;
 import com.forteach.websocket.repository.BigQuestionRepository;
-import com.forteach.websocket.repository.BrainstormQuestionRepository;
-import com.forteach.websocket.repository.SurveyQuestionRepository;
-import com.forteach.websocket.repository.TaskQuestionRepository;
-import com.forteach.websocket.service.RedisInteract;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import static com.forteach.websocket.common.Dic.*;
+import static com.forteach.websocket.service.WsService.SESSION_MAP;
 
 /**
  * @Description:推送给学生
@@ -21,20 +24,56 @@ import static com.forteach.websocket.common.Dic.*;
 @Component
 public class TiWenPush {
 
+    //学生交互操作类
     @Resource
-    private RedisInteract interact;
+    private StuInteractImpl StuInteract;
 
     @Resource
     private BigQuestionRepository bigQuestionRepository;
 
-    @Resource
-    private TaskQuestionRepository taskQuestionRepository;
+    /**
+     *学生提问推送信息
+     * @param circleId
+     * @return
+     */
+    public List<ToStudentPush> tiWenStudent(final String circleId){
 
-    @Resource
-    private SurveyQuestionRepository surveyQuestionRepository;
+        //获得提问方式的题目编号
+        final String questId=StuInteract.getNowQuestId(QuestionType.TiWen,circleId, Dic.ASK_INTERACTIVE_SELECT);
+        //获得当前题目选中的学生
+        final String stus= StuInteract.getQuestSelectStu(circleId);
 
-    @Resource
-    private BrainstormQuestionRepository brainstormQuestionRepository;
+        //获得当前题目的交互方式
+        final String interactive=StuInteract.getNowQuestInteractive(circleId);  //交互方式  选人、举手、抢答
+        //暂时设定，需要从redis里面去除该值
+        final String category=StuInteract.getNowQuestCategory(circleId);  //小组 个人
+
+        //根据所选的学生，对比Session数据是否在线，并获得学生推送详情
+        return Arrays.asList(stus.split(",")).stream()
+                .filter(id -> null != SESSION_MAP.get(id))
+                .filter(id -> SESSION_MAP.get(id).isOpen())
+                //创建推送数据
+                .map(uid->TStudentToPush(uid,questId, interactive, category))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 推送学生数据对象构造
+     ** @param uid 学生编号
+     * @param questid 题目编号
+     * @param interactive  交互方式  选人、举手、抢答
+     * @param category  小组 个人
+     * @return
+     */
+    private ToStudentPush TStudentToPush(String uid,String questid,String interactive,String category) {
+                //是学生推送学生信息
+                return ToStudentPush.builder()
+                        .uid(uid)
+                        //提问问题
+                        .askQuestion(achieveQuestion(questid,interactive,category))
+                        .build();
+    }
 
     /**
      *
@@ -98,7 +137,7 @@ public class TiWenPush {
     }
 
     /**
-     * 封装是否能够回答
+     * 选人方式题目推送
      *
      * @param bigQuestion
      * @return

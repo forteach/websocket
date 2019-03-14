@@ -126,6 +126,16 @@ public class WsServiceImpl implements WsService {
         });
     }
 
+    /**
+     * 循环处理推送信息
+     * @param obj
+     */
+    @Override
+    public void processTeacher(ToTeacherPush obj) {
+            Session session = SESSION_MAP.get(obj.getUid());
+            sendTeacherMessage(obj, session);
+    }
+
     //推动给教师信息
     private void sendTeacherMessage(ToTeacherPush toPush, Session session) {
         //必须session 存在并且是开启状态才能推送

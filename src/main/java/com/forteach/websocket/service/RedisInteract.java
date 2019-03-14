@@ -24,6 +24,9 @@ public interface RedisInteract {
     //获得提问题目选中的学生
     public  String getQuestStu(String circleId,String questId);
 
+    //获得加入课堂的学生
+    public List<String> getInteractiveStudents(final String circleId, final String teacherId);
+
     Set<String> getSets(String key);
 
     String uidType(String uid);

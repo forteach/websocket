@@ -21,8 +21,7 @@ public abstract class BaseEntity {
     @Id
     protected String id;
 
-    @LastModifiedDate
-    protected Date uDate;
+    protected String uDate;
 
 }
 

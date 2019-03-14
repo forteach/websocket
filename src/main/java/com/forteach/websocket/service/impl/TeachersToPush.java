@@ -47,7 +47,7 @@ public class TeachersToPush {
         if (uCircle == null || uRandom == null) {
             return null;
         }
-        String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.BigQuestion.name()).concat(uCircle);
+        String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.TiWen.name()).concat(uCircle);
         String questionId = interact.askQuestionId(askKey);
         if (questionId == null) {
             return null;
@@ -56,8 +56,8 @@ public class TeachersToPush {
             return null;
         }
 
-        if (interact.answerDistinct(getAnswDistinctKey(uCircle, uRandom), examineeIsReplyKey(QuestionType.BigQuestion, uCircle), askKey)) {
-            List<Students> students = peopleAnswer(uCircle, questionId, askKey, QuestionType.BigQuestion);
+        if (interact.answerDistinct(getAnswDistinctKey(uCircle, uRandom), examineeIsReplyKey(QuestionType.TiWen, uCircle), askKey)) {
+            List<Students> students = peopleAnswer(uCircle, questionId, askKey, QuestionType.TiWen);
             return buildAchieveAnswer(students);
         } else {
             return null;
@@ -70,7 +70,7 @@ public class TeachersToPush {
         if (uCircle == null || uRandom == null) {
             return null;
         }
-        String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.SurveyQuestion.name()).concat(uCircle);
+        String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.WenJuan.name()).concat(uCircle);
         String questionId = interact.askQuestionId(askKey);
         if (questionId == null) {
             return null;
@@ -78,9 +78,9 @@ public class TeachersToPush {
         if (!interact.untitled(askKey)) {
             return null;
         }
-        if (interact.answerDistinct(getAnswDistinctKey(uCircle, uRandom), examineeIsReplyKey(QuestionType.SurveyQuestion, uCircle), askKey)) {
+        if (interact.answerDistinct(getAnswDistinctKey(uCircle, uRandom), examineeIsReplyKey(QuestionType.WenJuan, uCircle), askKey)) {
             //获取学生回答情况信息列表
-            List<Students> students = peopleAnswer(uCircle, questionId, askKey, QuestionType.SurveyQuestion);
+            List<Students> students = peopleAnswer(uCircle, questionId, askKey, QuestionType.WenJuan);
             return buildAchieveSurveyAnswer(students);
         } else {
             return null;
@@ -93,7 +93,7 @@ public class TeachersToPush {
         if (uCircle == null || uRandom == null) {
             return null;
         }
-        String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.BrainstormQuestion.name()).concat(uCircle);
+        String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.FengBao.name()).concat(uCircle);
         String questionId = interact.askQuestionId(askKey);
         if (questionId == null) {
             return null;
@@ -101,8 +101,8 @@ public class TeachersToPush {
         if (!interact.untitled(askKey)) {
             return null;
         }
-        if (interact.answerDistinct(getAnswDistinctKey(uCircle, uRandom), examineeIsReplyKey(QuestionType.BrainstormQuestion, uCircle), askKey)) {
-            List<Students> students = peopleAnswer(uCircle, questionId, askKey, QuestionType.BrainstormQuestion);
+        if (interact.answerDistinct(getAnswDistinctKey(uCircle, uRandom), examineeIsReplyKey(QuestionType.FengBao, uCircle), askKey)) {
+            List<Students> students = peopleAnswer(uCircle, questionId, askKey, QuestionType.FengBao);
             return buildAchieveBrainstormAnswer(students);
         } else {
             return null;
@@ -115,7 +115,7 @@ public class TeachersToPush {
         if (uCircle == null || uRandom == null) {
             return null;
         }
-        String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.TaskQuestion.name()).concat(uCircle);
+        String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.RenWu.name()).concat(uCircle);
         String questionId = interact.askQuestionId(askKey);
         if (questionId == null) {
             return null;
@@ -123,8 +123,8 @@ public class TeachersToPush {
         if (!interact.untitled(askKey)) {
             return null;
         }
-        if (interact.answerDistinct(getAnswDistinctKey(uCircle, uRandom), examineeIsReplyKey(QuestionType.TaskQuestion, uCircle), askKey)) {
-            List<Students> students = peopleAnswer(uCircle, questionId, askKey, QuestionType.TaskQuestion);
+        if (interact.answerDistinct(getAnswDistinctKey(uCircle, uRandom), examineeIsReplyKey(QuestionType.RenWu, uCircle), askKey)) {
+            List<Students> students = peopleAnswer(uCircle, questionId, askKey, QuestionType.RenWu);
             return buildAchieveTaskAnswer(students);
         } else {
             return null;
@@ -137,7 +137,7 @@ public class TeachersToPush {
         if (uCircle == null || uRandom == null) {
             return null;
         }
-        String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.ExerciseBook.name()).concat(uCircle);
+        String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.LianXi.name()).concat(uCircle);
         String questionId = interact.askQuestionId(askKey);
         if (questionId == null) {
             return null;
@@ -145,8 +145,8 @@ public class TeachersToPush {
         if (!interact.untitled(askKey)) {
             return null;
         }
-        if (interact.answerDistinct(getAnswDistinctKey(uCircle, uRandom), examineeIsReplyKey(QuestionType.ExerciseBook, uCircle), askKey)) {
-            List<Students> students = peopleAnswer(uCircle, questionId, askKey, QuestionType.ExerciseBook);
+        if (interact.answerDistinct(getAnswDistinctKey(uCircle, uRandom), examineeIsReplyKey(QuestionType.LianXi, uCircle), askKey)) {
+            List<Students> students = peopleAnswer(uCircle, questionId, askKey, QuestionType.LianXi);
             return buildAchieveBookAnswer(students);
         } else {
             return null;
@@ -155,7 +155,7 @@ public class TeachersToPush {
 
     /**
      * 获取回答的学生情况
-     *
+     *TODO old
      * @param uCircle
      * @param questionId
      * @param askKey
@@ -173,7 +173,8 @@ public class TeachersToPush {
 
             if (flag) {
                 log.debug("peopleAnswer 获得了数据 推送");
-                return new CircleAnswer(student, ASK_CIRCLE_ANSWER_DID, answ);
+                //return new CircleAnswer(student, ASK_CIRCLE_ANSWER_DID, answ);old*******
+                return new CircleAnswer();
             } else {
                 log.debug("peopleAnswer 没有获得数据 进行重试");
 
@@ -185,14 +186,16 @@ public class TeachersToPush {
                         answ = findAskAnswer(uCircle, id, questionId, type);
                         if (flag) {
                             log.debug("通过休眠获得到最新数据 ,共休眠次数 {} 每次 {} millis", i + 1, 1);
-                            return new CircleAnswer(student, ASK_CIRCLE_ANSWER_DID, answ);
+                            //return new CircleAnswer(student, ASK_CIRCLE_ANSWER_DID, answ);old*******
+                            return new CircleAnswer();
                         }
                     } catch (InterruptedException e) {
                         throw new RuntimeException("线程休眠异常");
                     }
                 }
                 log.debug("peopleAnswer 没有获得数据 重试结束");
-                return new CircleAnswer(student, ASK_CIRCLE_ANSWER_ALREADY, new AskAnswer());
+               // return new CircleAnswer(student, ASK_CIRCLE_ANSWER_ALREADY, new AskAnswer());old*******
+                return new CircleAnswer();
             }
 
         }).collect(Collectors.toList());
@@ -283,19 +286,7 @@ public class TeachersToPush {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * 查找互动学生信息
-     *
-     * @param uCircle
-     * @return
-     */
-    private List<Students> findInteractiveStudents(String uCircle) {
 
-        return interact.getSets(interactiveClassKey(uCircle))
-                .stream()
-                .map(id -> studentsService.findStudentsBrief(id))
-                .collect(Collectors.toList());
-    }
 
 
     /**
@@ -308,7 +299,7 @@ public class TeachersToPush {
      */
     private Object findAskAnswer(final String circleId, final String examineeId, final String questionId, final QuestionType type) {
 
-        if (type.equals(QuestionType.BigQuestion)) {
+        if (type.equals(QuestionType.TiWen)) {
             Query query = Query.query(
                     Criteria.where("circleId").is(circleId)
                             .and("questionId").is(questionId)
@@ -345,7 +336,7 @@ public class TeachersToPush {
         if (uCircle == null || uRandom == null) {
             return null;
         }
-        String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.BigQuestion.name()).concat(uCircle);
+        String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.TiWen.name()).concat(uCircle);
 
         List<Students> uids = interactStudents(uCircle);
         if (uids.size() > 0 && interact.raiseDistinct(raiseDistinctKey(uCircle, uRandom), askKey, uids.size())) {
@@ -355,29 +346,5 @@ public class TeachersToPush {
         }
     }
 
-    /**
-     * 主动推送 加入课堂的学生
-     *
-     * @param uid
-     * @return
-     */
-    public AchieveJoin achieveInteractiveStudents(String uid) {
 
-        String uCircle = interact.uidCircle(uid);
-        String uRandom = interact.uidRandom(uid);
-        if (uCircle == null || uRandom == null) {
-            return null;
-        }
-        String askKey = CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.BigQuestion.name()).concat(uCircle);
-        //查找互动学生信息
-        List<Students> uids = findInteractiveStudents(uCircle);
-        if (uids.size() > 0 &&
-                //学生加入信息去重
-                interact.joinDistinct(joinDistinctKey(uCircle, uRandom), askKey, uids.size())) {
-            return buildAchieveJoin(uids);
-        } else {
-            return null;
-        }
-
-    }
 }

@@ -21,7 +21,7 @@ public class RedisTest {
 
     @Test
     public void redisTest() {
-        QuestionType questionType = QuestionType.BigQuestion;
+        QuestionType questionType = QuestionType.TiWen;
         System.out.println(questionType.name());
         stringRedisTemplate.opsForValue().set("1Test", "redis ok");
 //
