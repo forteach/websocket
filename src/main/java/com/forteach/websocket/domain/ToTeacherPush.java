@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 public class ToTeacherPush {
 
     /**
-     * 需要推送的用户id,(学生，教师)
+     * 需要推送的用户id,(教师)
      */
     private String uid;
     /**

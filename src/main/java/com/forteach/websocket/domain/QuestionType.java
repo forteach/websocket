@@ -1,7 +1,7 @@
 package com.forteach.websocket.domain;
 
 /**
- * @Description:　问题类型
+ * @Description: 习题练习的类型
  * @author: liu zhenming
  * @version: V1.0
  * @date: 2019/1/15  10:26
@@ -9,23 +9,28 @@ package com.forteach.websocket.domain;
 public enum QuestionType {
 
     /**
-     * 考试 练习题库
+     * 提问
      */
-    BigQuestion,
+    //BigQuestion,
+    TiWen,
     /**
      * 头脑风暴题库
      */
-    BrainstormQuestion,
+    //BrainstormQuestion,
+    FengBao,
     /**
-     * 任务题库
+     * 任务
      */
-    TaskQuestion,
+    //TaskQuestion,
+    RenWu,
     /**
-     * 问卷题库
+     * 问卷
      */
-    SurveyQuestion,
+    //SurveyQuestion,
+    WenJuan,
     /**
      * 练习册
      */
-    ExerciseBook
+    //ExerciseBook
+    LianXi
 }

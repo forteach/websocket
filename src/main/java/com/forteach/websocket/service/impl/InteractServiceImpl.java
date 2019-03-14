@@ -7,6 +7,7 @@ import com.forteach.websocket.domain.ToTeacherPush;
 import com.forteach.websocket.service.InteractService;
 import com.forteach.websocket.service.RedisInteract;
 import com.forteach.websocket.service.student.push.TiWenPush;
+import com.forteach.websocket.service.teacher.push.ClassStudentPush;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -34,103 +35,126 @@ public class InteractServiceImpl implements InteractService {
     @Resource
     private StudentToPush studentToPush;
 
+    //课堂提问推送
     @Resource
     private TiWenPush tiWenPush;
+
+    //课堂加入学生学生推送
+    @Resource
+    private ClassStudentPush classStudentPush ;
 
     @Resource
     private TeachersToPush teachersToPush;
 
-    /**
-     * 获取课堂交互信息
-     *
-     * @return
-     */
-    @Override
-    public List<ToTeacherPush> obtainTeacher(String circleId) {
-        // 从redis取出加入的学生信息
-        Set<String> uid = interact.getSets(KeyStorage.INTERACTION_UID_SET_PREFIX);
-        if (uid != null && uid.size() > 0) {
-            //构建推送对象信息集合
-            return uid.stream()
-                    .filter(id -> null != SESSION_MAP.get(id) && SESSION_MAP.get(id).isOpen())
-                    .filter(id -> SUBSCRIBE_USER_TEACHER.equals(interact.uidType(id)))
-                    .map(this::buildTeacherToPush)
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList());
-        }
-        return new ArrayList<>();
-    }
+//    /**
+//     * 获取课堂交互信息
+//     *
+//     * @return
+//     */
+//    @Override
+//    public List<ToTeacherPush> obtainTeacher(String circleId) {
+//        // 从redis取出加入的学生信息
+////        Set<String> uid = interact.getSets(KeyStorage.INTERACTION_UID_SET_PREFIX);
+////        if (uid != null && uid.size() > 0) {
+//        final String teacherId=interact.getClassTeacherId(circleId);
+//            //构建推送对象信息集合
+//            return interact.getInteractiveStudents(circleId,teacherId)
+//                    .stream()
+//                    .filter(id -> null != SESSION_MAP.get(id))
+//                    .filter(id -> SESSION_MAP.get(id).isOpen())
+//                    .map(this::buildTeacherToPush)
+//                    .filter(Objects::nonNull)
+//                    .collect(Collectors.toList());
+////        }
+////        return new ArrayList<>();
+//    }
+
+
+
+//    /**
+//     * 获取单个课堂推送给学生交互信息
+//     * @param circleId 课堂编号
+//     * @param teachId 教师ID
+//     * @return
+//     */
+//    @Override
+//    public List<ToStudentPush> obtainStudent(String circleId,String teachId) {
+//        // 从redis取出加入的学生信息
+//       // Set<String> uid = interact.getSets(INTERACTION_UID_SET_PREFIX);
+//        //获得课堂ID，正在上课的学生
+////        final Set<String> uid = interact.getSets(ClassRoomKey.getInteractiveIdQra(circleId))
+//        return interact.getSets(ClassRoomKey.getInteractiveIdQra(circleId))
+//                .stream()
+//                .filter(teachId::equals)//过滤掉班级教师ID
+//                .filter(id -> null != SESSION_MAP.get(id))
+//                .filter(id -> SESSION_MAP.get(id).isOpen())
+//                .map(this::buildStudentToPush)
+//                .filter(Objects::nonNull)
+//                .collect(Collectors.toList());
+//
+////                .collect(Collectors.toSet());
+//
+////        if (uid != null && uid.size() > 0) {
+////            //构建推送对象信息集合
+////            return uid.stream()
+////                    .filter(id -> null != SESSION_MAP.get(id))
+////                    .filter(id -> SESSION_MAP.get(id).isOpen())
+////                    .map(this::buildStudentToPush)
+////                    .filter(Objects::nonNull)
+////                    .collect(Collectors.toList());
+////        }
+////        return new ArrayList<>();
+//    }
+
+
     //根据课堂编号，获得需要推送给学生的提问信息
 
-    /**
-     * @param circleId
-     * @return
-     */
     @Override
-    public List<ToStudentPush> tiWenStudent(String circleId) {
-
-        //获得提问方式的题目编号
-        final String questId = interact.getNowQuestId(circleId);
-        //获得当前题目选中的学生
-        final String stus = interact.getQuestStu(circleId, questId);
-        //获得当前题目的交互类型和参与形式
-        String nowQueType = interact.getNowQuestType(circleId, questId);
-        String[] nowQueTyeps = nowQueType.split(",");
-        //暂时设定，需要从redis里面去除该值
-        //交互方式  选人、举手、抢答
-        String interactive = nowQueTyeps[1];
-        //暂时设定，需要从redis里面去除该值
-        //小组 个人
-        String category = nowQueTyeps[0];
-
-        //根据所选的学生，对比Session数据是否在线，并获得学生推送详情
-        return Arrays.asList(stus.split(",")).stream()
-                .filter(id -> null != SESSION_MAP.get(id) && SESSION_MAP.get(id).isOpen())
-                .map(uid -> buildStudentToPush(uid, questId, interactive, category, QuestionType.TiWen))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+    public List<ToTeacherPush> getClassStudent(String circleId, String teachserId) {
+        return classStudentPush.getClassStudent(circleId,teachserId);
     }
+
+
 
 
     /**
      * 构建需要推送的信息(教师端)
      *
-     * @param uid
+     * @param
      * @return
      */
-    private ToTeacherPush buildTeacherToPush(String uid) {
+    public ToTeacherPush buildTeacherToPush(String circleId,String teachseId,String type) {
         // 获取要推送的用户身份信息 teacher student
-        String uType = interact.uidType(uid);
-        if (!SUBSCRIBE_USER_STUDENT.equals(uType)) {
-            return ToTeacherPush.builder()
-                    .uid(uid)
-                    //学生回答信息(BigQuestion)
-                    .achieveAnswer(teachersToPush.achieveAnswer(uid))
-                    //学生举手信息
-                    .achieveRaise(teachersToPush.achieveRaise(uid))
-                    //学生加入课堂信息
-                    .achieveJoin(teachersToPush.achieveInteractiveStudents(uid))
-                    //实时学生问卷答案
-                    .achieveSurveyAnswer(teachersToPush.achieveSurveyAnswer(uid))
-                    //头脑风暴答案
-                    .achieveBrainstormAnswer(teachersToPush.achieveBrainstormAnswer(uid))
-                    //任务答案
-                    .achieveTaskAnswer(teachersToPush.achieveTaskAnswer(uid))
-                    //习题答案
-                    .achieveBookAnswer(teachersToPush.achieveBookAnswer(uid))
-                    .build();
+        switch (type){
+            case "classStu":
+           // return classStudentPush.getClassStudent(circleId,teachseId);
+            case "huida":
+                return ToTeacherPush.builder()
+                        .uid(teachseId)
+                        //学生回答信息(BigQuestion)
+                        .achieveAnswer(teachersToPush.achieveAnswer(teachseId))
+//                        //学生举手信息
+//                        .achieveRaise(teachersToPush.achieveRaise(uid))
+//                        //实时学生问卷答案
+//                        .achieveSurveyAnswer(teachersToPush.achieveSurveyAnswer(uid))
+//                        //头脑风暴答案
+//                        .achieveBrainstormAnswer(teachersToPush.achieveBrainstormAnswer(uid))
+//                        //任务答案
+//                        .achieveTaskAnswer(teachersToPush.achieveTaskAnswer(uid))
+//                        //习题答案
+//                        .achieveBookAnswer(teachersToPush.achieveBookAnswer(uid))
+                        .build();
         }
         return null;
     }
 
     /**
      * 推送学生数据对象构造
-     * * @param uid 学生编号
-     *
-     * @param questid     题目编号
-     * @param interactive 交互方式  选人、举手、抢答
-     * @param category    小组 个人
-     * @param type        参与的活动   提问 练习  风暴等
+     ** @param uid 学生编号
+     * @param questid 题目编号
+     * @param interactive  交互方式  选人、举手、抢答
+     * @param category  小组 个人
+     * @param type  参与的活动   提问 练习  风暴等
      * @return
      */
     private ToStudentPush buildStudentToPush(String uid, String questid, String interactive, String category, QuestionType type) {

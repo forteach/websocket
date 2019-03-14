@@ -67,7 +67,7 @@ public class KeyStorage {
      * @return
      */
     public static String getAskKey(String circle) {
-        return CLASSROOM_ASK_QUESTIONS_ID.concat(circle).concat(QuestionType.BigQuestion.name());
+        return CLASSROOM_ASK_QUESTIONS_ID.concat(circle).concat(QuestionType.TiWen.name());
     }
 
     /**

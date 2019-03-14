@@ -16,7 +16,9 @@ import org.springframework.beans.BeanUtils;
 @NoArgsConstructor
 public class CircleAnswer extends Students {
 
+    private String circleId;
 
+    private String questionId;
     /**
      * 回答状态
      * １未回答
@@ -24,17 +26,22 @@ public class CircleAnswer extends Students {
      */
     private String state;
 
-    private Object askAnswer;
+    /**
+     * 获得题目内容
+     */
+    private String askAnswerInfo;
 
-    public CircleAnswer(String state, Object askAnswer) {
-        this.state = state;
-        this.askAnswer = askAnswer;
-    }
+    /**
+     * 批改结果
+     */
+    private String piGaiResult;
 
-
-    public CircleAnswer(Students students, String state, Object askAnswer) {
+    public CircleAnswer(String circleId,String questionId,Students students, String state, String askAnswerInfo,String piGaiResult) {
         BeanUtils.copyProperties(students, this);
+        this.circleId=circleId;
+        this.questionId=questionId;
+        this.piGaiResult=piGaiResult;
         this.state = state;
-        this.askAnswer = askAnswer;
+        this.askAnswerInfo = askAnswerInfo;
     }
 }

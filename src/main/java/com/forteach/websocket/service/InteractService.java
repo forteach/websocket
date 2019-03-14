@@ -14,22 +14,11 @@ import java.util.List;
 public interface InteractService {
 
     /**
-     * 获取redis中待推送的教师数据
+     * 获取redis中加入班级的学生
      *
      * @return
      */
-    public List<ToTeacherPush> obtainTeacher(String circleId);
-    /**
-     * 获取redis中待推送的学生数据
-     *
-     * @return
-     */
-   // public List<ToStudentPush> obtainStudent(String circleId,String teachId);
+    public List<ToTeacherPush> getClassStudent(String circleId,String teachserId);
 
-    /**
-     * 推送选中学生提问的信息
-     * @param circleId
-     * @return
-     */
-    public List<ToStudentPush> tiWenStudent(String circleId);
+
 }

@@ -59,7 +59,7 @@ public class RedisInteractImpl implements RedisInteract {
 
     @Override
     public String getNowQuestId(String circleId) {
-        String key= BigQueKey.askTypeQuestionsIdNow(QuestionType.TiWen, new BigQuestionGiveVo(circleId, Dic.ASK_INTERACTIVE_SELECT, ""));
+        String key= BigQueKey.askTypeQuestionsIdNow(QuestionType.TiWen, circleId, Dic.ASK_INTERACTIVE_SELECT);
         return stringRedisTemplate.opsForValue().get(key);
     }
 
@@ -84,7 +84,19 @@ public class RedisInteractImpl implements RedisInteract {
     @Override
     public String getQuestStu(String circleId, String questId) {
         return stringRedisTemplate.opsForValue()
-                .get(BigQueKey.askTypeQuestionsId(QuestionType.TiWen, new BigQuestionGiveVo(circleId, Dic.ASK_INTERACTIVE_SELECT, ""), questId));
+                .get(BigQueKey.askTypeQuestionsId(QuestionType.TiWen, circleId, Dic.ASK_INTERACTIVE_SELECT, questId));
+    }
+
+    /**
+     * 获得班级加入的学生
+     *
+     * @param
+     * @return
+     */
+    public List<String> getInteractiveStudents(final String circleId, final String teacherId) {
+        return  stringRedisTemplate.opsForSet().members(ClassRoomKey.getInteractiveIdQra(circleId))
+                .stream().filter(id -> !id.equals(teacherId))//需要过滤掉教师ID
+                .collect(Collectors.toList());
     }
 
     /**

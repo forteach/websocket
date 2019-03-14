@@ -84,4 +84,12 @@ public interface WsService {
      */
     void processTeacher(List<ToTeacherPush> list);
 
+    /**
+     * 处理
+     *
+     * @param obj
+     * @return
+     */
+    void processTeacher(ToTeacherPush obj);
+
 }
