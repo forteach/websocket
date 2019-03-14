@@ -1,5 +1,7 @@
 package com.forteach.websocket.service.student.push;
 
+import com.alibaba.fastjson.JSON;
+import com.forteach.websocket.common.BigQueKey;
 import com.forteach.websocket.common.Dic;
 import com.forteach.websocket.common.QuestionType;
 import com.forteach.websocket.domain.*;
@@ -26,10 +28,7 @@ public class TiWenPush {
 
     //学生交互操作类
     @Resource
-    private StuInteractImpl StuInteract;
-
-    @Resource
-    private BigQuestionRepository bigQuestionRepository;
+    private StuInteractImpl stuInteract;
 
     /**
      *学生提问推送信息
@@ -39,14 +38,14 @@ public class TiWenPush {
     public List<ToStudentPush> tiWenStudent(final String circleId){
 
         //获得提问方式的题目编号
-        final String questId=StuInteract.getNowQuestId(QuestionType.TiWen,circleId, Dic.ASK_INTERACTIVE_SELECT);
+        final String questId=stuInteract.getNowQuestId(QuestionType.TiWen,circleId, Dic.ASK_INTERACTIVE_SELECT);
         //获得当前题目选中的学生
-        final String stus= StuInteract.getQuestSelectStu(circleId);
+        final String stus= stuInteract.getQuestSelectStu(circleId);
 
         //获得当前题目的交互方式
-        final String interactive=StuInteract.getNowQuestInteractive(circleId);  //交互方式  选人、举手、抢答
+        final String interactive=stuInteract.getNowQuestInteractive(circleId);  //交互方式  选人、举手、抢答
         //暂时设定，需要从redis里面去除该值
-        final String category=StuInteract.getNowQuestCategory(circleId);  //小组 个人
+        final String category=stuInteract.getNowQuestCategory(circleId);  //小组 个人
 
         //根据所选的学生，对比Session数据是否在线，并获得学生推送详情
         return Arrays.asList(stus.split(",")).stream()
@@ -123,11 +122,11 @@ public class TiWenPush {
     private OptQuestion askPeople(String questionId, String interactive) {
         switch (interactive) {
             case ASK_INTERACTIVE_RACE:
-                return selected(findBigQuestion(questionId));
+                return selected(stuInteract.getBigQuestion(questionId));
             case ASK_INTERACTIVE_RAISE:
                 return null;//raiseSelected(askKey, uid, findBigQuestion(askKey));
             case ASK_INTERACTIVE_SELECT:
-                return selected(findBigQuestion(questionId));
+                return selected(stuInteract.getBigQuestion(questionId));
             case ASK_INTERACTIVE_VOTE:
                 return null;
             default:
@@ -146,16 +145,7 @@ public class TiWenPush {
         return new OptQuestion(ASK_QUESTIONS_SELECTED, bigQuestion);
     }
 
-    /**
-     * 获得当前课堂的问题
-     *
-     * @param questionId 题目Id
-     * @return
-     */
-    private BigQuestion findBigQuestion(final String questionId) {
 
-        return bigQuestionRepository.findById(questionId).get();
-    }
 
         /**
      * 构建提问问题返回值

@@ -37,13 +37,15 @@ public class ClassStudentStask {
     /**
      * 每隔１秒遍历发送一次在redis 推送的教师相关信息
      */
-   // @Scheduled(initialDelay = 1000 * 10, fixedDelay = 500)
+    @Scheduled(initialDelay = 1000 * 10, fixedDelay = 25000)
     public void refreshTeacherInfo() {
+        System.out.println("Class--!!!!!");
         interact.getOpenRooms()
                 .stream()
                 .filter(Objects::nonNull)
                 .forEach(circleid-> pushClassStudent(circleid,interact.getRoomTeacherId(circleid))
                 );
+        System.out.println("Class--####");
     }
 
     //推动当前加入课堂的学生信息,推送给老师

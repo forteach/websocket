@@ -33,6 +33,11 @@ public class BigQueKey {
      */
     public static final String CLASSROOM_ASK_QUESTIONS_ID = "ask";
 
+    //缓存当前已发布的题目题干内容，不分课堂。
+    public static String QuestionsNow(String questionId) {
+        return CLASSROOM_ASK_NOW.concat(questionId);
+    }
+
     /**
      * 课堂题目当前前缀
      *
@@ -108,6 +113,7 @@ public class BigQueKey {
      * @return 单个题目ID+前缀+学生编号=题目答案=Hashmap
      */
     public static String answerTypeQuestStuList(final String circleId,String questionId,String typeName) {
+        //TODO 需要处理为空
         return questionId.concat("answerlist").concat(typeName).concat(circleId);
     }
 

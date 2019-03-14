@@ -24,8 +24,8 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 @Slf4j
 @Component
-//@ServerEndpoint(value = "/interactive/{circle}/{uid}/{type}/{random}", configurator = WsContextProvider.class)
-@ServerEndpoint(value = "/interactive/{circle}/{token}/{random}", configurator = WsContextProvider.class)
+@ServerEndpoint(value = "/interactive/{circle}/{uid}/{type}/{random}", configurator = WsContextProvider.class)
+//@ServerEndpoint(value = "/interactive/{circle}/{token}/{random}", configurator = WsContextProvider.class)
 public class WsServer {
 
 
@@ -63,31 +63,31 @@ public class WsServer {
      * @param type
      * @param random 随机数
      */
-   // @OnOpen
-//    public void onOpen(Session session, @PathParam("circle") String circle, @PathParam("uid") String uid1, @PathParam("type") String type, @PathParam("random") String random) {
-//        //属性赋值
-//        evaluation(circle, uid1, type, random);
-//
-//        log.info("New session opened , current connections {} / session id {}" +
-//                        "{circle} {}/{uid} {}/{type} {}/{random} {}", ONLINE_COUNT.incrementAndGet(), session.getId(),
-//                circle, uid1, type, random);
-//
-//        //用户注册 订阅
-//        subExecutor.execute(new WorkerForSubImpl(this.circle, this.uid, this.type, this.random, session, this.wsSvc));
-//    }
-
     @OnOpen
-    public void onOpen(Session session, @PathParam("circle") String circle, @PathParam("token") String token,  @PathParam("random") String random) {
+    public void onOpen(Session session, @PathParam("circle") String circle, @PathParam("uid") String uid1, @PathParam("type") String type, @PathParam("random") String random) {
         //属性赋值
-        evaluation(circle, "410221199706224226", "student", random);
+        evaluation(circle, uid1, type, random);
 
         log.info("New session opened , current connections {} / session id {}" +
                         "{circle} {}/{uid} {}/{type} {}/{random} {}", ONLINE_COUNT.incrementAndGet(), session.getId(),
-                circle, "410221199706224226", "student", random);
+                circle, uid1, type, random);
 
         //用户注册 订阅
         subExecutor.execute(new WorkerForSubImpl(this.circle, this.uid, this.type, this.random, session, this.wsSvc));
     }
+
+//    @OnOpen
+//    public void onOpen(Session session, @PathParam("circle") String circle, @PathParam("token") String token,  @PathParam("random") String random) {
+//        //属性赋值
+//        evaluation(circle, "410221199706224226", "student", random);
+//
+//        log.info("New session opened , current connections {} / session id {}" +
+//                        "{circle} {}/{uid} {}/{type} {}/{random} {}", ONLINE_COUNT.incrementAndGet(), session.getId(),
+//                circle, "410221199706224226", "student", random);
+//
+//        //用户注册 订阅
+//        subExecutor.execute(new WorkerForSubImpl(this.circle, this.uid, this.type, this.random, session, this.wsSvc));
+//    }
 
     @OnMessage
     public void onMessage(String message, Session session) {

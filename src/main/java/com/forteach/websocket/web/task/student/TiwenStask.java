@@ -2,12 +2,9 @@ package com.forteach.websocket.web.task.student;
 
 import com.alibaba.fastjson.JSON;
 import com.forteach.websocket.domain.ToStudentPush;
-import com.forteach.websocket.domain.ToTeacherPush;
-import com.forteach.websocket.service.InteractService;
 import com.forteach.websocket.service.RedisInteract;
 import com.forteach.websocket.service.WsService;
 import com.forteach.websocket.service.student.push.TiWenPush;
-import com.forteach.websocket.service.teacher.push.ClassStudentPush;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

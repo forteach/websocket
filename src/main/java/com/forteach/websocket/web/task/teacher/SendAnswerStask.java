@@ -36,13 +36,15 @@ public class SendAnswerStask {
     /**
      * 每隔１秒遍历发送一次在redis
      */
-   // @Scheduled(initialDelay = 1000 * 10, fixedDelay = 500)
+    @Scheduled(initialDelay = 1000 * 10, fixedDelay = 25000)
     public void refreshTeacherInfo() {
+        System.out.println("answer--!!!!!");
         interact.getOpenRooms()
                 .stream()
                 .filter(Objects::nonNull)
                 .forEach(circleid-> pushClassStudent(circleid)
                 );
+        System.out.println("answer--!####");
     }
 
     //推动当前加入课堂的学生信息,推送给老师

@@ -1,5 +1,8 @@
 package com.forteach.websocket.service.student.push;
+import com.alibaba.fastjson.JSON;
 import com.forteach.websocket.common.*;
+import com.forteach.websocket.domain.BigQuestion;
+import com.forteach.websocket.repository.BigQuestionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -23,6 +26,25 @@ public class StuInteractImpl {
     @Resource
     private StringRedisTemplate stringRedisTemplate;
 
+    @Resource
+    private BigQuestionRepository bigQuestionRepository;
+
+    //获得题目内容
+    public BigQuestion getBigQuestion(String questionId){
+        String key=BigQueKey.QuestionsNow(questionId);
+       return stringRedisTemplate.hasKey(key)?JSON.parseObject(stringRedisTemplate.opsForValue().get(BigQueKey.QuestionsNow(questionId)),BigQuestion.class): bigQuestionRepository.findById(questionId).get();
+    }
+
+    /**
+     * 获得当前课堂的问题
+     *
+     * @param questionId 题目Id
+     * @return
+     */
+    private BigQuestion findBigQuestion(final String questionId) {
+
+        return bigQuestionRepository.findById(questionId).get();
+    }
 
     /**
      *获得当前课堂活动的题目ID
