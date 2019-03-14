@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import org.springframework.beans.BeanUtils;
 
 /**
- * @Description:
+ * @Description:  题目信息
  * @author: liu zhenming
  * @version: V1.0
  * @date: 2018/12/24  16:11

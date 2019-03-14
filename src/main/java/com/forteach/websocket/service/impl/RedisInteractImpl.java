@@ -2,6 +2,7 @@ package com.forteach.websocket.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.forteach.websocket.common.*;
 import com.forteach.websocket.domain.Students;
 import com.forteach.websocket.domain.Team;
 import com.forteach.websocket.service.RedisInteract;
@@ -40,6 +41,39 @@ public class RedisInteractImpl implements RedisInteract {
 
     @Resource
     private RedisTemplate redisTemplate;
+
+    //获得当前开课课堂教师的编号
+    @Override
+    public String getRoomTeacherId(String circleId) {
+        return stringRedisTemplate.opsForValue().get(ClassRoomKey.getRoomTeacherKey(circleId));
+    }
+
+    //获得当前开课课堂列表
+    @Override
+    public List<String> getOpenRooms() {
+        return stringRedisTemplate.opsForSet().members(ClassRoomKey.OPEN_CLASSROOM)
+                .stream().collect(Collectors.toList());
+    }
+
+    @Override
+    public String getNowQuestId(String circleId) {
+        String key= BigQueKey.askTypeQuestionsIdNow(QuestionType.TiWen, new BigQuestionGiveVo(circleId, Dic.ASK_INTERACTIVE_SELECT, ""));
+        return stringRedisTemplate.opsForValue().get(key);
+    }
+
+    //获得当前题目的交互类型和参与形式
+    @Override
+    public String getNowQuestType(String circleId, String questId) {
+        String key=BigQueKey.askTypeQuestionsIdType(circleId, questId);
+        return stringRedisTemplate.opsForValue().get(key);
+    }
+
+    //获得当前开课课堂列表
+    @Override
+    public String getQuestStu(String circleId, String questId) {
+        return stringRedisTemplate.opsForValue()
+                .get(BigQueKey.askTypeQuestionsId(QuestionType.TiWen, new BigQuestionGiveVo(circleId, Dic.ASK_INTERACTIVE_SELECT, ""), questId));
+    }
 
     /**
      * 查看回答标志

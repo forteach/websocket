@@ -1,7 +1,6 @@
 package com.forteach.websocket.common;
 
 import com.forteach.websocket.domain.QuestionType;
-
 import static com.forteach.websocket.common.Dic.CLASSROOM_ASK_QUESTIONS_ID;
 
 /**
@@ -68,7 +67,7 @@ public class KeyStorage {
      * @return
      */
     public static String getAskKey(String circle) {
-        return CLASSROOM_ASK_QUESTIONS_ID.concat(QuestionType.BigQuestion.name()).concat(circle);
+        return CLASSROOM_ASK_QUESTIONS_ID.concat(circle).concat(QuestionType.BigQuestion.name());
     }
 
     /**
@@ -106,7 +105,7 @@ public class KeyStorage {
     }
 
     public static String examineeIsReplyKey(QuestionType type, String circle) {
-        return EXAMINEE_IS_REPLY_KEY.concat(type.name()).concat(circle);
+        return EXAMINEE_IS_REPLY_KEY.concat(circle).concat(type.name());
     }
 
     public static String getAnswDistinctKey(String circle, String random) {

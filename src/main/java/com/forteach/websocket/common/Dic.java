@@ -24,12 +24,12 @@ public class Dic {
     public static final String CATEGORY_TEAM = "team";
 
     /**
-     * 提问交互
+     * 提问交互抢答
      */
     public static final String ASK_INTERACTIVE_RACE = "race";
 
     /**
-     *
+     *提问交互举手
      */
     public static final String ASK_INTERACTIVE_RAISE = "raise";
 
@@ -72,6 +72,16 @@ public class Dic {
      * 未回答
      */
     public static final String ASK_CIRCLE_ANSWER_ALREADY = "1";
+
+    /**
+     * 　加入的是教师
+     */
+    public static final String SUBSCRIBE_USER_TEACHER = "teacher";
+
+    /**
+     * 加入课堂情况是学生
+     */
+    public static final String SUBSCRIBE_USER_STUDENT = "student";
 
     /**
      * 用户token 认证前缀

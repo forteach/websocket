@@ -18,11 +18,14 @@ public interface InteractService {
      *
      * @return
      */
-    List<ToTeacherPush> obtainTeacher();
+    public List<ToTeacherPush> obtainTeacher(String circleId);
     /**
      * 获取redis中待推送的学生数据
      *
      * @return
      */
-    List<ToStudentPush> obtainStudent();
+   // public List<ToStudentPush> obtainStudent(String circleId,String teachId);
+
+    //推送选中学生提问的信息
+    public List<ToStudentPush> tiWenStudent(String circleId);
 }

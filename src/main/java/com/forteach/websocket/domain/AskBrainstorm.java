@@ -1,7 +1,6 @@
 package com.forteach.websocket.domain;
 
 import lombok.Data;
-
 import java.util.List;
 
 /**

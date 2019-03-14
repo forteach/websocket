@@ -8,13 +8,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import javax.websocket.Session;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import static com.forteach.websocket.common.KeyStorage.INTERACTION_UID_SET_PREFIX;
 import static com.forteach.websocket.common.KeyStorage.actionPropertyKey;
 
@@ -128,7 +126,7 @@ public class WsServiceImpl implements WsService {
         });
     }
 
-
+    //推动给教师信息
     private void sendTeacherMessage(ToTeacherPush toPush, Session session) {
         //必须session 存在并且是开启状态才能推送
         boolean effective = effective(session);
@@ -173,6 +171,7 @@ public class WsServiceImpl implements WsService {
         }
     }
 
+    //推动给学生信息
     private void sendStudentMessage(ToStudentPush toPush, Session session) {
         //必须session 存在并且是开启状态才能推送
         boolean effective = effective(session);
