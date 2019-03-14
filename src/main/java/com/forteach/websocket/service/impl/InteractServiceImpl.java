@@ -1,6 +1,5 @@
 package com.forteach.websocket.service.impl;
 
-import com.forteach.websocket.common.KeyStorage;
 import com.forteach.websocket.common.QuestionType;
 import com.forteach.websocket.domain.ToStudentPush;
 import com.forteach.websocket.domain.ToTeacherPush;
@@ -10,14 +9,8 @@ import com.forteach.websocket.service.student.push.TiWenPush;
 import com.forteach.websocket.service.teacher.push.ClassStudentPush;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import static com.forteach.websocket.common.Dic.SUBSCRIBE_USER_STUDENT;
-import static com.forteach.websocket.common.Dic.SUBSCRIBE_USER_TEACHER;
-import static com.forteach.websocket.service.WsService.SESSION_MAP;
+import java.util.List;
 
 /**
  * @Description: 互动交互数据获取

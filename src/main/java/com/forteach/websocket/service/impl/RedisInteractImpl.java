@@ -93,6 +93,7 @@ public class RedisInteractImpl implements RedisInteract {
      * @param
      * @return
      */
+    @Override
     public List<String> getInteractiveStudents(final String circleId, final String teacherId) {
         return  stringRedisTemplate.opsForSet().members(ClassRoomKey.getInteractiveIdQra(circleId))
                 .stream().filter(id -> !id.equals(teacherId))//需要过滤掉教师ID

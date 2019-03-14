@@ -3,7 +3,6 @@ package com.forteach.websocket.config;
 import com.forteach.websocket.worker.WsMonitorThread;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;

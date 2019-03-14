@@ -20,9 +20,6 @@ import java.util.Objects;
 @Component
 public class SendAnswerStask {
 
-//    @Resource
-//    private InteractService interactService;
-
     @Resource
     private RedisInteract interact;
 
@@ -36,7 +33,7 @@ public class SendAnswerStask {
     /**
      * 每隔１秒遍历发送一次在redis
      */
-    @Scheduled(initialDelay = 1000 * 10, fixedDelay = 25000)
+    @Scheduled(initialDelay = 1000 * 10, fixedDelay = 2000)
     public void refreshTeacherInfo() {
         System.out.println("answer--!!!!!");
         interact.getOpenRooms()

@@ -1,6 +1,5 @@
 package com.forteach.websocket.service;
 
-import com.forteach.websocket.domain.ToStudentPush;
 import com.forteach.websocket.domain.ToTeacherPush;
 
 import java.util.List;

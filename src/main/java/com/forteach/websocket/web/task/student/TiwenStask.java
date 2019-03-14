@@ -8,7 +8,6 @@ import com.forteach.websocket.service.student.push.TiWenPush;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Objects;
@@ -36,7 +35,7 @@ public class TiwenStask {
      * 每隔１秒遍历发送一次在redis 推送的学生相关信息
      * TODO 会推送多条，需要进行判断去重使用 redis
      */
-   @Scheduled(initialDelay = 1000 * 2, fixedDelay = 25000)
+   @Scheduled(initialDelay = 1000 * 2, fixedDelay = 2000)
     public void refreshStudentInfo() {
         System.out.println("******************");
             //获得正在开课的课堂ID

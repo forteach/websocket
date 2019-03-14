@@ -1,20 +1,12 @@
 package com.forteach.websocket.service.teacher.push;
 
-import com.alibaba.fastjson.JSON;
 import com.forteach.websocket.common.BigQueKey;
 import com.forteach.websocket.common.ClassRoomKey;
-import com.forteach.websocket.domain.Students;
-import com.forteach.websocket.domain.Team;
-import com.alibaba.fastjson.TypeReference;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
-import static com.forteach.websocket.common.KeyStorage.*;
 import javax.annotation.Resource;
-import java.time.Duration;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,9 +26,6 @@ public class TeacherInteractImpl {
 
     @Resource
     private StringRedisTemplate stringRedisTemplate;
-
-    @Resource
-    private RedisTemplate redisTemplate;
 
     /**
      * 获得当前课堂提问的题目ID
@@ -97,12 +86,19 @@ public class TeacherInteractImpl {
         return hashOperations.get(askKey, "answerFlag");
     }
 
-    //获得当前开课课堂教师的编号
+    /**
+     * 获得当前开课课堂教师的编号
+     * @param circleId
+     * @return
+     */
     public String getRoomTeacherId(String circleId) {
         return stringRedisTemplate.opsForValue().get(ClassRoomKey.getRoomTeacherKey(circleId));
     }
 
-    //获得当前开课课堂列表
+    /**
+     * 获得当前开课课堂列表
+     * @return
+     */
     public List<String> getOpenRooms() {
         return stringRedisTemplate.opsForSet().members(ClassRoomKey.OPEN_CLASSROOM)
                 .stream().collect(Collectors.toList());
