@@ -57,7 +57,9 @@ public class StudentToPush {
             //获得题目编号
         String questionId = interact.askQuestionId(askKey);
         if (questionId == null) {
-            log.debug("获取需要推送的问题为NULL 参数　==> uid : {}", uid);
+            if (log.isDebugEnabled()) {
+                log.debug("获取需要推送的问题为NULL 参数　==> uid : [{}]", uid);
+            }
             return null;
         }
         //-------------------------------------------------------

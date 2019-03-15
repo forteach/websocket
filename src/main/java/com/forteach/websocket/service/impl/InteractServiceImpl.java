@@ -28,11 +28,15 @@ public class InteractServiceImpl implements InteractService {
     @Resource
     private StudentToPush studentToPush;
 
-    //课堂提问推送
+    /**
+     * 课堂提问推送
+     */
     @Resource
     private TiWenPush tiWenPush;
 
-    //课堂加入学生学生推送
+    /**
+     * 课堂加入学生学生推送
+     */
     @Resource
     private ClassStudentPush classStudentPush ;
 

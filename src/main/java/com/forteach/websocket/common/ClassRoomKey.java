@@ -23,18 +23,30 @@ public class ClassRoomKey {
      */
     public static final String OPEN_CLASSROOM = "OpenRoom";
 
-    //课堂所有学生
+    /**
+     * 课堂所有学生
+     * @param circleId
+     * @return
+     */
     public static String getInteractiveIdQra(String circleId){
         return circleId.concat(ClassRoomKey.CLASS_ROOM_QR_CODE_PREFIX);
     }
 
-    //课堂创建信息
+    /**
+     * 课堂创建信息
+     * @param teacherId
+     * @return
+     */
     public static String getRoomKey(String teacherId){
 
         return ClassRoomKey.INTERACTIVE_CLASSROOM.concat(teacherId);
     }
 
-    //课堂的上课教师
+    /**
+     * 课堂的上课教师
+     * @param circleId
+     * @return
+     */
     public static String getRoomTeacherKey(String circleId){
         return circleId.concat(ClassRoomKey.INTERACTIVE_CLASSROOM);
     }

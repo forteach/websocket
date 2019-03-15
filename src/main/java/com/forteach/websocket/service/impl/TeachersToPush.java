@@ -167,12 +167,15 @@ public class TeachersToPush {
             Students student = studentsService.findStudentsBrief(id);
 
             if (flag) {
-                log.debug("peopleAnswer 获得了数据 推送");
+                if (log.isDebugEnabled()) {
+                    log.debug("peopleAnswer 获得了数据 推送");
+                }
                 //return new CircleAnswer(student, ASK_CIRCLE_ANSWER_DID, answ);old*******
                 return new CircleAnswer();
             } else {
-                log.debug("peopleAnswer 没有获得数据 进行重试");
-
+                if(log.isDebugEnabled()) {
+                    log.debug("peopleAnswer 没有获得数据 进行重试");
+                }
                 for (int i = 0; i < 20; i++) {
 
                     try {
@@ -180,7 +183,9 @@ public class TeachersToPush {
                         flag = interact.isMember(examineeIsReplyKey(type, uCircle), id);
                         answ = findAskAnswer(uCircle, id, questionId, type);
                         if (flag) {
-                            log.debug("通过休眠获得到最新数据 ,共休眠次数 {} 每次 {} millis", i + 1, 1);
+                            if (log.isDebugEnabled()) {
+                                log.debug("通过休眠获得到最新数据 ,共休眠次数 {} 每次 {} millis", i + 1, 1);
+                            }
                             //return new CircleAnswer(student, ASK_CIRCLE_ANSWER_DID, answ);old*******
                             return new CircleAnswer();
                         }
@@ -188,7 +193,9 @@ public class TeachersToPush {
                         throw new RuntimeException("线程休眠异常");
                     }
                 }
-                log.debug("peopleAnswer 没有获得数据 重试结束");
+                if (log.isDebugEnabled()) {
+                    log.debug("peopleAnswer 没有获得数据 重试结束");
+                }
                // return new CircleAnswer(student, ASK_CIRCLE_ANSWER_ALREADY, new AskAnswer());old*******
                 return new CircleAnswer();
             }

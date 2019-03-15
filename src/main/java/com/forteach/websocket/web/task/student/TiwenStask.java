@@ -8,6 +8,7 @@ import com.forteach.websocket.service.student.push.TiWenPush;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Objects;
@@ -35,31 +36,37 @@ public class TiwenStask {
      * 每隔１秒遍历发送一次在redis 推送的学生相关信息
      * TODO 会推送多条，需要进行判断去重使用 redis
      */
-   @Scheduled(initialDelay = 1000 * 2, fixedDelay = 2000)
+    @Scheduled(initialDelay = 1000 * 2, fixedDelay = 2000)
     public void refreshStudentInfo() {
-        System.out.println("******************");
-            //获得正在开课的课堂ID
-            interact.getOpenRooms()
-                    .stream()
-                    .filter(Objects::nonNull)
-                    .forEach(circleid-> pushTiwenStudent(circleid)
-            );
-        System.out.println("-----------------");
+        //获得正在开课的课堂ID
+        interact.getOpenRooms()
+                .stream()
+                .filter(Objects::nonNull)
+                .peek(c -> {
+                    if (log.isDebugEnabled()) {
+                        log.debug("推送的学生相关信息 circleId : [{}]", c);
+                    }
+                })
+                .forEach(circleid -> pushTiwenStudent(circleid)
+                );
     }
 
     //获得提问题目需要推送的学生
 
     /**
-     *提问任务推送
+     * 提问任务推送
+     *
      * @param circleid
      */
-    private void pushTiwenStudent(final String circleid){
+    private void pushTiwenStudent(final String circleid) {
 
-            try {
+        try {
             //获得需要推送的题目信息
-           final List<ToStudentPush> pushList = tiWenPush.tiWenStudent(circleid);
+            final List<ToStudentPush> pushList = tiWenPush.tiWenStudent(circleid);
             if (pushList != null && pushList.size() != 0) {
-                log.info("tiwen:{}"+ JSON.toJSONString(pushList));
+                if (log.isInfoEnabled()) {
+                    log.info("提问信息　:　[{}]", JSON.toJSONString(pushList));
+                }
                 //处理推送
                 wsService.processStudent(pushList);
             }

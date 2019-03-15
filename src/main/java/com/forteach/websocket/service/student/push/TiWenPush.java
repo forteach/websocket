@@ -39,9 +39,14 @@ public class TiWenPush {
 
         //获得提问方式的题目编号
         final String questId=stuInteract.getNowQuestId(QuestionType.TiWen,circleId, Dic.ASK_INTERACTIVE_SELECT);
+        if (questId == null) {
+            return null;
+        }
         //获得当前题目选中的学生
         final String stus= stuInteract.getQuestSelectStu(circleId);
-
+        if (stus == null){
+            return null;
+        }
         //获得当前题目的交互方式
         //交互方式  选人、举手、抢答
         final String interactive=stuInteract.getNowQuestInteractive(circleId);

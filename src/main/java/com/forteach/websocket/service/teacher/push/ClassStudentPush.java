@@ -42,10 +42,15 @@ public class ClassStudentPush {
 
         //构建推送对象信息集合
         return Arrays.asList(teachseId).stream()
-                .filter(id -> null != SESSION_MAP.get(id))
-                .filter(id -> SESSION_MAP.get(id).isOpen())
+                .filter(Objects::nonNull)
+                .filter(id -> null != SESSION_MAP.get(id) && SESSION_MAP.get(id).isOpen())
                 .map(tid->buildTeacherToPush(tid,circleId))
                 .filter(Objects::nonNull)
+                .peek(t -> {
+                    if (log.isDebugEnabled()){
+                        log.debug("老师推送的对象信息 : [{}]", t);
+                    }
+                })
                 .collect(Collectors.toList());
 
     }

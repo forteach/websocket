@@ -43,7 +43,9 @@ public class WorkerForSubImpl implements Runnable {
         wsSvc.registerSession(uid, this.sessions);
         //解除可能遗留的信息
         wsSvc.unSubscript(uid);
-        log.debug("circle {}, uid {}, type {}, random {}, this.sessions {}", circle, uid, type, random, this.sessions);
+        if (log.isDebugEnabled()) {
+            log.debug("circle [{}], uid [{}], type [{}], random [{}], this.sessions [{}]", circle, uid, type, random, this.sessions);
+        }
         //订阅
         wsSvc.subscript(circle, uid, type, random, this.sessions);
     }

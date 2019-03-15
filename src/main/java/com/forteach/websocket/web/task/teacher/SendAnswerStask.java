@@ -7,6 +7,7 @@ import com.forteach.websocket.service.teacher.push.AchieveAnswerPush;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
 import javax.annotation.Resource;
 import java.util.Objects;
 
@@ -26,30 +27,39 @@ public class SendAnswerStask {
     @Resource
     private WsService wsService;
 
-    //课堂加入学生学生推送
+    /**
+     * 课堂加入学生学生推送
+     */
     @Resource
-    private AchieveAnswerPush achieveAnswerPush ;
+    private AchieveAnswerPush achieveAnswerPush;
 
     /**
      * 每隔１秒遍历发送一次在redis
      */
     @Scheduled(initialDelay = 1000 * 10, fixedDelay = 2000)
     public void refreshTeacherInfo() {
-        System.out.println("answer--!!!!!");
         interact.getOpenRooms()
                 .stream()
                 .filter(Objects::nonNull)
-                .forEach(circleid-> pushClassStudent(circleid)
+                .peek(c -> {
+                    if (log.isDebugEnabled()) {
+                        log.debug("发送给老师课堂 : circleId : [{}]", c);
+                    }
+                })
+                .forEach(circleId -> pushClassStudent(circleId)
                 );
-        System.out.println("answer--!####");
     }
 
-    //推动当前加入课堂的学生信息,推送给老师
-    private void pushClassStudent(final String circleid){
+    /**
+     * 推动当前加入课堂的学生信息,推送给老师
+     *
+     * @param circleid
+     */
+    private void pushClassStudent(final String circleid) {
         try {
             // 获取redis中待推送的数据
             ToTeacherPush pushList = achieveAnswerPush.getAchieveAnswer(circleid);
-            if (pushList != null) {
+            if (pushList != null && pushList.getUid() != null) {
                 //处理推送
                 wsService.processTeacher(pushList);
             }

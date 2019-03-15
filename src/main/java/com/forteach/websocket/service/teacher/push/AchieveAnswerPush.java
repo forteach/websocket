@@ -54,6 +54,9 @@ public class AchieveAnswerPush {
         String uRandom = "";
         //获得题目ID
         final String questionId =TeacherInteract.getNowQuestionId(circleId);
+        if (questionId == null){
+            return null;
+        }
         //获得学生的回答信息
         List<Students> students = peopleAnswer(circleId, questionId, QuestionType.TiWen);
         return buildAchieveAnswer(students);
