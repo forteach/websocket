@@ -7,6 +7,7 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,7 +46,9 @@ public class TeacherInteractImpl {
      */
     public List<String> getInteractiveStudents(final String circleId, final String teacherId) {
         return  stringRedisTemplate.opsForSet().members(ClassRoomKey.getInteractiveIdQra(circleId))
-                .stream().filter(id -> !id.equals(teacherId))//需要过滤掉教师ID
+                .stream()
+                //需要过滤掉教师ID
+                .filter(id -> !id.equals(teacherId))
                 .collect(Collectors.toList());
     }
 
@@ -101,7 +104,8 @@ public class TeacherInteractImpl {
      */
     public List<String> getOpenRooms() {
         return stringRedisTemplate.opsForSet().members(ClassRoomKey.OPEN_CLASSROOM)
-                .stream().collect(Collectors.toList());
+                .stream()
+                .collect(Collectors.toList());
     }
 
 }

@@ -68,10 +68,12 @@ public class StudentToPush {
 
         String cut = interact.askQuestionCut(askKey);
 
-        String category = interact.askCategoryType(askKey);//获得个人回答还是组回答
-        String interactive = interact.askInteractiveType(askKey);//获得题目回答方式
+        //获得个人回答还是组回答
+        String category = interact.askCategoryType(askKey);
+        //获得题目回答方式
+        String interactive = interact.askInteractiveType(askKey);
         //创建题目信息
-            OptQuestion optQuestion = getQuestion(askKey, uid, category, interactive);
+        OptQuestion optQuestion = getQuestion(askKey, uid, category, interactive);
 
         if (log.isDebugEnabled() && optQuestion != null){
             log.debug("optQuestion : {}", optQuestion.toString());

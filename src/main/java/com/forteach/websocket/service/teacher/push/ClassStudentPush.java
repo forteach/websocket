@@ -81,18 +81,4 @@ public class ClassStudentPush {
         return new AchieveJoin(list);
     }
 
-//    /**
-//     * 查找互动学生信息
-//     *
-//     * @param uCircle
-//     * @return
-//     */
-//    private List<Students> findInteractiveStudents(String uCircle) {
-//
-//        return interact.getSets(interactiveClassKey(uCircle))
-//                .stream()
-//                .map(id -> studentsService.findStudentsBrief(id))
-//                .collect(Collectors.toList());
-//    }
-
 }

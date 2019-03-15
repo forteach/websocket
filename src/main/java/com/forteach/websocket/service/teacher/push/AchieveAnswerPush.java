@@ -20,7 +20,7 @@ import static com.forteach.websocket.common.Dic.ASK_CIRCLE_ANSWER_DID;
 public class AchieveAnswerPush {
 
     @Resource
-    private TeacherInteractImpl TeacherInteract;
+    private TeacherInteractImpl teacherInteract;
 
     @Resource
     private StudentsService studentsService;
@@ -34,14 +34,13 @@ public class AchieveAnswerPush {
      */
     public ToTeacherPush getAchieveAnswer(final String circleId) {
         //获得需要课堂的教师ID
-        final String teachseId=TeacherInteract.getRoomTeacherId(circleId);
+        final String teacherId=teacherInteract.getRoomTeacherId(circleId);
         //创建回答信息
         return ToTeacherPush.builder()
-                .uid(teachseId)
+                .uid(teacherId)
                 //学生回答信息(BigQuestion)
                 .achieveAnswer(achieveAnswer(circleId))
                 .build();
-
     }
 
     /**
@@ -51,9 +50,9 @@ public class AchieveAnswerPush {
      */
     public AchieveAnswer achieveAnswer(final String circleId) {
         //获得回答cut随机值
-        String uRandom = "";
+//        String uRandom = "";
         //获得题目ID
-        final String questionId =TeacherInteract.getNowQuestionId(circleId);
+        final String questionId =teacherInteract.getNowQuestionId(circleId);
         if (questionId == null){
             return null;
         }
@@ -81,51 +80,17 @@ public class AchieveAnswerPush {
      * @return
      */
     private List<Students> peopleAnswer(final String uCircle, final String questionId, final QuestionType type) {
-        return TeacherInteract.getAnswerStudent(uCircle,questionId,type.name()).stream().map(stuid -> {
+        return teacherInteract.getAnswerStudent(uCircle,questionId,type.name()).stream().map(stuid -> {
             //查询redis 筛选是否回答情况
             Students student = studentsService.findStudentsBrief(stuid);
             //学生回答的答案
-            String askAnswerInfo=TeacherInteract.getQuestAnswer(uCircle,questionId,type.name(),stuid);
+            String askAnswerInfo=teacherInteract.getQuestAnswer(uCircle,questionId,type.name(),stuid);
             //获得学生的批改结果
-            String piGaiResult=TeacherInteract.piGaiResult(uCircle,questionId,type.name(),stuid);
+            String piGaiResult=teacherInteract.piGaiResult(uCircle,questionId,type.name(),stuid);
             //创建学生回答推送对象
             return new CircleAnswer(uCircle,questionId,student, ASK_CIRCLE_ANSWER_DID, askAnswerInfo,piGaiResult);
 
         }).collect(Collectors.toList());
     }
-
-//    /**
-//     * 查找学生的回答信息
-//     *
-//     * @param circleId
-//     * @param examineeId
-//     * @param questionId
-//     * @return
-//     */
-//    private Object findAskAnswer(final String circleId, final String examineeId, final String questionId, final QuestionType type) {
-//
-//        if (type.equals(QuestionType.TiWen)) {
-//            Query query = Query.query(
-//                    Criteria.where("circleId").is(circleId)
-//                            .and("questionId").is(questionId)
-//                            .and("examineeId").is(examineeId));
-//
-//            return mongoTemplate.findOne(query, AskAnswer.class);
-//        }
-//
-//        Query query = Query.query(
-//                Criteria.where("circleId").is(circleId)
-//                        .and("examineeId").is(examineeId)
-//                        .and("libraryType").is(type.name()));
-//        ActivityAskAnswer activityAskAnswer = mongoTemplate.findOne(query, ActivityAskAnswer.class);
-//        return activityAskAnswerResults(activityAskAnswer);
-//    }
-//
-//    private Object activityAskAnswerResults(ActivityAskAnswer activityAskAnswer) {
-//        if (activityAskAnswer == null) {
-//            return null;
-//        }
-//        return activityAskAnswer.getAnswList();
-//    }
 
 }

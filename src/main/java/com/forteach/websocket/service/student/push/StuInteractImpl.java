@@ -36,7 +36,8 @@ public class StuInteractImpl {
      */
     public BigQuestion getBigQuestion(String questionId){
         String key=BigQueKey.QuestionsNow(questionId);
-       return stringRedisTemplate.hasKey(key)?JSON.parseObject(stringRedisTemplate.opsForValue().get(BigQueKey.QuestionsNow(questionId)),BigQuestion.class): bigQuestionRepository.findById(questionId).get();
+       return stringRedisTemplate.hasKey(key) ? JSON.parseObject(stringRedisTemplate.opsForValue()
+               .get(BigQueKey.QuestionsNow(questionId)),BigQuestion.class) : bigQuestionRepository.findById(questionId).orElse(new BigQuestion());
     }
 
     /**
