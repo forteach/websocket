@@ -1,27 +1,27 @@
 package com.forteach.websocket.service.teacher.push;
 
-import com.alibaba.fastjson.JSON;
 import com.forteach.websocket.common.BigQueKey;
 import com.forteach.websocket.common.ClassRoomKey;
+import com.forteach.websocket.common.Dic;
+import com.forteach.websocket.domain.AchieveRaise;
+import com.forteach.websocket.domain.QuestionType;
 import com.forteach.websocket.domain.Students;
-import com.forteach.websocket.domain.Team;
-import com.alibaba.fastjson.TypeReference;
+import com.forteach.websocket.service.StudentsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
-import static com.forteach.websocket.common.KeyStorage.*;
 import javax.annotation.Resource;
-import java.time.Duration;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.forteach.websocket.common.Dic.CLASSROOM_ASK_QUESTIONS_ID;
+import static com.forteach.websocket.common.KeyStorage.raiseDistinctKey;
 
 
 /**
  * @Description: 学生推送业务数据处理
- * @author: liu zhenming
+ * @author: zjw
  * @version: V1.0
  * @date: 2019/1/2  15:12
  */
@@ -36,7 +36,7 @@ public class TeacherInteractImpl {
     private StringRedisTemplate stringRedisTemplate;
 
     @Resource
-    private RedisTemplate redisTemplate;
+    private StudentsService studentsService;
 
     /**
      * 获得当前课堂提问的题目ID
@@ -45,6 +45,15 @@ public class TeacherInteractImpl {
      */
     public String getNowQuestionId(String circleId){
         return  hashOperations.get(BigQueKey.QuestionsIdNow(circleId),"questionId");
+    }
+
+    /**
+     * 获得当前课堂提问的题目ID
+     * @param circleId
+     * @return
+     */
+    public String getNoQuestionType(String circleId){
+        return  hashOperations.get(BigQueKey.QuestionsIdNow(circleId),"questionType");
     }
 
 
@@ -68,6 +77,7 @@ public class TeacherInteractImpl {
      * @return
      */
     public List<String> getAnswerStudent(String circleId,String questId,String typeName) {
+        //获得学生回答顺序列表
         return stringRedisTemplate.opsForList().range(BigQueKey.answerTypeQuestStuList(circleId, questId, typeName),0,-1);
     }
 
@@ -97,15 +107,41 @@ public class TeacherInteractImpl {
         return hashOperations.get(askKey, "answerFlag");
     }
 
-    //获得当前开课课堂教师的编号
+    /**
+     * 获得当前开课课堂教师的编号
+     * @param circleId
+     * @return
+     */
     public String getRoomTeacherId(String circleId) {
         return stringRedisTemplate.opsForValue().get(ClassRoomKey.getRoomTeacherKey(circleId));
     }
 
-    //获得当前开课课堂列表
+    /**
+     * 获得当前开课课堂列表
+     * @return
+     */
     public List<String> getOpenRooms() {
         return stringRedisTemplate.opsForSet().members(ClassRoomKey.OPEN_CLASSROOM)
                 .stream().collect(Collectors.toList());
+    }
+
+    /**
+     * 获取举手信息
+     *
+     * @param circleId 课堂ID
+     * @return
+     */
+    public AchieveRaise achieveRaise(String circleId,String questId,String  questionType) {
+
+       List<Students> students= interactStudents( circleId, questId, questionType);
+        return new AchieveRaise(students);
+    }
+
+    //获得回答学生的基本对象信息
+    public List<Students> interactStudents(String circleId,String questId,String questionType){
+        return stringRedisTemplate.opsForSet().members(BigQueKey.askTypeQuestionsId(questionType,circleId, Dic.ASK_INTERACTIVE_RAISE,questId))
+                .stream().map(stuId ->studentsService.findStudentsBrief(stuId))
+                .collect(Collectors.toList());
     }
 
 }
