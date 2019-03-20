@@ -42,6 +42,7 @@ public class ClassStudentPush {
 
         //构建推送对象信息集合
         return Arrays.asList(teachseId).stream()
+                .filter(Objects::nonNull)
                 .filter(id -> null != SESSION_MAP.get(id))
                 .filter(id -> SESSION_MAP.get(id).isOpen())
                 .map(tid->buildTeacherToPush(tid,circleId))
