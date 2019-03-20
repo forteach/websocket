@@ -87,7 +87,7 @@ public class TeacherInteractImpl {
                 .stream()
                 .filter(id -> !id.equals(teacherId))//需要过滤掉教师ID
                 .filter(id->hasJoin(circleId,teacherId))
-                .map(id->joinStuTuiSong(circleId,teacherId))
+                .map(id->joinStuTuiSong(circleId,teacherId,id))
                 .collect(Collectors.toList());
     }
 
@@ -97,7 +97,7 @@ public class TeacherInteractImpl {
     }
 
     //将课堂加入的学生登记入已推送列表推送过
-    private String joinStuTuiSong(String circleId, String stuId){
+    private String joinStuTuiSong(String circleId, String teacherId,String stuId){
         stringRedisTemplate.opsForSet().add(ClassRoomKey.getJoinTuisongStuKey(circleId),stuId);
         return stuId;
     }
