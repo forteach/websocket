@@ -75,6 +75,12 @@ public class TeacherInteractImpl {
         return getTuiSongStuId(circleId, teacherId);
     }
 
+    /**
+     * 生成推送的学生ID
+     * @param circleId
+     * @param teacherId
+     * @return
+     */
     private List<String> getTuiSongStuId(final String circleId, final String teacherId){
         return  stringRedisTemplate.opsForSet()
                 .members(ClassRoomKey.getInteractiveIdQra(circleId))
