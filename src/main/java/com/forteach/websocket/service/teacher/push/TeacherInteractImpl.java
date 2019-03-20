@@ -70,13 +70,19 @@ public class TeacherInteractImpl {
         return getTuiSongStuId(circleId, teacherId);
     }
 
+    /**
+     * 生成推送的学生ID
+     * @param circleId
+     * @param teacherId
+     * @return
+     */
     private List<String> getTuiSongStuId(final String circleId, final String teacherId){
         return  stringRedisTemplate.opsForSet()
                 .members(ClassRoomKey.getInteractiveIdQra(circleId))
                 .stream()
                 .filter(id -> !id.equals(teacherId))//需要过滤掉教师ID
-                .filter(id->hasJoin(circleId,teacherId))
-                .map(id->joinStuTuiSong(circleId,teacherId))
+                .filter(id->hasJoin(circleId,id))
+                .map(id->joinStuTuiSong(circleId,id))
                 .collect(Collectors.toList());
     }
 
