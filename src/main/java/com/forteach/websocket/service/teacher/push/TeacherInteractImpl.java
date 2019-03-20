@@ -93,7 +93,7 @@ public class TeacherInteractImpl {
 
     //判断该学生是否已经推送过
     private boolean hasJoin(String circleId, String stuId){
-       return !stringRedisTemplate.opsForSet().isMember(ClassRoomKey.getJoinTuisongStuKey(circleId),stuId);
+       return (!stringRedisTemplate.opsForSet().isMember(ClassRoomKey.getJoinTuisongStuKey(circleId),stuId).booleanValue());
     }
 
     //将课堂加入的学生登记入已推送列表推送过
