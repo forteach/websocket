@@ -94,7 +94,7 @@ public class TeacherInteractImpl {
      * @return
      */
     private boolean hasJoin(String circleId, String stuId){
-       return !stringRedisTemplate.opsForSet().isMember(ClassRoomKey.getJoinTuisongStuKey(circleId),stuId);
+       return (!stringRedisTemplate.opsForSet().isMember(ClassRoomKey.getJoinTuisongStuKey(circleId),stuId).booleanValue());
     }
 
     /**
