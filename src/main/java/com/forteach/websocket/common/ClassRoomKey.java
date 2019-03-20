@@ -64,7 +64,11 @@ public class ClassRoomKey {
         return circleId.concat(OPEN_CLASSROOM_Random.concat("tag")).concat(uid);
     }
 
-    //课堂所有学生
+    /**
+     * 课堂所有学生
+     * @param circleId
+     * @return
+     */
     public static String getInteractiveIdQra(String circleId){
         return circleId.concat(ClassRoomKey.CLASS_ROOM_QR_CODE_PREFIX);
     }

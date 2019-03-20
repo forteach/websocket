@@ -80,7 +80,8 @@ public class TeacherInteractImpl {
         return  stringRedisTemplate.opsForSet()
                 .members(ClassRoomKey.getInteractiveIdQra(circleId))
                 .stream()
-                .filter(id -> !id.equals(teacherId))//需要过滤掉教师ID
+                //需要过滤掉教师ID
+                .filter(id -> !id.equals(teacherId))
                 .filter(id->hasJoin(circleId,id))
                 .map(id->joinStuTuiSong(circleId,id))
                 .collect(Collectors.toList());
