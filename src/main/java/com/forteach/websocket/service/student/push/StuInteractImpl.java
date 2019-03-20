@@ -59,7 +59,7 @@ public class StuInteractImpl {
      * @return
      */
     public String getNowQuestId(QuestionType type,String circleId,String Interact) {
-        String key= BigQueKey.askTypeQuestionsIdNow(type, circleId, Interact);
+        String key= BigQueKey.askTypeQuestionsIdNow(type.name(), circleId, Interact);
         return stringRedisTemplate.opsForValue().get(key);
     }
 

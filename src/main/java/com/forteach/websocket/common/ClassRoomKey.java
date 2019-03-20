@@ -28,6 +28,12 @@ public class ClassRoomKey {
      * @param circleId
      * @return
      */
+    /**
+     * 加入课堂，已推送过得学生
+     */
+    public static final String ROOM_JOIN_STU_TS = "RoomJoinStu";
+
+    //课堂所有学生
     public static String getInteractiveIdQra(String circleId){
         return circleId.concat(ClassRoomKey.CLASS_ROOM_QR_CODE_PREFIX);
     }
@@ -49,6 +55,11 @@ public class ClassRoomKey {
      */
     public static String getRoomTeacherKey(String circleId){
         return circleId.concat(ClassRoomKey.INTERACTIVE_CLASSROOM);
+    }
+
+    //加入课堂，已推送过得学生
+    public static String getJoinTuisongStuKey(String circleId){
+        return circleId.concat(ClassRoomKey.ROOM_JOIN_STU_TS);
     }
 
 }

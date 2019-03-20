@@ -52,8 +52,8 @@ public class BigQueKey {
      *
      * @return 当前问题前缀+课堂+问题类型+回答方式=ForValue
      */
-    public static String askTypeQuestionsIdNow(final QuestionType type, String circleId, String interactive) {
-        return CLASSROOM_ASK_NOW+askTypeQuestionsId(type,circleId,interactive);
+    public static String askTypeQuestionsIdNow(final String questionType, String circleId, String interactive) {
+        return CLASSROOM_ASK_NOW+askTypeQuestionsId(questionType,circleId,interactive);
     }
 
     /**
@@ -61,8 +61,8 @@ public class BigQueKey {
      *
      * @return 问题前缀+课堂+问题类型+回答方式  题目列表List
      */
-    public static String askTypeQuestionsId(final QuestionType type,String circleId, String interactive) {
-        return circleId.concat(BigQueKey.CLASSROOM_ASK_QUESTIONS_ID).concat(type.name().concat(interactive));
+    public static String askTypeQuestionsId(final String questionType,String circleId, String interactive) {
+        return circleId.concat(BigQueKey.CLASSROOM_ASK_QUESTIONS_ID).concat(questionType.concat(interactive));
     }
 
     /**
@@ -70,8 +70,8 @@ public class BigQueKey {
      *
      * @return 上一次的问题前缀+课堂+问题类型+回答方式=ForValu
      */
-    public static String askTypeQuestionsIdPrve(final QuestionType type, String circleId, String interactive) {
-        return CLASSROOM_ASK_PRVE.concat(askTypeQuestionsId(type,circleId,interactive));
+    public static String askTypeQuestionsIdPrve(final String questionType, String circleId, String interactive) {
+        return CLASSROOM_ASK_PRVE.concat(askTypeQuestionsId(questionType,circleId,interactive));
     }
 
     /**
@@ -79,8 +79,8 @@ public class BigQueKey {
      *
      * @return 问题前缀+课堂+问题类型+回答方式+单个题目ID=ForSet
      */
-    public static String askTypeQuestionsId(final QuestionType type, String circleId, String interactive,String questionId) {
-        return askTypeQuestionsId(type,circleId,interactive).concat(questionId);
+    public static String askTypeQuestionsId(final String questionType, String circleId, String interactive,String questionId) {
+        return askTypeQuestionsId(questionType,circleId,interactive).concat(questionId);
     }
 
     /**
