@@ -100,7 +100,7 @@ public class TeacherInteractImpl {
     }
 
     private void clearJoinStuTuiSong(final String circleId,final String teacherId){
-       if(stringRedisTemplate.delete(ClassRoomKey.getJoinTuisongStuKey(circleId))){
+       if(stringRedisTemplate.delete(ClassRoomKey.getJoinTuisongStuKey(circleId)).booleanValue()){
            stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circleId, teacherId), ClassRoomKey.OPEN_CLASSROOM_Random_TAG_NO);
        }
     }
