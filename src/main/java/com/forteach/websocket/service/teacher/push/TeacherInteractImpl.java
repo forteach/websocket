@@ -59,12 +59,22 @@ public class TeacherInteractImpl {
      * @return
      */
     public List<String> getInteractiveStudents(final String circleId, final String teacherId) {
+        //获得随机数状态,页面刷新会改变随机数状态
+        String radonTag=stringRedisTemplate.opsForValue().get(ClassRoomKey.getOpenClassRandomTag(circleId,teacherId));
+        //随机数未改变，过滤已发送过的学生
+        if(radonTag.equals(ClassRoomKey.OPEN_CLASSROOM_Random_TAG_YES)) {
+            //清除推送学生数据，改变随机值状态也N
+            clearJoinStuTuiSong(circleId,teacherId);
+        }
+        //推送学生信息
+        return getTuiSongStuId(circleId, teacherId);
+    }
+
+    private List<String> getTuiSongStuId(final String circleId, final String teacherId){
         return  stringRedisTemplate.opsForSet()
                 .members(ClassRoomKey.getInteractiveIdQra(circleId))
                 .stream()
                 .filter(id -> !id.equals(teacherId))//需要过滤掉教师ID
-                .filter(id->hasJoin(circleId,id))
-                .map(id->joinStuTuiSong(circleId,id))
                 .collect(Collectors.toList());
     }
 
@@ -87,6 +97,12 @@ public class TeacherInteractImpl {
     private String joinStuTuiSong(String circleId, String stuId){
         stringRedisTemplate.opsForSet().add(ClassRoomKey.getJoinTuisongStuKey(circleId),stuId);
         return stuId;
+    }
+
+    private void clearJoinStuTuiSong(final String circleId,final String teacherId){
+       if(stringRedisTemplate.delete(ClassRoomKey.getJoinTuisongStuKey(circleId))){
+           stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circleId, teacherId), ClassRoomKey.OPEN_CLASSROOM_Random_TAG_NO);
+       }
     }
 
     /**

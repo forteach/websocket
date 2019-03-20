@@ -42,10 +42,11 @@ public class ClassStudentPush {
 
         //构建推送对象信息集合
         return Arrays.asList(teachseId).stream()
-                .filter(Objects::nonNull)
-                .filter(id -> null != SESSION_MAP.get(id) && SESSION_MAP.get(id).isOpen())
+                .filter(id -> null != SESSION_MAP.get(id))
+                .filter(id -> SESSION_MAP.get(id).isOpen())
                 .map(tid->buildTeacherToPush(tid,circleId))
-                .filter(Objects::nonNull)
+                //推送数据为空的话，终止流
+                .filter(obj->obj.getAchieveJoin()!=null)
                 .peek(t -> {
                     if (log.isDebugEnabled()){
                         log.debug("老师推送的对象信息 : [{}]", t);
@@ -85,7 +86,7 @@ public class ClassStudentPush {
                 .filter(Objects::nonNull)
                 .map(stuId ->studentsService.findStudentsBrief(stuId))
                 .collect(Collectors.toList());
-        return new AchieveJoin(list);
+        return list.size()>0?new AchieveJoin(list):null;
     }
 
 }

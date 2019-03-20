@@ -1,6 +1,7 @@
 package com.forteach.websocket.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.forteach.websocket.common.ClassRoomKey;
 import com.forteach.websocket.domain.ToStudentPush;
 import com.forteach.websocket.domain.ToTeacherPush;
 import com.forteach.websocket.service.WsService;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.websocket.Session;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import static com.forteach.websocket.common.KeyStorage.INTERACTION_UID_SET_PREFIX;
@@ -18,7 +20,7 @@ import static com.forteach.websocket.common.KeyStorage.actionPropertyKey;
 
 /**
  * @Description: 处理用户链接相应的班级 进行推送信息链接
- * @author: liu zhenming
+ * @author: zjw
  * @version: V1.0
  * @date: 2018/12/27  9:38
  */
@@ -32,6 +34,7 @@ public class WsServiceImpl implements WsService {
     @Resource
     private StringRedisTemplate stringRedisTemplate;
 
+    //old
     @Override
     public boolean subscript(String circle, String uid, String type, String random, Session sessions) {
         try {
@@ -49,6 +52,34 @@ public class WsServiceImpl implements WsService {
         } catch (Exception e) {
             log.error("subscript error {}", e.getMessage());
         }
+        return true;
+    }
+
+    /**
+     * new
+     * @param circle  课堂ID
+     * @param uid   加入的用户
+     * @param random  每次连接的随机数
+     * @return
+     */
+    @Override
+    public boolean subscript(String circle, String uid,String random){
+
+        //保存课堂用户连接的随机数
+        if(stringRedisTemplate.hasKey(ClassRoomKey.getOpenClassRandom(circle,uid))){
+            //获得当前用户的随机数
+           String radon= stringRedisTemplate.opsForValue().get(ClassRoomKey.getOpenClassRandom(circle,uid));
+           //两次随机数不相等
+           if(!radon.equals(random) )
+           {
+                //随机数已经改变
+               stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid),ClassRoomKey.OPEN_CLASSROOM_Random_TAG_YES, Duration.ofSeconds(60*60*2));
+           }
+        }else{
+              stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid),ClassRoomKey.OPEN_CLASSROOM_Random_TAG_NO, Duration.ofSeconds(60*60*2));
+        }
+        stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandom(circle,uid),random, Duration.ofSeconds(60*60*2));
+
         return true;
     }
 

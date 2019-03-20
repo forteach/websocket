@@ -33,6 +33,15 @@ public interface WsService {
     boolean subscript(String circle, String uid, String type, String random, Session sessions);
 
     /**
+     * 订阅
+     * @param circle
+     * @param uid
+     * @param random
+     * @return
+     */
+    public boolean subscript(String circle, String uid,String random);
+
+    /**
      * 取消订阅
      *
      * @return
