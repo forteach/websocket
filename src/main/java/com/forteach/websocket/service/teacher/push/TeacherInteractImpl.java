@@ -75,6 +75,8 @@ public class TeacherInteractImpl {
                 .members(ClassRoomKey.getInteractiveIdQra(circleId))
                 .stream()
                 .filter(id -> !id.equals(teacherId))//需要过滤掉教师ID
+                .filter(id->hasJoin(circleId,teacherId))
+                .map(id->joinStuTuiSong(circleId,teacherId))
                 .collect(Collectors.toList());
     }
 
