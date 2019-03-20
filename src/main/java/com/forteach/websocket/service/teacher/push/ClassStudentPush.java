@@ -72,7 +72,12 @@ public class ClassStudentPush {
 
     }
 
-        //生成需要推送的加入课堂学生详情数据
+    /**
+     * 生成需要推送的加入课堂学生详情数据
+     * @param uid
+     * @param circleId
+     * @return
+     */
     public AchieveJoin achieveInteractiveStudents(String uid,String circleId) {
         //获得需要推送的学生列表Id
         List<Students> list = TeacherInteract.getInteractiveStudents(circleId, uid)

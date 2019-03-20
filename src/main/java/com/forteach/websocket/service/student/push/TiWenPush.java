@@ -26,12 +26,14 @@ import static com.forteach.websocket.service.WsService.SESSION_MAP;
 @Component
 public class TiWenPush {
 
-    //学生交互操作类
+    /**
+     * 学生交互操作类
+     */
     @Resource
     private StuInteractImpl stuInteract;
 
     /**
-     *学生提问推送信息
+     * 学生提问推送信息
      * @param circleId
      * @return
      */

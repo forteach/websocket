@@ -4,7 +4,6 @@ import com.forteach.websocket.common.BigQueKey;
 import com.forteach.websocket.common.ClassRoomKey;
 import com.forteach.websocket.common.Dic;
 import com.forteach.websocket.domain.AchieveRaise;
-import com.forteach.websocket.domain.QuestionType;
 import com.forteach.websocket.domain.Students;
 import com.forteach.websocket.service.StudentsService;
 import lombok.extern.slf4j.Slf4j;
@@ -12,12 +11,8 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-import static com.forteach.websocket.common.Dic.CLASSROOM_ASK_QUESTIONS_ID;
-import static com.forteach.websocket.common.KeyStorage.raiseDistinctKey;
-
 
 /**
  * @Description: 学生推送业务数据处理
@@ -73,12 +68,22 @@ public class TeacherInteractImpl {
                 .collect(Collectors.toList());
     }
 
-    //判断该学生是否已经推送过
+    /**
+     * 判断该学生是否已经推送过
+     * @param circleId
+     * @param stuId
+     * @return
+     */
     private boolean hasJoin(String circleId, String stuId){
        return !stringRedisTemplate.opsForSet().isMember(ClassRoomKey.getJoinTuisongStuKey(circleId),stuId);
     }
 
-    //将课堂加入的学生登记入已推送列表推送过
+    /**
+     * 将课堂加入的学生登记入已推送列表推送过
+     * @param circleId
+     * @param stuId
+     * @return
+     */
     private String joinStuTuiSong(String circleId, String stuId){
         stringRedisTemplate.opsForSet().add(ClassRoomKey.getJoinTuisongStuKey(circleId),stuId);
         return stuId;
