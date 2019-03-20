@@ -8,7 +8,7 @@ import javax.websocket.Session;
  * Created with IntelliJ IDEA.
  *
  * @Description: 开启线程推送
- * @author: liu zhenming
+ * @author: zjw
  * @version: V1.0
  * @date: 2018/3/11 16:14
  */
@@ -23,6 +23,7 @@ public class WorkerForSubImpl implements Runnable {
     private WsService wsSvc;
 
     private WorkerForSubImpl() {
+
     }
 
     public WorkerForSubImpl(String circle, String uid, String type, String random, Session sessions, WsService wsSvc) {
@@ -44,8 +45,10 @@ public class WorkerForSubImpl implements Runnable {
         //解除可能遗留的信息
         wsSvc.unSubscript(uid);
         log.debug("circle {}, uid {}, type {}, random {}, this.sessions {}", circle, uid, type, random, this.sessions);
-        //订阅
-        wsSvc.subscript(circle, uid, type, random, this.sessions);
+        // TODO 订阅 old
+        //wsSvc.subscript(circle, uid, type, random, this.sessions);
+        //new 订阅
+        wsSvc.subscript(circle, uid, random);
     }
 
 }
