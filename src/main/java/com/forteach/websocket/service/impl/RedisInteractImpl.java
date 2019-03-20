@@ -56,7 +56,7 @@ public class RedisInteractImpl implements RedisInteract {
 
     @Override
     public String getNowQuestId(String circleId) {
-        String key= BigQueKey.askTypeQuestionsIdNow(QuestionType.TiWen, circleId, Dic.ASK_INTERACTIVE_SELECT);
+        String key= BigQueKey.askTypeQuestionsIdNow(QuestionType.TiWen.name(), circleId, Dic.ASK_INTERACTIVE_SELECT);
         return stringRedisTemplate.opsForValue().get(key);
     }
 
@@ -71,7 +71,7 @@ public class RedisInteractImpl implements RedisInteract {
     @Override
     public String getQuestStu(String circleId, String questId) {
         return stringRedisTemplate.opsForValue()
-                .get(BigQueKey.askTypeQuestionsId(QuestionType.TiWen, circleId, Dic.ASK_INTERACTIVE_SELECT, questId));
+                .get(BigQueKey.askTypeQuestionsId(QuestionType.TiWen.name(), circleId, Dic.ASK_INTERACTIVE_SELECT, questId));
     }
 
     /**
