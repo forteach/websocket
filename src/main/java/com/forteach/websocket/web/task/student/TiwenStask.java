@@ -36,7 +36,7 @@ public class TiwenStask {
      * 每隔１秒遍历发送一次在redis 推送的学生相关信息
      * TODO 会推送多条，需要进行判断去重使用 redis
      */
-    @Scheduled(initialDelay = 1000 * 2, fixedDelay = 2000)
+    @Scheduled(initialDelay = 1000 * 2, fixedDelay = 10000)
     public void refreshStudentInfo() {
         //获得正在开课的课堂ID
         interact.getOpenRooms()

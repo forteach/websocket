@@ -37,7 +37,7 @@ public class ClassStudentStask {
     /**
      * 每隔１秒遍历发送一次在redis 推送的教师相关信息
      */
-    @Scheduled(initialDelay = 1000 * 10, fixedDelay = 2000)
+    @Scheduled(initialDelay = 1000 * 10, fixedDelay = 10000)
     public void refreshTeacherInfo() {
         interact.getOpenRooms()
                 .stream()
