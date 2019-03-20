@@ -21,9 +21,6 @@ import java.util.Objects;
 @Component
 public class ClassStudentStask {
 
-//    @Resource
-//    private InteractService interactService;
-
     @Resource
     private RedisInteract interact;
 
@@ -39,13 +36,13 @@ public class ClassStudentStask {
      */
     @Scheduled(initialDelay = 1000 * 10, fixedDelay = 25000)
     public void refreshTeacherInfo() {
-        System.out.println("Class--!!!!!");
+        System.out.println("teacher 课堂加入学生- ***");
         interact.getOpenRooms()
                 .stream()
                 .filter(Objects::nonNull)
                 .forEach(circleid-> pushClassStudent(circleid,interact.getRoomTeacherId(circleid))
                 );
-        System.out.println("Class--####");
+        System.out.println("teacher 课堂加入学生 end--");
     }
 
     //推动当前加入课堂的学生信息,推送给老师

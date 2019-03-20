@@ -38,13 +38,13 @@ public class SendAnswerStask {
      */
     @Scheduled(initialDelay = 1000 * 10, fixedDelay = 25000)
     public void refreshTeacherInfo() {
-        System.out.println("answer--!!!!!");
+        System.out.println("teacher 学生回答 ***");
         interact.getOpenRooms()
                 .stream()
                 .filter(Objects::nonNull)
                 .forEach(circleid-> pushClassStudent(circleid)
                 );
-        System.out.println("answer--!####");
+        System.out.println("teacher 学生回答 end--");
     }
 
     //推动当前加入课堂的学生信息,推送给老师

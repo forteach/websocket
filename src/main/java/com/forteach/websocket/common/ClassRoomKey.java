@@ -23,6 +23,11 @@ public class ClassRoomKey {
      */
     public static final String OPEN_CLASSROOM = "OpenRoom";
 
+    /**
+     * 加入课堂，已推送过得学生
+     */
+    public static final String ROOM_JOIN_STU_TS = "RoomJoinStu";
+
     //课堂所有学生
     public static String getInteractiveIdQra(String circleId){
         return circleId.concat(ClassRoomKey.CLASS_ROOM_QR_CODE_PREFIX);
@@ -37,6 +42,11 @@ public class ClassRoomKey {
     //课堂的上课教师
     public static String getRoomTeacherKey(String circleId){
         return circleId.concat(ClassRoomKey.INTERACTIVE_CLASSROOM);
+    }
+
+    //加入课堂，已推送过得学生
+    public static String getJoinTuisongStuKey(String circleId){
+        return circleId.concat(ClassRoomKey.ROOM_JOIN_STU_TS);
     }
 
 }

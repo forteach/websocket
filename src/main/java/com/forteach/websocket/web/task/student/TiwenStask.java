@@ -33,18 +33,18 @@ public class TiwenStask {
 
     /**
      * 每隔１秒遍历发送一次在redis 推送的学生相关信息
-     * TODO 会推送多条，需要进行判断去重使用 redis
+     *
      */
    @Scheduled(initialDelay = 1000 * 2, fixedDelay = 25000)
     public void refreshStudentInfo() {
-        System.out.println("******************");
+        System.out.println("学生接收题目*********");
             //获得正在开课的课堂ID
             interact.getOpenRooms()
                     .stream()
                     .filter(Objects::nonNull)
                     .forEach(circleid-> pushTiwenStudent(circleid)
             );
-        System.out.println("-----------------");
+        System.out.println("学生接收题目 end-------");
     }
 
     //获得提问题目需要推送的学生

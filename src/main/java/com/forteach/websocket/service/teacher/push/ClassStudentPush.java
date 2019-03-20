@@ -67,11 +67,13 @@ public class ClassStudentPush {
 
     }
 
-
+        //生成需要推送的加入课堂学生详情数据
     public AchieveJoin achieveInteractiveStudents(String uid,String circleId) {
-
+        //获得需要推送的学生列表Id
         List<Students> list = TeacherInteract.getInteractiveStudents(circleId, uid)
-                .stream().map(stuId ->studentsService.findStudentsBrief(stuId))
+                .stream()
+                .filter(Objects::nonNull)
+                .map(stuId ->studentsService.findStudentsBrief(stuId))
                 .collect(Collectors.toList());
         return new AchieveJoin(list);
     }

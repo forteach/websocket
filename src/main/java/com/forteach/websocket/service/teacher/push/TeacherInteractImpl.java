@@ -58,15 +58,30 @@ public class TeacherInteractImpl {
 
 
     /**
-     * 获得班级加入的学生
+     * 获得班级加入的学生ID
      *
      * @param
      * @return
      */
     public List<String> getInteractiveStudents(final String circleId, final String teacherId) {
-        return  stringRedisTemplate.opsForSet().members(ClassRoomKey.getInteractiveIdQra(circleId))
-                .stream().filter(id -> !id.equals(teacherId))//需要过滤掉教师ID
+        return  stringRedisTemplate.opsForSet()
+                .members(ClassRoomKey.getInteractiveIdQra(circleId))
+                .stream()
+                .filter(id -> !id.equals(teacherId))//需要过滤掉教师ID
+                .filter(id->hasJoin(circleId,id))
+                .map(id->joinStuTuiSong(circleId,id))
                 .collect(Collectors.toList());
+    }
+
+    //判断该学生是否已经推送过
+    private boolean hasJoin(String circleId, String stuId){
+       return !stringRedisTemplate.opsForSet().isMember(ClassRoomKey.getJoinTuisongStuKey(circleId),stuId);
+    }
+
+    //将课堂加入的学生登记入已推送列表推送过
+    private String joinStuTuiSong(String circleId, String stuId){
+        stringRedisTemplate.opsForSet().add(ClassRoomKey.getJoinTuisongStuKey(circleId),stuId);
+        return stuId;
     }
 
     /**
@@ -93,6 +108,14 @@ public class TeacherInteractImpl {
        return  hashOperations.get(BigQueKey.answerTypeQuestionsId(circleId,questId,typeName),examineeId);
     }
 
+    /**
+     * 获得自动批改结果
+     * @param circleId
+     * @param questId
+     * @param typeName
+     * @param examineeId
+     * @return
+     */
     public String piGaiResult(String circleId,String questId,String typeName,String examineeId){
         return  hashOperations.get(BigQueKey.piGaiTypeQuestionsId(circleId,questId,typeName),examineeId);
     }
