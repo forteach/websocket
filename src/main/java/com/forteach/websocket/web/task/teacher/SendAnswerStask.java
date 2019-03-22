@@ -36,7 +36,7 @@ public class SendAnswerStask {
     /**
      * 每隔１秒遍历发送一次在redis
      */
-    @Scheduled(initialDelay = 1000 * 10, fixedDelay = 25000)
+    @Scheduled(initialDelay = 1000 * 10, fixedDelay = 10000)
     public void refreshTeacherInfo() {
         System.out.println("teacher 学生回答 ***");
         interact.getOpenRooms()

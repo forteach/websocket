@@ -1,11 +1,7 @@
 package com.forteach.websocket.service.student.push;
 
-import com.alibaba.fastjson.JSON;
-import com.forteach.websocket.common.BigQueKey;
-import com.forteach.websocket.common.Dic;
 import com.forteach.websocket.common.QuestionType;
 import com.forteach.websocket.domain.*;
-import com.forteach.websocket.repository.BigQuestionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
@@ -37,15 +33,17 @@ public class TiWenPush {
      */
     public List<ToStudentPush> tiWenStudent(final String circleId){
 
+        String intarcet=stuInteract.getNowQuestInteractive(circleId);
+
         //获得提问方式的题目编号
-        final String questId=stuInteract.getNowQuestId(QuestionType.TiWen,circleId, Dic.ASK_INTERACTIVE_SELECT);
+        final String questId=stuInteract.getNowQuestId(QuestionType.TiWen,circleId, intarcet);
         //获得当前题目选中的学生
         final String stus= stuInteract.getQuestSelectStu(circleId);
 
-        //获得当前题目的交互方式
-        final String interactive=stuInteract.getNowQuestInteractive(circleId);  //交互方式  选人、举手、抢答
-        //暂时设定，需要从redis里面去除该值
-        final String category=stuInteract.getNowQuestCategory(circleId);  //小组 个人
+        //获得当前题目的交互方式  选人 抢答
+        final String interactive=stuInteract.getNowQuestInteractive(circleId);
+        //暂时设定，需要从redis里面去除该值 小组 个人
+        final String category=stuInteract.getNowQuestCategory(circleId);
 
         //根据所选的学生，对比Session数据是否在线，并获得学生推送详情
         return Arrays.asList(stus.split(",")).stream()

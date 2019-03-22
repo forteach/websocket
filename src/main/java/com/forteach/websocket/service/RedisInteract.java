@@ -16,13 +16,13 @@ public interface RedisInteract {
     public List<String> getOpenRooms();
 
     //获得当前提问题目的ID
-    public String getNowQuestId(String circleId);
+    public String getNowQuestId(String circleId,String intercat);
 
     //获得当前题目的交互类型和参与形式
     public String getNowQuestType(String circleId, String questId);
 
     //获得提问题目选中的学生
-    public  String getQuestStu(String circleId,String questId);
+    public  String getQuestStu(String circleId,String questId,String intercat);
 
     //获得加入课堂的学生
     public List<String> getInteractiveStudents(final String circleId, final String teacherId);
