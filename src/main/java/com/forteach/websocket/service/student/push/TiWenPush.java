@@ -1,5 +1,6 @@
 package com.forteach.websocket.service.student.push;
 
+import com.forteach.websocket.common.Dic;
 import com.forteach.websocket.common.QuestionType;
 import com.forteach.websocket.domain.*;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,7 @@ public class TiWenPush {
     @Resource
     private StuInteractImpl stuInteract;
 
+
     /**
      *学生提问推送信息
      * @param circleId
@@ -33,26 +35,46 @@ public class TiWenPush {
      */
     public List<ToStudentPush> tiWenStudent(final String circleId){
 
-        String intarcet=stuInteract.getNowQuestInteractive(circleId);
+        final String intarcet=stuInteract.getNowQuestInteractive(circleId);
 
-        //获得提问方式的题目编号
-        final String questId=stuInteract.getNowQuestId(QuestionType.TiWen,circleId, intarcet);
-        //获得当前题目选中的学生
-        final String stus= stuInteract.getQuestSelectStu(circleId);
+        if(intarcet!=null&&!intarcet.equals("")){
+            //获得提问方式的题目编号
+            final String questId=stuInteract.getNowQuestId(QuestionType.TiWen,circleId, intarcet);
+            //获得当前题目选中的学生
+            final String stus= stuInteract.getQuestSelectStu(circleId);
 
-        //获得当前题目的交互方式  选人 抢答
-        final String interactive=stuInteract.getNowQuestInteractive(circleId);
-        //暂时设定，需要从redis里面去除该值 小组 个人
-        final String category=stuInteract.getNowQuestCategory(circleId);
+            //获得当前题目的交互方式  选人 抢答
+            final String interactive=stuInteract.getNowQuestInteractive(circleId);
+            //暂时设定，需要从redis里面去除该值 小组 个人
+            final String category=stuInteract.getNowQuestCategory(circleId);
 
-        //根据所选的学生，对比Session数据是否在线，并获得学生推送详情
-        return Arrays.asList(stus.split(",")).stream()
-                .filter(id -> null != SESSION_MAP.get(id))
-                .filter(id -> SESSION_MAP.get(id).isOpen())
-                //创建推送数据
-                .map(uid->TStudentToPush(uid,questId, interactive, category))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+            final String teacherId=stuInteract.getRoomTeacherId(circleId);
+
+            //根据所选的学生，对比Session数据是否在线，并获得学生推送详情
+            if(intarcet.equals(Dic.ASK_INTERACTIVE_RAISE)&&stus.equals("")){
+                //获取加入课堂的学生？？？？？？
+                return stuInteract.getClassStus(circleId).stream()
+                        .filter(id->!id.equals(teacherId))
+                       .filter(id -> null != SESSION_MAP.get(id))
+                        .filter(id -> SESSION_MAP.get(id).isOpen())
+                        //创建推送数据
+                        .map(uid->TStudentToPush(uid,questId, interactive, category))
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toList());
+            }else{
+                return Arrays.asList(stus.split(",")).stream()
+                        .filter(id -> null != SESSION_MAP.get(id))
+                        .filter(id -> SESSION_MAP.get(id).isOpen())
+                        //创建推送数据
+                        .map(uid->TStudentToPush(uid,questId, interactive, category))
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toList());
+            }
+
+        }else{
+            return null;
+        }
+
     }
 
     /**
@@ -118,11 +140,12 @@ public class TiWenPush {
      * @return
      */
     private OptQuestion askPeople(String questionId, String interactive) {
+        //TODO 提问获得题目详情内容，几种交互方式都一样，是否需要合并
         switch (interactive) {
             case ASK_INTERACTIVE_RACE:
                 return selected(stuInteract.getBigQuestion(questionId));
             case ASK_INTERACTIVE_RAISE:
-                return null;//raiseSelected(askKey, uid, findBigQuestion(askKey));
+                return selected(stuInteract.getBigQuestion(questionId));
             case ASK_INTERACTIVE_SELECT:
                 return selected(stuInteract.getBigQuestion(questionId));
             case ASK_INTERACTIVE_VOTE:

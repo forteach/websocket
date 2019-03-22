@@ -35,7 +35,7 @@ public class TiwenStask {
      * 每隔１秒遍历发送一次在redis 推送的学生相关信息
      *
      */
-   @Scheduled(initialDelay = 1000 * 2, fixedDelay = 25000)
+   @Scheduled(initialDelay = 1000 * 2, fixedDelay = 5000)
     public void refreshStudentInfo() {
         System.out.println("学生接收题目*********");
             //获得正在开课的课堂ID

@@ -35,12 +35,19 @@ public class AchieveAnswerPush {
     public ToTeacherPush getAchieveAnswer(final String circleId) {
         //获得需要课堂的教师ID
         final String teachseId=TeacherInteract.getRoomTeacherId(circleId);
-        //创建回答信息
-        return ToTeacherPush.builder()
-                .uid(teachseId)
-                //学生回答信息(BigQuestion)
-                .achieveAnswer(achieveAnswer(circleId))
-                .build();
+
+        if(teachseId!=null&&!teachseId.equals("")){
+            AchieveAnswer achieveAnswer=achieveAnswer(circleId);
+            if(achieveAnswer!=null)   {
+                //创建回答信息
+                return ToTeacherPush.builder()
+                        .uid(teachseId)
+                        //学生回答信息(BigQuestion)
+                        .achieveAnswer(achieveAnswer)
+                        .build();
+            }
+        }
+        return null;
 
     }
 
@@ -56,8 +63,10 @@ public class AchieveAnswerPush {
         final String questionId =TeacherInteract.getNowQuestionId(circleId);
         //获得学生的回答信息
         List<Students> students = peopleAnswer(circleId, questionId, QuestionType.TiWen);
-        return buildAchieveAnswer(students);
-
+        if(students!=null) {
+            return buildAchieveAnswer(students);
+        }
+        return null;
     }
 
     /**
@@ -78,17 +87,20 @@ public class AchieveAnswerPush {
      * @return
      */
     private List<Students> peopleAnswer(final String uCircle, final String questionId, final QuestionType type) {
-        return TeacherInteract.getAnswerStudent(uCircle,questionId,type.name()).stream().map(stuid -> {
-            //查询redis 筛选是否回答情况
-            Students student = studentsService.findStudentsBrief(stuid);
-            //学生回答的答案
-            String askAnswerInfo=TeacherInteract.getQuestAnswer(uCircle,questionId,type.name(),stuid);
-            //获得学生的批改结果
-            String piGaiResult=TeacherInteract.piGaiResult(uCircle,questionId,type.name(),stuid);
-            //创建学生回答推送对象
-            return new CircleAnswer(uCircle,questionId,student, ASK_CIRCLE_ANSWER_DID, askAnswerInfo,piGaiResult);
+        if(questionId!=null&&!questionId.equals("")){
+            return TeacherInteract.getAnswerStudent(uCircle,questionId,type.name()).stream().map(stuid -> {
+                //查询redis 筛选是否回答情况
+                Students student = studentsService.findStudentsBrief(stuid);
+                //学生回答的答案
+                String askAnswerInfo=TeacherInteract.getQuestAnswer(uCircle,questionId,type.name(),stuid);
+                //获得学生的批改结果
+                String piGaiResult=TeacherInteract.piGaiResult(uCircle,questionId,type.name(),stuid);
+                //创建学生回答推送对象
+                return new CircleAnswer(uCircle,questionId,student, ASK_CIRCLE_ANSWER_DID, askAnswerInfo,piGaiResult);
 
-        }).collect(Collectors.toList());
+            }).collect(Collectors.toList());
+        }
+       return null;
     }
 
 //    /**

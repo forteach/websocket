@@ -37,7 +37,7 @@ public class SendRaiseStask {
     /**
      * 每隔１秒遍历发送一次在redis
      */
-    @Scheduled(initialDelay = 1000 * 10, fixedDelay = 10000)
+    @Scheduled(initialDelay = 1000 * 10, fixedDelay = 5000)
     public void refreshTeacherInfo() {
         interact.getOpenRooms()
                 .stream()

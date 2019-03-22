@@ -1,15 +1,11 @@
 package com.forteach.websocket.service.teacher.push;
 
 import com.forteach.websocket.domain.*;
-import com.forteach.websocket.service.StudentsService;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.stream.Collectors;
 
-import static com.forteach.websocket.common.Dic.ASK_CIRCLE_ANSWER_DID;
 
 /**
  * @Description:学生回答推送给老师
@@ -59,8 +55,6 @@ public class AchieveRaisePush {
         }
         //获得学生的回答信息
         return  TeacherInteract.achieveRaise(circleId, questionId, questionType);
-
-
     }
 
 }
