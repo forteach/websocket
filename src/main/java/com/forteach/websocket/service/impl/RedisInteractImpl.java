@@ -58,10 +58,15 @@ public class RedisInteractImpl implements RedisInteract {
     }
 
     @Override
+    public String getNowQuestId(String circleId) {
+        return null;
+    }
+
     /**
      * circleId 课堂Id
      * intercat 互动方式 选人 、抢答等
      */
+    @Override
     public String getNowQuestId(String circleId,String intercat) {
         String key= BigQueKey.askTypeQuestionsIdNow(QuestionType.TiWen.name(), circleId, intercat);
         return stringRedisTemplate.opsForValue().get(key);

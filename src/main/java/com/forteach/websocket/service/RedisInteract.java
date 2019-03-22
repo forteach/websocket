@@ -36,7 +36,7 @@ public interface RedisInteract {
      * @param questId
      * @return
      */
-    public  String getQuestStu(String circleId,String questId);
+//    String getQuestStu(String circleId,String questId);
 
     /**
      * 获得加入课堂的学生
@@ -115,5 +115,21 @@ public interface RedisInteract {
      */
     Boolean selectTeamVerify(final String askKey, final String examineeId);
 
+    /**
+     * ntercat 互动方式 选人 、抢答等
+     * @param circleId
+     * @param intercat
+     * @return
+     */
+    String getNowQuestId(String circleId,String intercat);
+
+    /**
+     * intercat 互动方式 选人 、抢答等
+     * @param circleId
+     * @param questId
+     * @param intercat
+     * @return
+     */
+    String getQuestStu(String circleId, String questId,String intercat);
 
 }
