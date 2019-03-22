@@ -44,7 +44,7 @@ public class AchieveRaisePush {
      */
     public AchieveRaise achieveRaise(final String circleId) {
         //获得回答cut随机值
-        String uRandom = "";
+//        String uRandom = "";
         //获得题目ID
         final String questionId =TeacherInteract.getNowQuestionId(circleId);
 
@@ -54,8 +54,6 @@ public class AchieveRaisePush {
         }
         //获得学生的回答信息
         return  TeacherInteract.achieveRaise(circleId, questionId, questionType);
-
-
     }
 
 }

@@ -3,12 +3,10 @@ package com.forteach.websocket.web.task.teacher;
 import com.forteach.websocket.domain.ToTeacherPush;
 import com.forteach.websocket.service.RedisInteract;
 import com.forteach.websocket.service.WsService;
-import com.forteach.websocket.service.teacher.push.AchieveAnswerPush;
 import com.forteach.websocket.service.teacher.push.AchieveRaisePush;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
 import javax.annotation.Resource;
 import java.util.Objects;
 

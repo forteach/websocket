@@ -8,6 +8,8 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -88,5 +90,23 @@ public class StuInteractImpl {
      */
     public String getQuestSelectStu(String circleId){
         return hashOperations.get(BigQueKey.QuestionsIdNow(circleId), "selected");
+    }
+
+    /**
+     * 获得当前班级的所有学生ID
+     * @param circleId
+     * @return
+     */
+    public List<String> getClassStus(String circleId ){
+        return  stringRedisTemplate.opsForSet().members(ClassRoomKey.getInteractiveIdQra(circleId)).stream().collect(Collectors.toList());
+    }
+
+    /**
+     *
+     * @param circleId  获得搬家
+     * @return
+     */
+    public String getRoomTeacherId(String circleId) {
+        return stringRedisTemplate.opsForValue().get(ClassRoomKey.getRoomTeacherKey(circleId));
     }
 }
