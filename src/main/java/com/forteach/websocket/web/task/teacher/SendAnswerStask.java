@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -51,7 +52,7 @@ public class SendAnswerStask {
     private void pushClassStudent(final String circleid){
         try {
             // 获取redis中待推送的数据
-            ToTeacherPush pushList = achieveAnswerPush.getAchieveAnswer(circleid);
+            List<ToTeacherPush> pushList = achieveAnswerPush.getAchieveAnswer(circleid);
             if (pushList != null) {
                 //处理推送
                 wsService.processTeacher(pushList);

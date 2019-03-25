@@ -47,7 +47,7 @@ public class ClassStudentPush {
                 .filter(id -> SESSION_MAP.get(id).isOpen())
                 .map(tid->buildTeacherToPush(tid,circleId))
                 //推送数据为空的话，终止流
-                .filter(obj->obj.getAchieveJoin()!=null)
+                .filter(obj->obj.getAchieveAnswer()!=null)
                 .collect(Collectors.toList());
 
     }
