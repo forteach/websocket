@@ -49,11 +49,8 @@ public class AchieveAnswerPush {
      * @return
      */
     public ToTeacherPush buildTeacherToPush(final String teachseId,final String circleId) {
-        //获得需要课堂的教师ID
-        final String teachseId=teacherInteract.getRoomTeacherId(circleId);
 
         if(teachseId!=null&&!"".equals(teachseId)){
-        if(teachseId!=null&&!teachseId.equals("")){
             AchieveAnswer achieveAnswer=achieveAnswer(circleId);
             if(achieveAnswer!=null)   {
                 //创建回答信息
