@@ -53,8 +53,10 @@ public class AchieveRaisePush {
         if (questionId == null){
             return null;
         }
+
+        final String teachseId=TeacherInteract.getRoomTeacherId(circleId);
         //获得学生的回答信息
-        return  TeacherInteract.achieveRaise(circleId, questionId, questionType);
+        return  TeacherInteract.achieveRaise(circleId, questionId, questionType,teachseId);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.forteach.websocket.service.teacher.push;
 
+import com.forteach.websocket.common.ClassRoomKey;
 import com.forteach.websocket.domain.*;
 import com.forteach.websocket.service.StudentsService;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,7 @@ public class AchieveAnswerPush {
 
     @Resource
     private StudentsService studentsService;
+
 
 
     /**
@@ -88,7 +90,8 @@ public class AchieveAnswerPush {
      */
     private List<Students> peopleAnswer(final String uCircle, final String questionId, final QuestionType type) {
         if(questionId!=null&&!questionId.equals("")){
-            return TeacherInteract.getAnswerStudent(uCircle,questionId,type.name()).stream().map(stuid -> {
+            final String teachseId=TeacherInteract.getRoomTeacherId(uCircle);
+            return TeacherInteract.getAnswerStu(uCircle,questionId,type.name(),teachseId).stream().map(stuid -> {
                 //查询redis 筛选是否回答情况
                 Students student = studentsService.findStudentsBrief(stuid);
                 //学生回答的答案
