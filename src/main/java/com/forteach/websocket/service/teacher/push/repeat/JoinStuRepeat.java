@@ -34,12 +34,12 @@ public class JoinStuRepeat extends AbsRepeatPush {
     }
 
     /**
-     * 清楚课堂学生回答题目Id推送缓存
+     * 清除课堂学生回答题目Id推送缓存
      * @param circleId
      * @param teacherId
      */
     public void clearJoinStu(final String circleId,final String teacherId){
         final String key =ClassRoomKey.getJoinTuisongStuKey(circleId);
-        clearJoinTuiSong(key,teacherId);
+        clearJoinTuiSong(key,circleId,teacherId);
     }
 }

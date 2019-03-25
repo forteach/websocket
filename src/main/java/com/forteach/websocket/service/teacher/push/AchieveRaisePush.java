@@ -26,15 +26,15 @@ public class AchieveRaisePush {
     private TeacherInteractImpl teacherInteract;
 
     public List<ToTeacherPush> getAchieveRaise(String circleId) {
-        final String teachseId=teacherInteract.getRoomTeacherId(circleId);
+        final String teacherId=teacherInteract.getRoomTeacherId(circleId);
         //构建推送对象信息集合
-        return Arrays.asList(teachseId).stream()
+        return Arrays.asList(teacherId).stream()
                 .filter(Objects::nonNull)
                 .filter(id -> null != SESSION_MAP.get(id))
                 .filter(id -> SESSION_MAP.get(id).isOpen())
                 .map(tid->buildTeacherToPush(tid,circleId))
                 //推送数据为空的话，终止流
-                .filter(obj->obj.getAchieveRaise()!=null)
+                .filter(obj-> obj != null && obj.getAchieveRaise()!=null)
                 .collect(Collectors.toList());
 
     }
@@ -71,9 +71,9 @@ public class AchieveRaisePush {
             return null;
         }
 
-        final String teachseId=teacherInteract.getRoomTeacherId(circleId);
+        final String teacherId=teacherInteract.getRoomTeacherId(circleId);
         //获得学生的回答信息
-        return  teacherInteract.achieveRaise(circleId, questionId, questionType,teachseId);
+        return  teacherInteract.achieveRaise(circleId, questionId, questionType,teacherId);
     }
 
 }

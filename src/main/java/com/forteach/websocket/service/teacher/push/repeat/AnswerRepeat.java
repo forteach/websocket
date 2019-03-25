@@ -39,6 +39,6 @@ public class AnswerRepeat extends AbsRepeatPush {
      */
     public void clearAnswer(final String circleId,final String teacherId){
         final String key =ClassRoomKey.getJoinTuisongAnswerKey(circleId);
-        clearJoinTuiSong(key,teacherId);
+        clearJoinTuiSong(key,circleId,teacherId);
     }
 }

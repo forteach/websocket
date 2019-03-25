@@ -37,7 +37,7 @@ public class ClassRoomKey {
     /**
      *临时课堂的随机数前缀
      */
-    public static final String OPEN_CLASSROOM_Random = "OpenRoomRandom";
+    public static final String OPEN_CLASSROOM_RANDOM = "OpenRoomRandom";
 
     /**
      * 加入课堂，已推送过得学生
@@ -61,7 +61,7 @@ public class ClassRoomKey {
      * @return
      */
     public static String getOpenClassRandom(String circleId,String uid){
-        return circleId.concat(OPEN_CLASSROOM_Random).concat(uid);
+        return circleId.concat(OPEN_CLASSROOM_RANDOM).concat(uid);
     }
 
     /**
@@ -71,7 +71,7 @@ public class ClassRoomKey {
      * @return
      */
     public static String getOpenClassRandomTag(String circleId,String uid){
-        return circleId.concat(OPEN_CLASSROOM_Random.concat("tag")).concat(uid);
+        return circleId.concat(OPEN_CLASSROOM_RANDOM.concat("tag")).concat(uid);
     }
 
     /**

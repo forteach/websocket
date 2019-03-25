@@ -79,9 +79,9 @@ public class WsServer {
         //属性赋值
         evaluation(circle, uid, type, random);
 
-        log.info("New session opened , current connections {} / session id {}" +
-                        "{circle} {}/{uid} {}/{type} {}/{random} {}", ONLINE_COUNT.incrementAndGet(), session.getId(),
-                circle, tokenService.getUid(token), tokenService.getType(token), random);
+        log.info("New session opened , current connections [{}] / session id [{}]" +
+                        "{circle} [{}]/{uid} [{}]/{type} [{}]/{random} [{}]", ONLINE_COUNT.incrementAndGet(), session.getId(),
+                circle, uid, type, random);
 
         //用户注册 订阅
         subExecutor.execute(new WorkerForSubImpl(this.circle, this.uid, this.type, this.random, session, this.wsSvc));
@@ -94,7 +94,7 @@ public class WsServer {
                 log.trace(" onMessage Pong: " + ByteBuffer.wrap("health-check".getBytes()));
                 session.getBasicRemote().sendText(JSON.toJSONString(new PongVo()));
             } catch (IOException e) {
-                log.error("onMessage： ERROR ! {}", e.getMessage());
+                log.error("onMessage： ERROR ! [{}]", e.getMessage());
             }
         }
 
@@ -103,7 +103,7 @@ public class WsServer {
     @OnClose
     public void onClose(Session session, CloseReason closeReason) {
         wsSvc.unSubscript(this.uid);
-        log.info("onClose: One closed, current connections {}", ONLINE_COUNT.decrementAndGet());
+        log.info("onClose: One closed, current connections [{}]", ONLINE_COUNT.decrementAndGet());
     }
 
     @OnError

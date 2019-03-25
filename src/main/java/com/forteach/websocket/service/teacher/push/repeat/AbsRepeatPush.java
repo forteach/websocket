@@ -21,9 +21,12 @@ public abstract class AbsRepeatPush {
     }
 
 
-    public void clearJoinTuiSong(String key, String value) {
+    public void clearJoinTuiSong(String key, String circleId, String value) {
         if(stringRedisTemplate.delete(key).booleanValue()){
-            stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(key, value), ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_NO);
+
+//            stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(key, value), ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_NO);
+
+            stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circleId, value), ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_NO);
         }
     }
 }

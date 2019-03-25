@@ -47,7 +47,7 @@ public class ClassStudentPush {
                 .filter(id -> SESSION_MAP.get(id).isOpen())
                 .map(tid->buildTeacherToPush(tid,circleId))
                 //推送数据为空的话，终止流
-                .filter(obj->obj.getAchieveAnswer()!=null)
+                .filter(obj-> obj != null && obj.getAchieveAnswer()!=null)
                 .peek(t -> {
                     if (log.isDebugEnabled()){
                         log.debug("老师推送的对象信息 : [{}]", t);
@@ -85,7 +85,7 @@ public class ClassStudentPush {
         List<Students> list = teacherInteract.getInteractiveStudents(circleId, uid)
                 .stream()
                 .filter(Objects::nonNull)
-                .map(stuId ->studentsService.findStudentsBrief(stuId))
+                .map(studentsService::findStudentsBrief)
                 .collect(Collectors.toList());
         return list.size()>0?new AchieveJoin(list):null;
     }

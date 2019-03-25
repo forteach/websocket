@@ -36,9 +36,9 @@ public class SessionStatsTask {
                     clearSum.incrementAndGet();
                 }
             });
-            log.info(" Clear not enabled session ; now sessionMap size : {} ,clear failure sum {}", SESSION_MAP.size(), clearSum);
+            log.info(" Clear not enabled session ; now sessionMap size : [{}] ,clear failure sum [{}]", SESSION_MAP.size(), clearSum);
         } catch (Exception e) {
-            log.error(" SessionStatsTask {}", e.getMessage());
+            log.error(" SessionStatsTask [{}]", e.getMessage());
         }
     }
 }

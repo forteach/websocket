@@ -37,7 +37,7 @@ public class AchieveAnswerPush {
                 .filter(id -> SESSION_MAP.get(id).isOpen())
                 .map(tid->buildTeacherToPush(tid,circleId))
                 //推送数据为空的话，终止流
-                .filter(obj->obj.getAchieveAnswer()!=null)
+                .filter(obj-> obj != null && obj.getAchieveAnswer()!=null)
                 .collect(Collectors.toList());
 
     }
@@ -48,14 +48,14 @@ public class AchieveAnswerPush {
      *teachseId 接受推送的教师
      * @return
      */
-    public ToTeacherPush buildTeacherToPush(final String teachseId,final String circleId) {
+    public ToTeacherPush buildTeacherToPush(final String teacherId,final String circleId) {
 
-        if(teachseId!=null&&!"".equals(teachseId)){
+        if(teacherId!=null&&!"".equals(teacherId)){
             AchieveAnswer achieveAnswer=achieveAnswer(circleId);
             if(achieveAnswer!=null)   {
                 //创建回答信息
                 return ToTeacherPush.builder()
-                        .uid(teachseId)
+                        .uid(teacherId)
                         //学生回答信息(BigQuestion)
                         .achieveAnswer(achieveAnswer)
                         .build();
