@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -37,7 +38,6 @@ public class SendAnswerStask {
      * 每隔１秒遍历发送一次在redis
      */
     @Scheduled(initialDelay = 1000 * 10, fixedDelay = 10000)
-    @Scheduled(initialDelay = 1000 * 10, fixedDelay = 5000)
     public void refreshTeacherInfo() {
         interact.getOpenRooms()
                 .stream()

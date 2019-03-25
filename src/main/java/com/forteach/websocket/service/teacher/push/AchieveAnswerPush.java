@@ -1,15 +1,16 @@
 package com.forteach.websocket.service.teacher.push;
 
-import com.forteach.websocket.common.ClassRoomKey;
 import com.forteach.websocket.domain.*;
 import com.forteach.websocket.service.StudentsService;
-import com.forteach.websocket.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import static com.forteach.websocket.common.Dic.ASK_CIRCLE_ANSWER_DID;
+import static com.forteach.websocket.service.WsService.SESSION_MAP;
 
 /**
  * @Description:学生回答推送给老师
@@ -27,6 +28,19 @@ public class AchieveAnswerPush {
     @Resource
     private StudentsService studentsService;
 
+    public List<ToTeacherPush> getAchieveAnswer(String circleId) {
+        final String teachseId=teacherInteract.getRoomTeacherId(circleId);
+        //构建推送对象信息集合
+        return Arrays.asList(teachseId).stream()
+                .filter(Objects::nonNull)
+                .filter(id -> null != SESSION_MAP.get(id))
+                .filter(id -> SESSION_MAP.get(id).isOpen())
+                .map(tid->buildTeacherToPush(tid,circleId))
+                //推送数据为空的话，终止流
+                .filter(obj->obj.getAchieveAnswer()!=null)
+                .collect(Collectors.toList());
+
+    }
 
     /**
      * 将课堂加入的学生回答数据，推送给老师
@@ -34,11 +48,12 @@ public class AchieveAnswerPush {
      *teachseId 接受推送的教师
      * @return
      */
-    public ToTeacherPush getAchieveAnswer(final String circleId) {
+    public ToTeacherPush buildTeacherToPush(final String teachseId,final String circleId) {
         //获得需要课堂的教师ID
         final String teachseId=teacherInteract.getRoomTeacherId(circleId);
 
         if(teachseId!=null&&!"".equals(teachseId)){
+        if(teachseId!=null&&!teachseId.equals("")){
             AchieveAnswer achieveAnswer=achieveAnswer(circleId);
             if(achieveAnswer!=null)   {
                 //创建回答信息
@@ -65,7 +80,7 @@ public class AchieveAnswerPush {
         final String questionId =teacherInteract.getNowQuestionId(circleId);
         //获得学生的回答信息
         List<Students> students = peopleAnswer(circleId, questionId, QuestionType.TiWen);
-        if(students!=null && students.size() > 0) {
+        if(students!=null&&students.size()>0) {
             return buildAchieveAnswer(students);
         }
         return null;

@@ -213,7 +213,7 @@ public class TeacherInteractImpl {
     public AchieveRaise achieveRaise(String circleId,String questId,String  questionType,String teacherId) {
 
        List<Students> students= getRaiseStu( circleId, questId, questionType,teacherId);
-        return new AchieveRaise(students);
+        return  (students!=null&&students.size()>0)?new AchieveRaise(students):null;
     }
 
     /**
