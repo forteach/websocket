@@ -27,9 +27,9 @@ public class AnswerRepeat extends AbsRepeatPush {
      * @param stuId
      * @return
      */
-    public String joinAnswer(String circleId, String stuId){
-        final String key =ClassRoomKey.getJoinTuisongAnswerKey(circleId);
-       return join(key,stuId);
+    public String joinAnswer(String circleId, String stuId) {
+        final String key = ClassRoomKey.getJoinTuisongAnswerKey(circleId);
+        return join(key, stuId);
     }
 
     /**
@@ -39,6 +39,6 @@ public class AnswerRepeat extends AbsRepeatPush {
      */
     public void clearAnswer(final String circleId,final String teacherId){
         final String key =ClassRoomKey.getJoinTuisongAnswerKey(circleId);
-        clearJoinTuiSong(key,circleId,teacherId);
+        clearJoinTuiSong(key, teacherId);
     }
 }

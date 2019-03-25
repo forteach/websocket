@@ -2,6 +2,7 @@ package com.forteach.websocket.service.teacher.push;
 
 import com.forteach.websocket.domain.*;
 import com.forteach.websocket.service.StudentsService;
+import com.forteach.websocket.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
@@ -36,7 +37,7 @@ public class AchieveAnswerPush {
                 .filter(id -> null != SESSION_MAP.get(id))
                 .filter(id -> SESSION_MAP.get(id).isOpen())
                 .map(tid->buildTeacherToPush(tid,circleId))
-                //推送数据为空的话，终止流
+                //推送数据为空的话，终止流 achieveAnswer
                 .filter(obj-> obj != null && obj.getAchieveAnswer()!=null)
                 .collect(Collectors.toList());
 
@@ -50,7 +51,7 @@ public class AchieveAnswerPush {
      */
     public ToTeacherPush buildTeacherToPush(final String teacherId,final String circleId) {
 
-        if(teacherId!=null&&!"".equals(teacherId)){
+        if(StringUtil.isNotEmpty(teacherId)){
             AchieveAnswer achieveAnswer=achieveAnswer(circleId);
             if(achieveAnswer!=null)   {
                 //创建回答信息
@@ -62,7 +63,6 @@ public class AchieveAnswerPush {
             }
         }
         return null;
-
     }
 
     /**
@@ -101,7 +101,7 @@ public class AchieveAnswerPush {
      * @return
      */
     private List<Students> peopleAnswer(final String uCircle, final String questionId, final QuestionType type) {
-        if(questionId!=null&&!"".equals(questionId)){
+        if(StringUtil.isNotEmpty(questionId)){
             final String teacherId=teacherInteract.getRoomTeacherId(uCircle);
             return teacherInteract.getAnswerStu(uCircle,questionId,type.name(),teacherId).stream().map(stuid -> {
                 //查询redis 筛选是否回答情况

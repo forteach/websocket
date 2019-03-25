@@ -95,6 +95,11 @@ public class TeacherInteractImpl {
                 .stream()
                 //需要过滤掉教师ID
                 .filter(id -> !id.equals(teacherId))
+                .peek(s -> {
+                    if (log.isDebugEnabled()){
+                        log.debug("推送的学生ID [{}]", s);
+                    }
+                })
                 .filter(id->joinStuRepeat.hasJoinStu(circleId,id))
                 .map(id->joinStuRepeat.joinStu(circleId,id))
                 .collect(Collectors.toList());
@@ -246,7 +251,7 @@ public class TeacherInteractImpl {
                 .stream()
                 .filter(id->riseRepeat.answerHasJoin(circleId,id))
                 .map(id->riseRepeat.joinAnswer(circleId,id))
-                .map(stuId ->studentsService.findStudentsBrief(stuId))
+                .map(studentsService::findStudentsBrief)
                 .collect(Collectors.toList());
     }
 

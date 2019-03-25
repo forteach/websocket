@@ -46,8 +46,8 @@ public class ClassStudentPush {
                 .filter(id -> null != SESSION_MAP.get(id))
                 .filter(id -> SESSION_MAP.get(id).isOpen())
                 .map(tid->buildTeacherToPush(tid,circleId))
-                //推送数据为空的话，终止流
-                .filter(obj-> obj != null && obj.getAchieveAnswer()!=null)
+                //推送数据为空的话，终止流 achieveJoin
+                .filter(obj -> obj != null && obj.getAchieveJoin() != null)
                 .peek(t -> {
                     if (log.isDebugEnabled()){
                         log.debug("老师推送的对象信息 : [{}]", t);
@@ -63,14 +63,13 @@ public class ClassStudentPush {
      * @param uid
      * @return
      */
-    private ToTeacherPush buildTeacherToPush(String uid,String circleId) {
+    private ToTeacherPush buildTeacherToPush(String uid, String circleId) {
         // 获取要推送的用户身份信息 teacher student
-
-            return ToTeacherPush.builder()
-                    .uid(uid)
-                    //学生加入课堂信息
-                    .achieveJoin(achieveInteractiveStudents(uid,circleId))
-                    .build();
+        return ToTeacherPush.builder()
+                .uid(uid)
+                //学生加入课堂信息
+                .achieveJoin(achieveInteractiveStudents(uid, circleId))
+                .build();
 
     }
 

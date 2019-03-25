@@ -33,7 +33,7 @@ public class AchieveRaisePush {
                 .filter(id -> null != SESSION_MAP.get(id))
                 .filter(id -> SESSION_MAP.get(id).isOpen())
                 .map(tid->buildTeacherToPush(tid,circleId))
-                //推送数据为空的话，终止流
+                //推送数据为空的话，终止流 achieveRaise
                 .filter(obj-> obj != null && obj.getAchieveRaise()!=null)
                 .collect(Collectors.toList());
 
