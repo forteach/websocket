@@ -73,10 +73,10 @@ public class WsServiceImpl implements WsService {
            if(!radon.equals(random) )
            {
                 //随机数已经改变
-               stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid),ClassRoomKey.OPEN_CLASSROOM_Random_TAG_YES, Duration.ofSeconds(60*60*2));
+               stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES, Duration.ofSeconds(60*60*2));
            }
         }else{
-              stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid),ClassRoomKey.OPEN_CLASSROOM_Random_TAG_NO, Duration.ofSeconds(60*60*2));
+              stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_NO, Duration.ofSeconds(60*60*2));
         }
         stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandom(circle,uid),random, Duration.ofSeconds(60*60*2));
 

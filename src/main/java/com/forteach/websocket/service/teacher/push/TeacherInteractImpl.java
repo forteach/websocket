@@ -75,7 +75,7 @@ public class TeacherInteractImpl {
         //获得随机数状态,页面刷新会改变随机数状态
         String radonTag=stringRedisTemplate.opsForValue().get(ClassRoomKey.getOpenClassRandomTag(circleId,teacherId));
         //随机数改变，清除已发送学生的缓存信息
-        if(radonTag.equals(ClassRoomKey.OPEN_CLASSROOM_Random_TAG_YES)) {
+        if(ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES.equals(radonTag)) {
             //清除推送学生数据，改变随机值状态也N，未改变状态
             joinStuRepeat.clearJoinStu(circleId,teacherId);
         }
@@ -128,7 +128,7 @@ public class TeacherInteractImpl {
         //获得随机数状态,页面刷新会改变随机数状态
         String radonTag=stringRedisTemplate.opsForValue().get(ClassRoomKey.getOpenClassRandomTag(circleId,teacherId));
         //随机数改变，过滤已发送过的学生
-        if(radonTag.equals(ClassRoomKey.OPEN_CLASSROOM_Random_TAG_YES)) {
+        if(ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES.equals(radonTag)) {
             //清除推送学生数据，改变随机值状态也N
             answerRepeat.clearAnswer(circleId,teacherId);
         }
@@ -226,7 +226,7 @@ public class TeacherInteractImpl {
         //获得随机数状态,页面刷新会改变随机数状态
         String radonTag=stringRedisTemplate.opsForValue().get(ClassRoomKey.getOpenClassRandomTag(circleId,teacherId));
         //随机数改变，过滤已发送过的学生
-        if(radonTag.equals(ClassRoomKey.OPEN_CLASSROOM_Random_TAG_YES)) {
+        if(ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES.equals(radonTag)) {
             //清除推送学生数据，改变随机值状态也N
             riseRepeat.clearAnswer(circleId,teacherId);
         }
@@ -234,7 +234,13 @@ public class TeacherInteractImpl {
         return raiseStudents(circleId, questId,typeName);
     }
 
-    //获得回答学生的基本对象信息
+    /**
+     * 获得回答学生的基本对象信息
+     * @param circleId
+     * @param questId
+     * @param questionType
+     * @return
+     */
     public List<Students> raiseStudents(String circleId,String questId,String questionType){
         return stringRedisTemplate.opsForSet().members(BigQueKey.askTypeQuestionsId(questionType,circleId, Dic.ASK_INTERACTIVE_RAISE,questId))
                 .stream()

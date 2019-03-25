@@ -12,12 +12,12 @@ public class ClassRoomKey {
     /**
      * 课堂SCOKET随机数YES状态,改变状态
      */
-    public static final String OPEN_CLASSROOM_Random_TAG_YES = "Y";
+    public static final String OPEN_CLASSROOM_RANDOM_TAG_YES = "Y";
 
     /**
      * 课堂SCOKET随机数NO状态，未改变状态
      */
-    public static final String OPEN_CLASSROOM_Random_TAG_NO = "N";
+    public static final String OPEN_CLASSROOM_RANDOM_TAG_NO = "N";
 
     /**
      * 课堂相关信息ID-Redis的编码前缀
@@ -102,17 +102,29 @@ public class ClassRoomKey {
         return circleId.concat(ClassRoomKey.INTERACTIVE_CLASSROOM);
     }
 
-    //加入课堂，已推送过得学生
+    /**
+     * 加入课堂，已推送过得学生
+     * @param circleId
+     * @return
+     */
     public static String getJoinTuisongStuKey(String circleId){
         return circleId.concat(ClassRoomKey.ROOM_JOIN_STU_TS);
     }
 
-    //加入课堂，已推送过的学生题目回答
+    /**
+     * 加入课堂，已推送过的学生题目回答
+     * @param circleId
+     * @return
+     */
     public static String getJoinTuisongAnswerKey(String circleId){
         return circleId.concat(ClassRoomKey.ROOM_JOIN_ANSW_TS);
     }
 
-    //加入课堂，已推送过的学生题目回答
+    /**
+     * 加入课堂，已推送过的学生题目回答
+     * @param circleId
+     * @return
+     */
     public static String getJoinTuisongRaiseKey(String circleId){
         return circleId.concat(ClassRoomKey.ROOM_JOIN_RAISE_TS);
     }

@@ -25,7 +25,7 @@ import static com.forteach.websocket.service.WsService.SESSION_MAP;
 public class ClassStudentPush {
 
     @Resource
-    private TeacherInteractImpl TeacherInteract;
+    private TeacherInteractImpl teacherInteract;
 
     @Resource
     private StudentsService studentsService;
@@ -82,7 +82,7 @@ public class ClassStudentPush {
      */
     public AchieveJoin achieveInteractiveStudents(String uid,String circleId) {
         //获得需要推送的学生列表Id
-        List<Students> list = TeacherInteract.getInteractiveStudents(circleId, uid)
+        List<Students> list = teacherInteract.getInteractiveStudents(circleId, uid)
                 .stream()
                 .filter(Objects::nonNull)
                 .map(stuId ->studentsService.findStudentsBrief(stuId))

@@ -9,6 +9,7 @@ import com.forteach.websocket.service.student.push.TiWenPush;
 import com.forteach.websocket.service.teacher.push.ClassStudentPush;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class InteractServiceImpl implements InteractService {
      * 课堂加入学生学生推送
      */
     @Resource
-    private ClassStudentPush classStudentPush ;
+    private ClassStudentPush classStudentPush;
 
     @Resource
     private TeachersToPush teachersToPush;
@@ -65,7 +66,6 @@ public class InteractServiceImpl implements InteractService {
 ////        }
 ////        return new ArrayList<>();
 //    }
-
 
 
 //    /**
@@ -108,10 +108,8 @@ public class InteractServiceImpl implements InteractService {
 
     @Override
     public List<ToTeacherPush> getClassStudent(String circleId, String teachserId) {
-        return classStudentPush.getClassStudent(circleId,teachserId);
+        return classStudentPush.getClassStudent(circleId, teachserId);
     }
-
-
 
 
     /**
@@ -120,38 +118,30 @@ public class InteractServiceImpl implements InteractService {
      * @param
      * @return
      */
-    public ToTeacherPush buildTeacherToPush(String circleId,String teachseId,String type) {
+    public ToTeacherPush buildTeacherToPush(String circleId, String teachseId, String type) {
         // 获取要推送的用户身份信息 teacher student
-        switch (type){
+        switch (type) {
             case "classStu":
-           // return classStudentPush.getClassStudent(circleId,teachseId);
+                // return classStudentPush.getClassStudent(circleId,teachseId);
             case "huida":
                 return ToTeacherPush.builder()
                         .uid(teachseId)
                         //学生回答信息(BigQuestion)
                         .achieveAnswer(teachersToPush.achieveAnswer(teachseId))
-//                        //学生举手信息
-//                        .achieveRaise(teachersToPush.achieveRaise(uid))
-//                        //实时学生问卷答案
-//                        .achieveSurveyAnswer(teachersToPush.achieveSurveyAnswer(uid))
-//                        //头脑风暴答案
-//                        .achieveBrainstormAnswer(teachersToPush.achieveBrainstormAnswer(uid))
-//                        //任务答案
-//                        .achieveTaskAnswer(teachersToPush.achieveTaskAnswer(uid))
-//                        //习题答案
-//                        .achieveBookAnswer(teachersToPush.achieveBookAnswer(uid))
                         .build();
+            default:
+                return null;
         }
-        return null;
     }
 
     /**
      * 推送学生数据对象构造
-     ** @param uid 学生编号
-     * @param questid 题目编号
-     * @param interactive  交互方式  选人、举手、抢答
-     * @param category  小组 个人
-     * @param type  参与的活动   提问 练习  风暴等
+     * * @param uid 学生编号
+     *
+     * @param questid     题目编号
+     * @param interactive 交互方式  选人、举手、抢答
+     * @param category    小组 个人
+     * @param type        参与的活动   提问 练习  风暴等
      * @return
      */
     private ToStudentPush buildStudentToPush(String uid, String questid, String interactive, String category, QuestionType type) {

@@ -16,7 +16,7 @@ import javax.annotation.Resource;
 public class AchieveRaisePush {
 
     @Resource
-    private TeacherInteractImpl TeacherInteract;
+    private TeacherInteractImpl teacherInteract;
 
 
     /**
@@ -27,7 +27,7 @@ public class AchieveRaisePush {
      */
     public ToTeacherPush getAchieveRaise(final String circleId) {
         //获得需要课堂的教师ID
-        final String teachseId=TeacherInteract.getRoomTeacherId(circleId);
+        final String teachseId=teacherInteract.getRoomTeacherId(circleId);
         //创建回答信息
         return ToTeacherPush.builder()
                 .uid(teachseId)
@@ -46,16 +46,16 @@ public class AchieveRaisePush {
         //获得回答cut随机值
 //        String uRandom = "";
         //获得题目ID
-        final String questionId =TeacherInteract.getNowQuestionId(circleId);
+        final String questionId =teacherInteract.getNowQuestionId(circleId);
 
-        final String questionType=TeacherInteract.getNoQuestionType(circleId);
+        final String questionType=teacherInteract.getNoQuestionType(circleId);
         if (questionId == null){
             return null;
         }
 
-        final String teachseId=TeacherInteract.getRoomTeacherId(circleId);
+        final String teachseId=teacherInteract.getRoomTeacherId(circleId);
         //获得学生的回答信息
-        return  TeacherInteract.achieveRaise(circleId, questionId, questionType,teachseId);
+        return  teacherInteract.achieveRaise(circleId, questionId, questionType,teachseId);
     }
 
 }

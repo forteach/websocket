@@ -38,7 +38,7 @@ public class AchieveAnswerPush {
         //获得需要课堂的教师ID
         final String teachseId=teacherInteract.getRoomTeacherId(circleId);
 
-        if(teachseId!=null&&!teachseId.equals("")){
+        if(teachseId!=null&&!"".equals(teachseId)){
             AchieveAnswer achieveAnswer=achieveAnswer(circleId);
             if(achieveAnswer!=null)   {
                 //创建回答信息
@@ -65,7 +65,7 @@ public class AchieveAnswerPush {
         final String questionId =teacherInteract.getNowQuestionId(circleId);
         //获得学生的回答信息
         List<Students> students = peopleAnswer(circleId, questionId, QuestionType.TiWen);
-        if(students!=null) {
+        if(students!=null && students.size() > 0) {
             return buildAchieveAnswer(students);
         }
         return null;
@@ -89,9 +89,9 @@ public class AchieveAnswerPush {
      * @return
      */
     private List<Students> peopleAnswer(final String uCircle, final String questionId, final QuestionType type) {
-        if(questionId!=null&&!questionId.equals("")){
-            final String teachseId=TeacherInteract.getRoomTeacherId(uCircle);
-            return TeacherInteract.getAnswerStu(uCircle,questionId,type.name(),teachseId).stream().map(stuid -> {
+        if(questionId!=null&&!"".equals(questionId)){
+            final String teacherId=teacherInteract.getRoomTeacherId(uCircle);
+            return teacherInteract.getAnswerStu(uCircle,questionId,type.name(),teacherId).stream().map(stuid -> {
                 //查询redis 筛选是否回答情况
                 Students student = studentsService.findStudentsBrief(stuid);
                 //学生回答的答案
