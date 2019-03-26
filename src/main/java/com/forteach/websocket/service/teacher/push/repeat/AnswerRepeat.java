@@ -30,7 +30,8 @@ public class AnswerRepeat extends AbsRepeatPush {
 
     //清楚课堂学生回答题目Id推送缓存
     public void clearAnswer(final String circleId,final String teacherId){
-        final String key =ClassRoomKey.getJoinTuisongAnswerKey(circleId);
-        clearJoinTuiSong(key,teacherId);
+        final String delKey =ClassRoomKey.getJoinTuisongAnswerKey(circleId);
+        final String tagKey =ClassRoomKey.getOpenClassRandomTag(circleId,teacherId);
+        clearJoinTuiSong(delKey,tagKey);
     }
 }
