@@ -27,7 +27,7 @@ public abstract class AbsRepeatPush {
             stringRedisTemplate.delete(delKey);
         }
         //修改随机数标记为N未变动
-        stringRedisTemplate.opsForValue().set(tagKey, ClassRoomKey.OPEN_CLASSROOM_Random_TAG_NO);
+        stringRedisTemplate.opsForValue().set(tagKey, ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_NO);
 
     }
 }
