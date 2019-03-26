@@ -39,7 +39,8 @@ public class JoinStuRepeat extends AbsRepeatPush {
      * @param teacherId
      */
     public void clearJoinStu(final String circleId,final String teacherId){
-        final String key =ClassRoomKey.getJoinTuisongStuKey(circleId);
-        clearJoinTuiSong(key, teacherId);
+        final String delKey =ClassRoomKey.getJoinTuisongStuKey(circleId);
+        final String tagKey =ClassRoomKey.getOpenClassRandomTag(circleId,teacherId);
+        clearJoinTuiSong(delKey,tagKey);
     }
 }

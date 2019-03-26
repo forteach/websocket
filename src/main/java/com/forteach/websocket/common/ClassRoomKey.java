@@ -65,7 +65,7 @@ public class ClassRoomKey {
     }
 
     /**
-     * 获得用户scoket连接的随机数
+     * 获得用户scoket连接的随机数改变状态
      * @param circleId
      * @param uid
      * @return
