@@ -41,7 +41,7 @@ public class TiWenPush {
             //获得提问方式的题目编号
             final String questId=stuInteract.getNowQuestId(QuestionType.TiWen,circleId, intarcet);
             //获得当前题目选中的学生
-            final String stus= stuInteract.getQuestSelectStu(circleId);
+            final String stus= stuInteract.getQuestNoReceiveSelectStu(circleId);
 
             //获得当前题目的交互方式  选人 抢答
             final String interactive=stuInteract.getNowQuestInteractive(circleId);
@@ -52,7 +52,7 @@ public class TiWenPush {
 
             //根据所选的学生，对比Session数据是否在线，并获得学生推送详情
             if(intarcet.equals(Dic.ASK_INTERACTIVE_RAISE)&&stus.equals("")){
-                //获取加入课堂的学生？？？？？？
+                //给所有加入课堂的学生推送题目
                 return stuInteract.getClassStus(circleId).stream()
                         .filter(id->!id.equals(teacherId))
                        .filter(id -> null != SESSION_MAP.get(id))
@@ -62,6 +62,7 @@ public class TiWenPush {
                         .filter(Objects::nonNull)
                         .collect(Collectors.toList());
             }else{
+                //给老师所选的人员推送题目
                 return Arrays.asList(stus.split(",")).stream()
                         .filter(id -> null != SESSION_MAP.get(id))
                         .filter(id -> SESSION_MAP.get(id).isOpen())
