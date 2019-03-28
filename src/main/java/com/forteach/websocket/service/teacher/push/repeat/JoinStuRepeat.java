@@ -1,6 +1,7 @@
 package com.forteach.websocket.service.teacher.push.repeat;
 
 
+import com.forteach.websocket.common.BigQueKey;
 import com.forteach.websocket.common.ClassRoomKey;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ public class JoinStuRepeat extends AbsRepeatPush {
     //清楚课堂学生回答题目Id推送缓存
     public void clearJoinStu(final String circleId,final String teacherId){
         final String delKey =ClassRoomKey.getJoinTuisongStuKey(circleId);
-        final String tagKey =ClassRoomKey.getOpenClassRandomTag(circleId,teacherId);
+        final String tagKey =ClassRoomKey.getOpenClassRandomTag(circleId,teacherId, BigQueKey.CLASSROOM_CLEAR_TAG_JION);
         clearJoinTuiSong(delKey,tagKey);
     }
 }
