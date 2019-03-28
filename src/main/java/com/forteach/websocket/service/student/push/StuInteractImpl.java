@@ -84,12 +84,21 @@ public class StuInteractImpl {
     }
 
     /**
-     * 获得当前开课课堂列表
+     * 获得当前开课课堂问题选人列表
      * @param circleId
      * @return
      */
     public String getQuestSelectStu(String circleId){
         return hashOperations.get(BigQueKey.QuestionsIdNow(circleId), "selected");
+    }
+
+    /**
+     * 获得当前开课课堂未收到推送标记的学生列表
+     * @param circleId
+     * @return
+     */
+    public String getQuestNoReceiveSelectStu(String circleId){
+        return hashOperations.get(BigQueKey.QuestionsIdNow(circleId), "noRreceiveSelected");
     }
 
     /**
