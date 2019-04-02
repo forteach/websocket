@@ -1,6 +1,7 @@
 package com.forteach.websocket.service.teacher.push.repeat;
 
 
+import com.forteach.websocket.common.BigQueKey;
 import com.forteach.websocket.common.ClassRoomKey;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +40,7 @@ public class RaiseRepeat extends AbsRepeatPush {
      */
     public void clearAnswer(final String circleId,final String teacherId){
         final String delKey =ClassRoomKey.getJoinTuisongRaiseKey(circleId);
-        final String tagKey =ClassRoomKey.getOpenClassRandomTag(circleId,teacherId);
+        final String tagKey =ClassRoomKey.getOpenClassRandomTag(circleId,teacherId, BigQueKey.CLASSROOM_CLEAR_TAG_RAISE);
         clearJoinTuiSong(delKey,tagKey);
     }
 }

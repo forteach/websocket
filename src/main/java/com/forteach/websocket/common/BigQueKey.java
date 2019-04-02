@@ -33,6 +33,13 @@ public class BigQueKey {
      */
     public static final String CLASSROOM_ASK_QUESTIONS_ID = "ask";
 
+    //刷新清除场景命名加入学生场景
+    public static final String CLASSROOM_CLEAR_TAG_JION="join";
+    //刷新清除场景命名问题回答场景
+    public static final String CLASSROOM_CLEAR_TAG_ANSWER="answer";
+    //刷新清除场景命名问题举手场景
+    public static final String CLASSROOM_CLEAR_TAG_RAISE="raise";
+
     //缓存当前已发布的题目题干内容，不分课堂。
     public static String QuestionsNow(String questionId) {
         return CLASSROOM_ASK_NOW.concat(questionId);
