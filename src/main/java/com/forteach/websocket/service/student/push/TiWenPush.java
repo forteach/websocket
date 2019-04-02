@@ -41,7 +41,7 @@ public class TiWenPush {
 
         final String intarcet=stuInteract.getNowQuestInteractive(circleId);
 
-        if(intarcet!=null&&!intarcet.equals("")){
+        if(intarcet!=null&&!"".equals(intarcet)){
             //获得提问方式的题目编号
             final String questId=stuInteract.getNowQuestId(QuestionType.TiWen,circleId, intarcet);
             //获得当前题目选中的学生
@@ -55,7 +55,7 @@ public class TiWenPush {
             final String teacherId=stuInteract.getRoomTeacherId(circleId);
 
             //根据所选的学生，对比Session数据是否在线，并获得学生推送详情
-            if(intarcet.equals(Dic.ASK_INTERACTIVE_RAISE)&&stus.equals("")){
+            if(intarcet.equals(Dic.ASK_INTERACTIVE_RAISE)&&"".equals(stus)){
                 //给所有加入课堂的学生推送题目
                 return stuInteract.getClassStus(circleId).stream()
                         .filter(id->!id.equals(teacherId))

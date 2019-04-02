@@ -72,7 +72,7 @@ public class ClassRoomKey {
      * @return
      */
     public static String getOpenClassRandomTag(String circleId,String uid,String tagType){
-        return circleId.concat(OPEN_CLASSROOM_Random.concat(tagType).concat("tag")).concat(uid);
+        return circleId.concat(OPEN_CLASSROOM_RANDOM.concat(tagType).concat("tag")).concat(uid);
     }
 
     /**

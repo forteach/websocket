@@ -35,7 +35,15 @@ public class WsServiceImpl implements WsService {
     @Resource
     private StringRedisTemplate stringRedisTemplate;
 
-    //old
+    /**
+     * old
+     * @param circle
+     * @param uid
+     * @param type
+     * @param random
+     * @param sessions
+     * @return
+     */
     @Override
     public boolean subscript(String circle, String uid, String type, String random, Session sessions) {
         try {
@@ -74,15 +82,15 @@ public class WsServiceImpl implements WsService {
            if(!radon.equals(random) )
            {
                 //随机数已经改变
-               stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid, BigQueKey.CLASSROOM_CLEAR_TAG_JION),ClassRoomKey.OPEN_CLASSROOM_Random_TAG_YES, Duration.ofSeconds(60*60*2));
-               stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid,BigQueKey.CLASSROOM_CLEAR_TAG_ANSWER),ClassRoomKey.OPEN_CLASSROOM_Random_TAG_YES, Duration.ofSeconds(60*60*2));
-               stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid,BigQueKey.CLASSROOM_CLEAR_TAG_RAISE),ClassRoomKey.OPEN_CLASSROOM_Random_TAG_YES, Duration.ofSeconds(60*60*2));
+               stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid, BigQueKey.CLASSROOM_CLEAR_TAG_JION),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES, Duration.ofSeconds(60*60*2));
+               stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid,BigQueKey.CLASSROOM_CLEAR_TAG_ANSWER),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES, Duration.ofSeconds(60*60*2));
+               stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid,BigQueKey.CLASSROOM_CLEAR_TAG_RAISE),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES, Duration.ofSeconds(60*60*2));
            }
         }else{
 
-              stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid,BigQueKey.CLASSROOM_CLEAR_TAG_JION),ClassRoomKey.OPEN_CLASSROOM_Random_TAG_NO, Duration.ofSeconds(60*60*2));
-              stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid,BigQueKey.CLASSROOM_CLEAR_TAG_ANSWER),ClassRoomKey.OPEN_CLASSROOM_Random_TAG_NO, Duration.ofSeconds(60*60*2));
-              stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid,BigQueKey.CLASSROOM_CLEAR_TAG_RAISE),ClassRoomKey.OPEN_CLASSROOM_Random_TAG_NO, Duration.ofSeconds(60*60*2));
+              stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid,BigQueKey.CLASSROOM_CLEAR_TAG_JION),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_NO, Duration.ofSeconds(60*60*2));
+              stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid,BigQueKey.CLASSROOM_CLEAR_TAG_ANSWER),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_NO, Duration.ofSeconds(60*60*2));
+              stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid,BigQueKey.CLASSROOM_CLEAR_TAG_RAISE),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_NO, Duration.ofSeconds(60*60*2));
         }
         //设置缓存随机数
         stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandom(circle,uid),random, Duration.ofSeconds(60*60*2));
