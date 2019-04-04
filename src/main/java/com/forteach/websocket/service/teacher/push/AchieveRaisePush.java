@@ -22,10 +22,10 @@ import static com.forteach.websocket.service.WsService.SESSION_MAP;
 public class AchieveRaisePush {
 
     @Resource
-    private TeacherInteractImpl TeacherInteract;
+    private TeacherInteractImpl teacherInteract;
 
     public List<ToTeacherPush> getAchieveRaise(String circleId) {
-        final String teachseId=TeacherInteract.getRoomTeacherId(circleId);
+        final String teachseId=teacherInteract.getRoomTeacherId(circleId);
         //构建推送对象信息集合
         return Arrays.asList(teachseId).stream()
                 .filter(Objects::nonNull)
@@ -63,16 +63,16 @@ public class AchieveRaisePush {
         //获得回答cut随机值
         String uRandom = "";
         //获得题目ID
-        final String questionId =TeacherInteract.getNowQuestionId(circleId);
+        final String questionId =teacherInteract.getNowQuestionId(circleId);
 
-        final String questionType=TeacherInteract.getNoQuestionType(circleId);
+        final String questionType=teacherInteract.getNoQuestionType(circleId);
         if (questionId == null){
             return null;
         }
 
-        final String teachseId=TeacherInteract.getRoomTeacherId(circleId);
+        final String teachseId=teacherInteract.getRoomTeacherId(circleId);
         //获得学生的回答信息
-        return  TeacherInteract.achieveRaise(circleId, questionId, questionType,teachseId);
+        return  teacherInteract.achieveRaise(circleId, questionId, questionType,teachseId);
     }
 
 }
