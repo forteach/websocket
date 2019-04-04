@@ -4,6 +4,8 @@ import com.forteach.websocket.common.ClassRoomKey;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import javax.annotation.Resource;
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 public abstract class AbsRepeatPush {
 
@@ -17,6 +19,7 @@ public abstract class AbsRepeatPush {
 
     public String join(String key, String value) {
          stringRedisTemplate.opsForSet().add(key,value);
+         stringRedisTemplate.expire(key, 2, TimeUnit.HOURS);
          return value;
     }
 
@@ -27,7 +30,7 @@ public abstract class AbsRepeatPush {
             stringRedisTemplate.delete(delKey);
         }
         //修改随机数标记为N未变动
-        stringRedisTemplate.opsForValue().set(tagKey, ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_NO);
+        stringRedisTemplate.opsForValue().set(tagKey, ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_NO,Duration.ofHours(2));
 
     }
 }

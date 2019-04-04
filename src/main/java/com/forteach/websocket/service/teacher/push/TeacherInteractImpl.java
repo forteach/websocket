@@ -95,11 +95,6 @@ public class TeacherInteractImpl {
                 .stream()
                 //需要过滤掉教师ID
                 .filter(id -> !id.equals(teacherId))
-                .peek(s -> {
-                    if (log.isDebugEnabled()){
-                        log.debug("推送的学生ID [{}]", s);
-                    }
-                })
                 .filter(id->joinStuRepeat.hasJoinStu(circleId,id))
                 .map(id->joinStuRepeat.joinStu(circleId,id))
                 .collect(Collectors.toList());
@@ -135,7 +130,7 @@ public class TeacherInteractImpl {
         //随机数改变，过滤已发送过的学生
         if(ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES.equals(radonTag)) {
             //清除推送学生数据，改变随机值状态也N
-            answerRepeat.clearAnswer(circleId,teacherId);
+            answerRepeat.clearAnswer(circleId,questId,teacherId);
         }
         //推送学生信息
         return getAnswerStudent(circleId, questId,typeName);
@@ -152,8 +147,8 @@ public class TeacherInteractImpl {
         //获得学生回答顺序列表
         return stringRedisTemplate.opsForList().range(BigQueKey.answerTypeQuestStuList(circleId, questId, typeName),0,-1)
                 .stream()
-                .filter(id->answerRepeat.answerHasJoin(circleId,id))
-                .map(id->answerRepeat.joinAnswer(circleId,id))
+                .filter(id->answerRepeat.answerHasJoin(circleId,questId,id))
+                .map(id->answerRepeat.joinAnswer(circleId,questId,id))
                 .collect(Collectors.toList());
     }
 
@@ -166,7 +161,7 @@ public class TeacherInteractImpl {
      * @return
      */
     public String getQuestAnswer(String circleId,String questId,String typeName,String examineeId){
-       return  hashOperations.get(BigQueKey.answerTypeQuestionsId(circleId,questId,typeName),examineeId);
+        return  hashOperations.get(BigQueKey.answerTypeQuestionsId(circleId,questId,typeName),examineeId);
     }
 
     /**
@@ -217,7 +212,7 @@ public class TeacherInteractImpl {
      */
     public AchieveRaise achieveRaise(String circleId,String questId,String  questionType,String teacherId) {
 
-       List<Students> students= getRaiseStu( circleId, questId, questionType,teacherId);
+        List<Students> students= getRaiseStu( circleId, questId, questionType,teacherId);
         return  (students!=null&&students.size()>0)?new AchieveRaise(students):null;
     }
 
@@ -231,9 +226,9 @@ public class TeacherInteractImpl {
         //获得随机数状态,页面刷新会改变随机数状态
         String radonTag=stringRedisTemplate.opsForValue().get(ClassRoomKey.getOpenClassRandomTag(circleId,teacherId, BigQueKey.CLASSROOM_CLEAR_TAG_RAISE));
         //随机数改变，过滤已发送过的学生
-        if(ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES.equals(radonTag)) {
+        if(radonTag.equals(ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES)) {
             //清除推送学生数据，改变随机值状态也N
-            riseRepeat.clearAnswer(circleId,teacherId);
+            riseRepeat.clearAnswer(circleId,questId,teacherId);
         }
         //推送学生信息
         return raiseStudents(circleId, questId,typeName);
@@ -249,9 +244,9 @@ public class TeacherInteractImpl {
     public List<Students> raiseStudents(String circleId,String questId,String questionType){
         return stringRedisTemplate.opsForSet().members(BigQueKey.askTypeQuestionsId(questionType,circleId, Dic.ASK_INTERACTIVE_RAISE,questId))
                 .stream()
-                .filter(id->riseRepeat.answerHasJoin(circleId,id))
-                .map(id->riseRepeat.joinAnswer(circleId,id))
-                .map(studentsService::findStudentsBrief)
+                .filter(id->riseRepeat.answerHasJoin(circleId,questId,id))
+                .map(id->riseRepeat.joinAnswer(circleId,questId,id))
+                .map(stuId ->studentsService.findStudentsBrief(stuId))
                 .collect(Collectors.toList());
     }
 
