@@ -131,7 +131,7 @@ public class TeacherInteractImpl {
         //随机数改变，过滤已发送过的学生
         if(radonTag.equals(ClassRoomKey.OPEN_CLASSROOM_Random_TAG_YES)) {
             //清除推送学生数据，改变随机值状态也N
-            answerRepeat.clearAnswer(circleId,teacherId);
+            answerRepeat.clearAnswer(circleId,questId,teacherId);
         }
         //推送学生信息
         return getAnswerStudent(circleId, questId,typeName);
@@ -148,8 +148,8 @@ public class TeacherInteractImpl {
         //获得学生回答顺序列表
         return stringRedisTemplate.opsForList().range(BigQueKey.answerTypeQuestStuList(circleId, questId, typeName),0,-1)
                 .stream()
-                .filter(id->answerRepeat.answerHasJoin(circleId,id))
-                .map(id->answerRepeat.joinAnswer(circleId,id))
+                .filter(id->answerRepeat.answerHasJoin(circleId,questId,id))
+                .map(id->answerRepeat.joinAnswer(circleId,questId,id))
                 .collect(Collectors.toList());
     }
 
@@ -229,7 +229,7 @@ public class TeacherInteractImpl {
         //随机数改变，过滤已发送过的学生
         if(radonTag.equals(ClassRoomKey.OPEN_CLASSROOM_Random_TAG_YES)) {
             //清除推送学生数据，改变随机值状态也N
-            riseRepeat.clearAnswer(circleId,teacherId);
+            riseRepeat.clearAnswer(circleId,questId,teacherId);
         }
         //推送学生信息
         return raiseStudents(circleId, questId,typeName);
@@ -239,8 +239,8 @@ public class TeacherInteractImpl {
     public List<Students> raiseStudents(String circleId,String questId,String questionType){
         return stringRedisTemplate.opsForSet().members(BigQueKey.askTypeQuestionsId(questionType,circleId, Dic.ASK_INTERACTIVE_RAISE,questId))
                 .stream()
-                .filter(id->riseRepeat.answerHasJoin(circleId,id))
-                .map(id->riseRepeat.joinAnswer(circleId,id))
+                .filter(id->riseRepeat.answerHasJoin(circleId,questId,id))
+                .map(id->riseRepeat.joinAnswer(circleId,questId,id))
                 .map(stuId ->studentsService.findStudentsBrief(stuId))
                 .collect(Collectors.toList());
     }

@@ -18,20 +18,20 @@ public class RaiseRepeat extends AbsRepeatPush {
     private StringRedisTemplate stringRedisTemplate;
 
     //判断题目举手学生是否已经加入推送缓存
-    public boolean answerHasJoin(String circleId,String stuId){
-        final String key =ClassRoomKey.getJoinTuisongRaiseKey(circleId);
+    public boolean answerHasJoin(String circleId,String questionId,String stuId){
+        final String key =ClassRoomKey.getJoinTuisongRaiseKey(circleId,questionId);
         return hasJoin(key,stuId);
     }
 
     //将课堂题目举手学生已推送列表推送过
-    public String joinAnswer(String circleId, String stuId){
-        final String key =ClassRoomKey.getJoinTuisongRaiseKey(circleId);
+    public String joinAnswer(String circleId,String questionId, String stuId){
+        final String key =ClassRoomKey.getJoinTuisongRaiseKey(circleId,questionId);
        return join(key,stuId);
     }
 
     //清楚课堂题目举手学生推送缓存
-    public void clearAnswer(final String circleId,final String teacherId){
-        final String delKey =ClassRoomKey.getJoinTuisongRaiseKey(circleId);
+    public void clearAnswer(final String circleId,String questionId,final String teacherId){
+        final String delKey =ClassRoomKey.getJoinTuisongRaiseKey(circleId,questionId);
         final String tagKey =ClassRoomKey.getOpenClassRandomTag(circleId,teacherId, BigQueKey.CLASSROOM_CLEAR_TAG_RAISE);
         clearJoinTuiSong(delKey,tagKey);
     }

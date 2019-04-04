@@ -97,13 +97,13 @@ public class ClassRoomKey {
     }
 
     //加入课堂，已推送过的学生题目回答
-    public static String getJoinTuisongAnswerKey(String circleId){
-        return circleId.concat(ClassRoomKey.ROOM_JOIN_ANSW_TS);
+    public static String getJoinTuisongAnswerKey(String circleId,String questionId){
+        return circleId.concat(questionId).concat(ClassRoomKey.ROOM_JOIN_ANSW_TS);
     }
 
     //加入课堂，已推送过的学生题目回答
-    public static String getJoinTuisongRaiseKey(String circleId){
-        return circleId.concat(ClassRoomKey.ROOM_JOIN_RAISE_TS);
+    public static String getJoinTuisongRaiseKey(String circleId,String questionId){
+        return circleId.concat(questionId).concat(ClassRoomKey.ROOM_JOIN_RAISE_TS);
     }
 
 }

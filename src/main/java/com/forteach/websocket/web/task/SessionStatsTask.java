@@ -25,7 +25,7 @@ public class SessionStatsTask {
      * 半小时清理一次session
      * 延迟10秒执行
      */
-    @Scheduled(initialDelay = 10 * 1000, fixedDelay = 30 * 60 * 1000)
+   // @Scheduled(initialDelay = 10 * 1000, fixedDelay = 30 * 60 * 1000)
     public void reportCurrentTime() {
         //添加院子操作进行计数统计
         final AtomicLong clearSum = new AtomicLong(0);

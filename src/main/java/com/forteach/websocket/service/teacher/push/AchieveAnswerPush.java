@@ -36,7 +36,8 @@ public class AchieveAnswerPush {
                 .filter(id -> null != SESSION_MAP.get(id))
                 .filter(id -> SESSION_MAP.get(id).isOpen())
                 .map(tid->buildTeacherToPush(tid,circleId))
-                //推送数据为空的话，终止流
+                .filter(Objects::nonNull)
+                // TODO 推送数据为空的话，终止流 null
                 .filter(obj->obj.getAchieveAnswer()!=null)
                 .collect(Collectors.toList());
 
