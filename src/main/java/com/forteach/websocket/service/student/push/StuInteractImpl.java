@@ -71,7 +71,7 @@ public class StuInteractImpl {
      * @param circleId
      * @return
      */
-    public List<String> getNowQuestId(QuestionType type,String circleId) {
+    public List<String> getNowMoreQuestId(QuestionType type,String circleId) {
         String key= BigQueKey.bookTypeQuestionsList(circleId);
         return stringRedisTemplate.opsForList().range(key,0,-1);
     }
@@ -118,7 +118,7 @@ public class StuInteractImpl {
      * @return
      */
     public String getMoreQuestNoReceiveSelectStu(String circleId){
-        return hashOperations.get(BigQueKey.questionsBookNow(circleId), "noRreceiveSelected");
+        return hashOperations.get(BigQueKey.questionsBookNow(circleId), "selected");
     }
 
     /**

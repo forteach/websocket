@@ -140,6 +140,7 @@ public class WsServiceImpl implements WsService {
     public boolean registerSession(String uid, Session session) {
         try {
             SESSION_MAP.put(uid, session);
+            //System.out.println(JSON.toJSONString(SESSION_MAP));
         } catch (Exception e) {
             log.error(">>> 注册用户session 时失败，注册用户 : [{}], session : [{}]", uid, session);
             return false;

@@ -38,16 +38,21 @@ public class MoreQuestionPush {
 
 //        if(intarcet!=null&&!"".equals(intarcet)){
             //获得当前课堂发布多题目列表（比如：练习册、调查等类型发布）
-            final List<String> questionIdList=stuInteract.getNowQuestId(type,circleId);
+            final List<String> questionIdList=stuInteract.getNowMoreQuestId(type,circleId);
+            if(questionIdList==null||questionIdList.size()==0){
+                return null;
+            }
             //获得当前多题目列表选中的学生
             final String stus= stuInteract.getMoreQuestNoReceiveSelectStu(circleId);
-
+        if(stus==null||stus.equals("")){
+            return null;
+        }
 //            //获得当前题目的交互方式  选人 抢答
 //            final String interactive=stuInteract.getNowQuestInteractive(circleId);
 //            //暂时设定，需要从redis里面去除该值 小组 个人
 //            final String category=stuInteract.getNowQuestCategory(circleId);
 
-            final String teacherId=stuInteract.getRoomTeacherId(circleId);
+           // final String teacherId=stuInteract.getRoomTeacherId(circleId);
 
             //根据所选的学生，对比Session数据是否在线，并获得学生推送详情
 //            if(intarcet.equals(Dic.ASK_INTERACTIVE_RAISE)&&"".equals(stus)){
@@ -64,6 +69,7 @@ public class MoreQuestionPush {
 //            }else{
                 //给老师所选的人员推送题目
                 return Arrays.asList(stus.split(",")).stream()
+                        .peek(id->System.out.println("*****************************"+SESSION_MAP.get(id)))
                         .filter(id -> null != SESSION_MAP.get(id))
                         .filter(id -> SESSION_MAP.get(id).isOpen())
                         //创建推送数据
