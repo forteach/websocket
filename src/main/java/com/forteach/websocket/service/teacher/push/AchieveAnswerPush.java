@@ -1,7 +1,9 @@
 package com.forteach.websocket.service.teacher.push;
 
 import com.forteach.websocket.domain.*;
-import com.forteach.websocket.service.StudentsService;
+import com.forteach.websocket.service.impl.AchieveAnswerService;
+import com.forteach.websocket.service.impl.ClassStudentService;
+import com.forteach.websocket.service.impl.StudentsService;
 import com.forteach.websocket.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -10,7 +12,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import static com.forteach.websocket.common.Dic.ASK_CIRCLE_ANSWER_DID;
 import static com.forteach.websocket.service.WsService.SESSION_MAP;
 
 /**
@@ -24,13 +25,25 @@ import static com.forteach.websocket.service.WsService.SESSION_MAP;
 public class AchieveAnswerPush {
 
     @Resource
-    private TeacherInteractImpl teacherInteract;
+    private ClassStudentService classStudentService;
+
+    @Resource
+    private AchieveAnswerService achieveAnswerService;
 
     @Resource
     private StudentsService studentsService;
 
+    /**
+     * 已回答
+     */
+    public static final String ASK_CIRCLE_ANSWER_DID = "2";
+
+    public List<String> getOpenRooms(){
+        return classStudentService.getOpenRooms();
+    }
+
     public List<ToTeacherPush> getAchieveAnswer(String circleId) {
-        final String teachseId=teacherInteract.getRoomTeacherId(circleId);
+        final String teachseId=classStudentService.getRoomTeacherId(circleId);
         //构建推送对象信息集合
         return Arrays.asList(teachseId).stream()
                 .filter(Objects::nonNull)
@@ -74,7 +87,7 @@ public class AchieveAnswerPush {
         //获得回答cut随机值
 //        String uRandom = "";
         //获得题目ID
-        final String questionId =teacherInteract.getNowQuestionId(circleId);
+        final String questionId =achieveAnswerService.getNowQuestionId(circleId);
         //获得学生的回答信息
         List<Students> students = peopleAnswer(circleId, questionId, QuestionType.TiWen);
         if(students!=null&&students.size()>0) {
@@ -90,6 +103,7 @@ public class AchieveAnswerPush {
      * @return
      */
     private AchieveAnswer buildAchieveAnswer(final List<Students> students) {
+
         return new AchieveAnswer(students);
     }
 
@@ -102,14 +116,14 @@ public class AchieveAnswerPush {
      */
     private List<Students> peopleAnswer(final String uCircle, final String questionId, final QuestionType type) {
         if(StringUtil.isNotEmpty(questionId)){
-            final String teacherId=teacherInteract.getRoomTeacherId(uCircle);
-            return teacherInteract.getAnswerStu(uCircle,questionId,type.name(),teacherId).stream().map(stuid -> {
+            final String teacherId=classStudentService.getRoomTeacherId(uCircle);
+            return achieveAnswerService.getAnswerStu(uCircle,questionId,type.name(),teacherId).stream().map(stuid -> {
                 //查询redis 筛选是否回答情况
                 Students student = studentsService.findStudentsBrief(stuid);
                 //学生回答的答案
-                String askAnswerInfo=teacherInteract.getQuestAnswer(uCircle,questionId,type.name(),stuid);
+                String askAnswerInfo=achieveAnswerService.getQuestAnswer(uCircle,questionId,type.name(),stuid);
                 //获得学生的批改结果
-                String piGaiResult=teacherInteract.piGaiResult(uCircle,questionId,type.name(),stuid);
+                String piGaiResult=achieveAnswerService.piGaiResult(uCircle,questionId,type.name(),stuid);
                 //创建学生回答推送对象
                 return new CircleAnswer(uCircle,questionId,student, ASK_CIRCLE_ANSWER_DID, askAnswerInfo,piGaiResult);
 

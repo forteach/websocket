@@ -2,9 +2,11 @@ package com.forteach.websocket.service.teacher.push;
 
 import com.forteach.websocket.domain.AchieveRaise;
 import com.forteach.websocket.domain.ToTeacherPush;
-import com.forteach.websocket.domain.*;
+import com.forteach.websocket.service.impl.AchieveRaiseService;
+import com.forteach.websocket.service.impl.ClassStudentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
@@ -23,18 +25,25 @@ import static com.forteach.websocket.service.WsService.SESSION_MAP;
 public class AchieveRaisePush {
 
     @Resource
-    private TeacherInteractImpl teacherInteract;
+    private ClassStudentService classStudentService;
+
+    @Resource
+    private AchieveRaiseService achieveRaiseService;
+
+    public List<String> getOpenRooms() {
+        return classStudentService.getOpenRooms();
+    }
 
     public List<ToTeacherPush> getAchieveRaise(String circleId) {
-        final String teacherId=teacherInteract.getRoomTeacherId(circleId);
+        final String teacherId = classStudentService.getRoomTeacherId(circleId);
         //构建推送对象信息集合
         return Arrays.asList(teacherId).stream()
                 .filter(Objects::nonNull)
                 .filter(id -> null != SESSION_MAP.get(id))
                 .filter(id -> SESSION_MAP.get(id).isOpen())
-                .map(tid->buildTeacherToPush(tid,circleId))
+                .map(tid -> buildTeacherToPush(tid, circleId))
                 //推送数据为空的话，终止流 achieveRaise
-                .filter(obj-> obj != null && obj.getAchieveRaise()!=null)
+                .filter(obj -> obj != null && obj.getAchieveRaise() != null)
                 .collect(Collectors.toList());
 
     }
@@ -42,10 +51,11 @@ public class AchieveRaisePush {
     /**
      * 将课堂加入的学生回答数据，推送给老师
      * circleId 课堂编号
-     *teachseId 接受推送的教师
+     * teachseId 接受推送的教师
+     *
      * @return
      */
-    public ToTeacherPush buildTeacherToPush(String uid,String circleId) {
+    public ToTeacherPush buildTeacherToPush(String uid, String circleId) {
         //创建回答信息
         return ToTeacherPush.builder()
                 .uid(uid)
@@ -64,16 +74,16 @@ public class AchieveRaisePush {
         //获得回答cut随机值
 //        String uRandom = "";
         //获得题目ID
-        final String questionId =teacherInteract.getNowQuestionId(circleId);
+        final String questionId = achieveRaiseService.getNowQuestionId(circleId);
 
-        final String questionType=teacherInteract.getNoQuestionType(circleId);
-        if (questionId == null){
+        final String questionType = achieveRaiseService.getNoQuestionType(circleId);
+        if (questionId == null) {
             return null;
         }
 
-        final String teacherId=teacherInteract.getRoomTeacherId(circleId);
+        final String teacherId = classStudentService.getRoomTeacherId(circleId);
         //获得学生的回答信息
-        return  teacherInteract.achieveRaise(circleId, questionId, questionType,teacherId);
+        return achieveRaiseService.achieveRaise(circleId, questionId, questionType, teacherId);
     }
 
 }

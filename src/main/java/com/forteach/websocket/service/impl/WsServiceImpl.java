@@ -1,7 +1,7 @@
 package com.forteach.websocket.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.forteach.websocket.common.BigQueKey;
+import com.forteach.websocket.service.Key.BigQueKey;
 import com.forteach.websocket.common.ClassRoomKey;
 import com.forteach.websocket.domain.ToStudentPush;
 import com.forteach.websocket.domain.ToTeacherPush;

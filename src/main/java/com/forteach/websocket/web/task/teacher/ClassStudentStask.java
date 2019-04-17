@@ -1,19 +1,20 @@
 package com.forteach.websocket.web.task.teacher;
 
 import com.forteach.websocket.domain.ToTeacherPush;
-import com.forteach.websocket.service.RedisInteract;
 import com.forteach.websocket.service.WsService;
+import com.forteach.websocket.service.impl.ClassStudentService;
 import com.forteach.websocket.service.teacher.push.ClassStudentPush;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Objects;
 
 /**
  * @Description:推送班级加入的学生
- * @author: liu zhenming
+ * @author: zjw
  * @version: V1.0
  * @date: 2018/12/27  14:42
  */
@@ -22,7 +23,7 @@ import java.util.Objects;
 public class ClassStudentStask {
 
     @Resource
-    private RedisInteract interact;
+    private ClassStudentService classStudentService;
 
     @Resource
     private WsService wsService;
@@ -38,7 +39,7 @@ public class ClassStudentStask {
      */
     @Scheduled(initialDelay = 1000 * 10, fixedDelay = 1000)
     public void refreshTeacherInfo() {
-        interact.getOpenRooms()
+        classStudentService.getOpenRooms()
                 .stream()
                 .filter(Objects::nonNull)
                 .peek(c -> {
@@ -46,7 +47,7 @@ public class ClassStudentStask {
                         log.debug("推送的教师课堂 circleId : [{}]", c);
                     }
                 })
-                .forEach(circleId -> pushClassStudent(circleId, interact.getRoomTeacherId(circleId))
+                .forEach(circleId -> pushClassStudent(circleId, classStudentService.getRoomTeacherId(circleId))
                 );
     }
 

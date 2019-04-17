@@ -1,7 +1,6 @@
 package com.forteach.websocket.web.task.teacher;
 
 import com.forteach.websocket.domain.ToTeacherPush;
-import com.forteach.websocket.service.RedisInteract;
 import com.forteach.websocket.service.WsService;
 import com.forteach.websocket.service.teacher.push.AchieveRaisePush;
 import lombok.extern.slf4j.Slf4j;
@@ -22,9 +21,6 @@ import java.util.Objects;
 public class SendRaiseStask {
 
     @Resource
-    private RedisInteract interact;
-
-    @Resource
     private WsService wsService;
 
     /**
@@ -38,7 +34,7 @@ public class SendRaiseStask {
      */
     @Scheduled(initialDelay = 1000 * 10, fixedDelay = 1000)
     public void refreshTeacherInfo() {
-        interact.getOpenRooms()
+        achieveRaisePush.getOpenRooms()
                 .stream()
                 .filter(Objects::nonNull)
                 .peek(c -> {

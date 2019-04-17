@@ -8,8 +8,6 @@ import com.forteach.websocket.util.StringUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Service;
-import static com.forteach.websocket.common.Dic.TOKEN_STUDENT;
-import static com.forteach.websocket.common.Dic.USER_TOKEN;
 
 /**
  * @author: zhangyy
@@ -24,18 +22,27 @@ public class TokenServiceImpl implements TokenService {
     @Value("${token.salt}")
     private String salt;
 
+    /**
+     * 用户token 认证前缀
+     */
+    public static final String USER_TOKEN = "userToken$";
+    /**
+     * 微信端学生类型
+     */
+    public final static String TOKEN_STUDENT = "student";
+
     private final HashOperations<String, String, String> hashOperations;
 
-    public TokenServiceImpl(HashOperations<String, String, String> hashOperations){
+    public TokenServiceImpl(HashOperations<String, String, String> hashOperations) {
         this.hashOperations = hashOperations;
     }
 
-    private String findUid(String token){
+    private String findUid(String token) {
         return JWT.decode(token).getAudience().get(0);
     }
 
     @Override
-    public String getType(String token){
+    public String getType(String token) {
         return JWT.decode(token).getAudience().get(1);
     }
 
@@ -51,10 +58,10 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public String getUid(String token){
+    public String getUid(String token) {
         String type = getType(token);
         String uId = findUid(token);
-        if (StringUtil.isNotEmpty(type) && TOKEN_STUDENT.equals(type)){
+        if (StringUtil.isNotEmpty(type) && TOKEN_STUDENT.equals(type)) {
             return hashOperations.get(USER_TOKEN.concat(uId), "studentId");
         }
         return uId;

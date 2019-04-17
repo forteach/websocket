@@ -3,7 +3,8 @@ package com.forteach.websocket.service.teacher.push;
 import com.forteach.websocket.domain.AchieveJoin;
 import com.forteach.websocket.domain.Students;
 import com.forteach.websocket.domain.ToTeacherPush;
-import com.forteach.websocket.service.StudentsService;
+import com.forteach.websocket.service.impl.StudentsService;
+import com.forteach.websocket.service.impl.TeacherService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
@@ -25,7 +26,7 @@ import static com.forteach.websocket.service.WsService.SESSION_MAP;
 public class ClassStudentPush {
 
     @Resource
-    private TeacherInteractImpl teacherInteract;
+    private TeacherService teacherService;
 
     @Resource
     private StudentsService studentsService;
@@ -75,13 +76,13 @@ public class ClassStudentPush {
 
     /**
      * 生成需要推送的加入课堂学生详情数据
-     * @param uid
+     * @param teacherId
      * @param circleId
      * @return
      */
-    public AchieveJoin achieveInteractiveStudents(String uid,String circleId) {
+    public AchieveJoin achieveInteractiveStudents(String teacherId,String circleId) {
         //获得需要推送的学生列表Id
-        List<Students> list = teacherInteract.getInteractiveStudents(circleId, uid)
+        List<Students> list = teacherService.getInteractiveStudents(circleId, teacherId)
                 .stream()
                 .filter(Objects::nonNull)
                 .map(studentsService::findStudentsBrief)

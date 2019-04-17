@@ -1,4 +1,4 @@
-package com.forteach.websocket.common;
+package com.forteach.websocket.service.Key;
 
 /**
  * @Description:
@@ -12,16 +12,6 @@ public class BigQueKey {
      * 互动提问hash前缀(习题库\头脑风暴等。。。)
      */
     public static final String CLASSROOM_ASK_NOW= "now";
-
-    /**
-     * 互动提问hash前缀(习题库\头脑风暴等。。。)
-     */
-    public static final String CLASSROOM_ASK_PRVE= "prve";
-
-    /**
-     * 课堂提问答案等前缀
-     */
-    public static final String EXAMINEE_IS_REPLY_KEY = "askReply";
 
     /**
      * 课堂问题前缀
@@ -83,15 +73,6 @@ public class BigQueKey {
     }
 
     /**
-     * 课堂题目上一题前缀
-     *
-     * @return 上一次的问题前缀+课堂+问题类型+回答方式=ForValu
-     */
-    public static String askTypeQuestionsIdPrve(final String questionType, String circleId, String interactive) {
-        return CLASSROOM_ASK_PRVE.concat(askTypeQuestionsId(questionType,circleId,interactive));
-    }
-
-    /**
      * 课堂所选单道题目前缀
      *
      * @return 问题前缀+课堂+问题类型+回答方式+单个题目ID=ForSet
@@ -143,14 +124,6 @@ public class BigQueKey {
         return  circleId.concat("asknow").concat(questionId);
     }
 
-    /**
-     * 课堂互动的hash前缀
-     *
-     * @return 问题前缀+课堂+问题类型+回答方式
-     */
-    public static String askQuestionsId(final QuestionType type, String circleId) {
-        return circleId.concat(BigQueKey.CLASSROOM_ASK_QUESTIONS_ID).concat(type.name());
-    }
 
     /**
      * 课堂练习互动前缀

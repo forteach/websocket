@@ -1,8 +1,8 @@
 package com.forteach.websocket.web.task.teacher;
 
 import com.forteach.websocket.domain.ToTeacherPush;
-import com.forteach.websocket.service.RedisInteract;
 import com.forteach.websocket.service.WsService;
+import com.forteach.websocket.service.impl.ClassStudentService;
 import com.forteach.websocket.service.teacher.push.AchieveAnswerPush;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,12 +21,6 @@ import java.util.Objects;
 @Component
 public class SendAnswerStask {
 
-//    @Resource
-//    private InteractService interactService;
-
-    @Resource
-    private RedisInteract interact;
-
     @Resource
     private WsService wsService;
 
@@ -39,7 +33,7 @@ public class SendAnswerStask {
      */
     @Scheduled(initialDelay = 1000 * 10, fixedDelay = 1000)
     public void refreshTeacherInfo() {
-        interact.getOpenRooms()
+        achieveAnswerPush.getOpenRooms()
                 .stream()
                 .filter(Objects::nonNull)
                 .peek(c -> {
