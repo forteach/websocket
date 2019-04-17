@@ -66,6 +66,17 @@ public class StuInteractImpl {
     }
 
     /**
+     *获得当前课堂活动的多题目列表
+     * @param type  课堂问题活动  练习册 、调查
+     * @param circleId
+     * @return
+     */
+    public List<String> getNowQuestId(QuestionType type,String circleId) {
+        String key= BigQueKey.bookTypeQuestionsList(circleId);
+        return stringRedisTemplate.opsForList().range(key,0,-1);
+    }
+
+    /**
      * 获得当前题目的交互类型
      * @param circleId
      * @return
@@ -99,6 +110,15 @@ public class StuInteractImpl {
      */
     public String getQuestNoReceiveSelectStu(String circleId){
         return hashOperations.get(BigQueKey.QuestionsIdNow(circleId), "noRreceiveSelected");
+    }
+
+    /**
+     * 获得当前开课课堂多题列表，未收到推送标记的学生列表
+     * @param circleId
+     * @return
+     */
+    public String getMoreQuestNoReceiveSelectStu(String circleId){
+        return hashOperations.get(BigQueKey.questionsBookNow(circleId), "noRreceiveSelected");
     }
 
     /**

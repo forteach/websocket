@@ -40,6 +40,16 @@ public class BigQueKey {
     //刷新清除场景命名问题举手场景
     public static final String CLASSROOM_CLEAR_TAG_RAISE="raise";
 
+    /**
+     * 互动练习册发布
+     */
+    public static final String CLASSROOM_BOOK_QUESTIONS_LIST = "bookList";
+
+    /**
+     * 课堂练习册
+     */
+    public static final String CLASSROOM_BOOK_NOW= "nowBook";
+
     //缓存当前已发布的题目题干内容，不分课堂。
     public static String QuestionsNow(String questionId) {
         return CLASSROOM_ASK_NOW.concat(questionId);
@@ -140,6 +150,24 @@ public class BigQueKey {
      */
     public static String askQuestionsId(final QuestionType type, String circleId) {
         return circleId.concat(BigQueKey.CLASSROOM_ASK_QUESTIONS_ID).concat(type.name());
+    }
+
+    /**
+     * 课堂练习互动前缀
+     *
+     * @return  题目列表List
+     */
+    public static String bookTypeQuestionsList(final String circleId) {
+        return circleId.concat(CLASSROOM_BOOK_QUESTIONS_LIST);
+    }
+
+    /**
+     * 课堂题目当前前缀
+     *
+     * @return now+课堂Id=map
+     */
+    public static String questionsBookNow(final String circleId) {
+        return CLASSROOM_BOOK_NOW.concat(circleId);
     }
 
 }

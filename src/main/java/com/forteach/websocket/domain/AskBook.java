@@ -39,4 +39,9 @@ public class AskBook<T> {
         this.selected = selected;
     }
 
+    public AskBook(String cut, List<T> bookQuestions) {
+        this.cut = cut;
+        this.bookQuestions = bookQuestions;
+    }
+
 }
