@@ -6,6 +6,7 @@ import com.forteach.websocket.common.QuestionType;
 import com.forteach.websocket.domain.BigQuestion;
 import com.forteach.websocket.repository.BigQuestionRepository;
 import com.forteach.websocket.service.Key.BigQueKey;
+import com.forteach.websocket.service.Key.SingleQueKey;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -41,9 +42,9 @@ public class SingleQuestService {
      * @return
      */
     public BigQuestion getBigQuestion(String questionId){
-        String key= BigQueKey.QuestionsNow(questionId);
+        String key= SingleQueKey.QuestionsNow(questionId);
        return stringRedisTemplate.hasKey(key) ? JSON.parseObject(stringRedisTemplate.opsForValue()
-               .get(BigQueKey.QuestionsNow(questionId)),BigQuestion.class) : bigQuestionRepository.findById(questionId).orElse(new BigQuestion());
+               .get(SingleQueKey.QuestionsNow(questionId)),BigQuestion.class) : bigQuestionRepository.findById(questionId).orElse(new BigQuestion());
     }
 
 
@@ -55,7 +56,7 @@ public class SingleQuestService {
      * @return
      */
     public String getNowQuestId(QuestionType type,String circleId,String Interact) {
-        String key= BigQueKey.askTypeQuestionsIdNow(type.name(), circleId, Interact);
+        String key= SingleQueKey.askTypeQuestionsIdNow(type.name(), circleId, Interact);
         return stringRedisTemplate.opsForValue().get(key);
     }
 
@@ -66,7 +67,7 @@ public class SingleQuestService {
      * @return
      */
     public String getNowQuestInteractive(String circleId) {
-        return hashOperations.get(BigQueKey.QuestionsIdNow(circleId), "interactive");
+        return hashOperations.get(SingleQueKey.QuestionsIdNow(circleId), "interactive");
     }
 
     /**
@@ -75,7 +76,7 @@ public class SingleQuestService {
      * @return
      */
     public String getNowQuestCategory(String circleId) {
-        return hashOperations.get(BigQueKey.QuestionsIdNow(circleId), "category");
+        return hashOperations.get(SingleQueKey.QuestionsIdNow(circleId), "category");
     }
 
 
@@ -85,7 +86,7 @@ public class SingleQuestService {
      * @return
      */
     public String getQuestNoReceiveSelectStu(String circleId){
-        return hashOperations.get(BigQueKey.QuestionsIdNow(circleId), "noRreceiveSelected");
+        return hashOperations.get(SingleQueKey.QuestionsIdNow(circleId), "noRreceiveSelected");
     }
 
     /**

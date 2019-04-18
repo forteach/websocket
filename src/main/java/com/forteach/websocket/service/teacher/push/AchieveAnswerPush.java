@@ -1,6 +1,7 @@
 package com.forteach.websocket.service.teacher.push;
 
 import com.forteach.websocket.domain.*;
+import com.forteach.websocket.service.Key.AchieveAnswerKey;
 import com.forteach.websocket.service.impl.AchieveAnswerService;
 import com.forteach.websocket.service.impl.ClassStudentService;
 import com.forteach.websocket.service.impl.StudentsService;
@@ -33,10 +34,7 @@ public class AchieveAnswerPush {
     @Resource
     private StudentsService studentsService;
 
-    /**
-     * 已回答
-     */
-    public static final String ASK_CIRCLE_ANSWER_DID = "2";
+
 
     public List<String> getOpenRooms(){
         return classStudentService.getOpenRooms();
@@ -125,7 +123,7 @@ public class AchieveAnswerPush {
                 //获得学生的批改结果
                 String piGaiResult=achieveAnswerService.piGaiResult(uCircle,questionId,type.name(),stuid);
                 //创建学生回答推送对象
-                return new CircleAnswer(uCircle,questionId,student, ASK_CIRCLE_ANSWER_DID, askAnswerInfo,piGaiResult);
+                return new CircleAnswer(uCircle,questionId,student, AchieveAnswerKey.ASK_CIRCLE_ANSWER_DID, askAnswerInfo,piGaiResult);
 
             }).collect(Collectors.toList());
         }

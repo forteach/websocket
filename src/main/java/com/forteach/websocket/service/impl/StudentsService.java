@@ -1,13 +1,11 @@
 package com.forteach.websocket.service.impl;
 
 import com.forteach.websocket.domain.Students;
+import com.forteach.websocket.service.Key.ClassStudentKey;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
-
-import static com.forteach.websocket.common.KeyStorage.STUDENT_ADO;
 
 /**
  * @Description:
@@ -23,10 +21,6 @@ public class StudentsService {
     @Resource
     private HashOperations<String, String, String> hashOperations;
 
-    public void getInteractiveStudents(){
-
-    }
-
 
     public Students findStudentsBrief(final String id) {
         return Students.builder().id(id).name(findStudentsName(id)).portrait(findStudentsPortrait(id)).build();
@@ -39,7 +33,7 @@ public class StudentsService {
      * @return
      */
     private String findStudentsName(final String id) {
-        return hashOperations.get(STUDENT_ADO.concat(id), "name");
+        return hashOperations.get(ClassStudentKey.STUDENT_ADO.concat(id), "name");
     }
 
     /**
@@ -49,6 +43,6 @@ public class StudentsService {
      * @return
      */
     private String findStudentsPortrait(final String id) {
-        return hashOperations.get(STUDENT_ADO.concat(id), "portrait");
+        return hashOperations.get(ClassStudentKey.STUDENT_ADO.concat(id), "portrait");
     }
 }

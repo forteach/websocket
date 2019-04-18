@@ -45,6 +45,18 @@ public class SingleQueKey {
      */
     public static final String CLASSROOM_BOOK_NOW = "nowBook";
 
+    //缓存当前已发布的题目题干内容，不分课堂。
+    public static String QuestionsNow(String questionId) {
+        return CLASSROOM_ASK_NOW.concat(questionId);
+    }
+    /**
+     * 课堂题目当前前缀
+     *
+     * @return now+课堂Id=map
+     */
+    public static String QuestionsIdNow(String circleId) {
+        return CLASSROOM_ASK_NOW.concat(circleId);
+    }
 
     /**
      * 课堂题目当前前缀

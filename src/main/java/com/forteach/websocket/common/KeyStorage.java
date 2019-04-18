@@ -15,10 +15,7 @@ public class KeyStorage {
      *
      */
     public static final String INTERACTION_UID_SET_PREFIX = "c.f.w.c.actionUidSet";
-    /**
-     * 学生信息前缀
-     */
-    public static final String STUDENT_ADO = "studentsData$";
+
     /**
      *
      */

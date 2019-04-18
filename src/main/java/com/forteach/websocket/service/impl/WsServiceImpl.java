@@ -1,10 +1,13 @@
 package com.forteach.websocket.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.forteach.websocket.service.Key.AchieveAnswerKey;
+import com.forteach.websocket.service.Key.AchieveRaiseKey;
 import com.forteach.websocket.service.Key.BigQueKey;
 import com.forteach.websocket.common.ClassRoomKey;
 import com.forteach.websocket.domain.ToStudentPush;
 import com.forteach.websocket.domain.ToTeacherPush;
+import com.forteach.websocket.service.Key.ClassStudentKey;
 import com.forteach.websocket.service.WsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
@@ -82,15 +85,15 @@ public class WsServiceImpl implements WsService {
            if(!radon.equals(random) )
            {
                 //随机数已经改变
-               stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid, BigQueKey.CLASSROOM_CLEAR_TAG_JION),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES, Duration.ofSeconds(60*60*2));
-               stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid,BigQueKey.CLASSROOM_CLEAR_TAG_ANSWER),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES, Duration.ofSeconds(60*60*2));
-               stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid,BigQueKey.CLASSROOM_CLEAR_TAG_RAISE),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES, Duration.ofSeconds(60*60*2));
+               stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid, ClassStudentKey.CLASSROOM_CLEAR_TAG_JION),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES, Duration.ofSeconds(60*60*2));
+               stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid,AchieveAnswerKey.CLASSROOM_CLEAR_TAG_ANSWER),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES, Duration.ofSeconds(60*60*2));
+               stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid, AchieveRaiseKey.CLASSROOM_CLEAR_TAG_RAISE),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES, Duration.ofSeconds(60*60*2));
            }
         }else{
 
-              stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid,BigQueKey.CLASSROOM_CLEAR_TAG_JION),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_NO, Duration.ofSeconds(60*60*2));
-              stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid,BigQueKey.CLASSROOM_CLEAR_TAG_ANSWER),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_NO, Duration.ofSeconds(60*60*2));
-              stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid,BigQueKey.CLASSROOM_CLEAR_TAG_RAISE),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_NO, Duration.ofSeconds(60*60*2));
+              stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid,ClassStudentKey.CLASSROOM_CLEAR_TAG_JION),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_NO, Duration.ofSeconds(60*60*2));
+              stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid, AchieveAnswerKey.CLASSROOM_CLEAR_TAG_ANSWER),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_NO, Duration.ofSeconds(60*60*2));
+              stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid,AchieveRaiseKey.CLASSROOM_CLEAR_TAG_RAISE),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_NO, Duration.ofSeconds(60*60*2));
         }
         //设置缓存随机数
         stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandom(circle,uid),random, Duration.ofSeconds(60*60*2));
@@ -107,8 +110,8 @@ public class WsServiceImpl implements WsService {
     @Override
     public boolean unSubscript(String uid) {
         try {
-//            stringRedisTemplate.opsForSet().remove(INTERACTION_UID_SET_PREFIX, uid);
-//            stringRedisTemplate.delete(actionPropertyKey(uid));
+            stringRedisTemplate.opsForSet().remove(INTERACTION_UID_SET_PREFIX, uid);
+            stringRedisTemplate.delete(actionPropertyKey(uid));
         } catch (Exception e) {
             log.error("unSubscript error {}", e.getMessage());
         }
