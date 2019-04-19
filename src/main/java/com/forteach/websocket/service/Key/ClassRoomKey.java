@@ -1,4 +1,4 @@
-package com.forteach.websocket.common;
+package com.forteach.websocket.service.Key;
 
 /**
  * @Description:
@@ -7,7 +7,6 @@ package com.forteach.websocket.common;
  * @date: 2018/11/9 11:03
  */
 public class ClassRoomKey {
-
 
     /**
      * 课堂SCOKET随机数YES状态,改变状态

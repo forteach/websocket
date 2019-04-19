@@ -1,6 +1,6 @@
 package com.forteach.websocket.service.impl;
 
-import com.forteach.websocket.common.ClassRoomKey;
+import com.forteach.websocket.service.Key.ClassRoomKey;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;

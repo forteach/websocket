@@ -1,7 +1,7 @@
 package com.forteach.websocket.service.teacher.push.repeat;
 
 import com.forteach.websocket.service.Key.AchieveAnswerKey;
-import com.forteach.websocket.common.ClassRoomKey;
+import com.forteach.websocket.service.Key.ClassRoomKey;
 import org.springframework.stereotype.Service;
 
 /**

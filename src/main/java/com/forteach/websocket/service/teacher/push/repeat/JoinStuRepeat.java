@@ -1,6 +1,6 @@
 package com.forteach.websocket.service.teacher.push.repeat;
 
-import com.forteach.websocket.common.ClassRoomKey;
+import com.forteach.websocket.service.Key.ClassRoomKey;
 import com.forteach.websocket.service.Key.ClassStudentKey;
 import org.springframework.stereotype.Service;
 

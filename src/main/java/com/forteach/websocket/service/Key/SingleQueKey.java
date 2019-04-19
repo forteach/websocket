@@ -13,7 +13,6 @@ public class SingleQueKey {
      */
     public static final String ASK_INTERACTIVE_RAISE = "raise";
 
-
     /**
      * 提问 选中
      */
@@ -35,18 +34,9 @@ public class SingleQueKey {
     public static final String CLASSROOM_ASK_QUESTIONS_ID = "ask";
 
 
-    /**
-     * 互动练习册发布
-     */
-    public static final String CLASSROOM_BOOK_QUESTIONS_LIST = "bookList";
-
-    /**
-     * 课堂练习册
-     */
-    public static final String CLASSROOM_BOOK_NOW = "nowBook";
 
     //缓存当前已发布的题目题干内容，不分课堂。
-    public static String QuestionsNow(String questionId) {
+    public static String questionsNow(String questionId) {
         return CLASSROOM_ASK_NOW.concat(questionId);
     }
     /**
@@ -54,7 +44,7 @@ public class SingleQueKey {
      *
      * @return now+课堂Id=map
      */
-    public static String QuestionsIdNow(String circleId) {
+    public static String questionsIdNow(String circleId) {
         return CLASSROOM_ASK_NOW.concat(circleId);
     }
 

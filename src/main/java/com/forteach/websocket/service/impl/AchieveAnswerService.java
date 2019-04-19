@@ -1,8 +1,8 @@
 package com.forteach.websocket.service.impl;
 
-import com.forteach.websocket.common.ClassRoomKey;
+import com.forteach.websocket.service.Key.ClassRoomKey;
 import com.forteach.websocket.service.Key.AchieveAnswerKey;
-import com.forteach.websocket.service.Key.BigQueKey;
+import com.forteach.websocket.service.Key.SingleQueKey;
 import com.forteach.websocket.service.teacher.push.repeat.AnswerRepeat;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
@@ -41,7 +41,7 @@ public class AchieveAnswerService {
      * @return
      */
     public String getNowQuestionId(String circleId) {
-        return hashOperations.get(AchieveAnswerKey.QuestionsIdNow(circleId), "questionId");
+        return hashOperations.get(SingleQueKey.questionsIdNow(circleId), "questionId");
     }
 
     /**

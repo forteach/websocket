@@ -1,11 +1,10 @@
 package com.forteach.websocket.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.forteach.websocket.common.ClassRoomKey;
+import com.forteach.websocket.service.Key.ClassRoomKey;
 import com.forteach.websocket.common.QuestionType;
 import com.forteach.websocket.domain.BigQuestion;
 import com.forteach.websocket.repository.BigQuestionRepository;
-import com.forteach.websocket.service.Key.BigQueKey;
 import com.forteach.websocket.service.Key.SingleQueKey;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
@@ -42,9 +41,9 @@ public class SingleQuestService {
      * @return
      */
     public BigQuestion getBigQuestion(String questionId){
-        String key= SingleQueKey.QuestionsNow(questionId);
+        String key= SingleQueKey.questionsNow(questionId);
        return stringRedisTemplate.hasKey(key) ? JSON.parseObject(stringRedisTemplate.opsForValue()
-               .get(SingleQueKey.QuestionsNow(questionId)),BigQuestion.class) : bigQuestionRepository.findById(questionId).orElse(new BigQuestion());
+               .get(SingleQueKey.questionsNow(questionId)),BigQuestion.class) : bigQuestionRepository.findById(questionId).orElse(new BigQuestion());
     }
 
 
@@ -67,7 +66,7 @@ public class SingleQuestService {
      * @return
      */
     public String getNowQuestInteractive(String circleId) {
-        return hashOperations.get(SingleQueKey.QuestionsIdNow(circleId), "interactive");
+        return hashOperations.get(SingleQueKey.questionsIdNow(circleId), "interactive");
     }
 
     /**
@@ -76,7 +75,7 @@ public class SingleQuestService {
      * @return
      */
     public String getNowQuestCategory(String circleId) {
-        return hashOperations.get(SingleQueKey.QuestionsIdNow(circleId), "category");
+        return hashOperations.get(SingleQueKey.questionsIdNow(circleId), "category");
     }
 
 
@@ -86,7 +85,7 @@ public class SingleQuestService {
      * @return
      */
     public String getQuestNoReceiveSelectStu(String circleId){
-        return hashOperations.get(SingleQueKey.QuestionsIdNow(circleId), "noRreceiveSelected");
+        return hashOperations.get(SingleQueKey.questionsIdNow(circleId), "noRreceiveSelected");
     }
 
     /**

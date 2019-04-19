@@ -1,6 +1,6 @@
 package com.forteach.websocket.service.impl;
 
-import com.forteach.websocket.common.ClassRoomKey;
+import com.forteach.websocket.service.Key.ClassRoomKey;
 import com.forteach.websocket.service.Key.ClassStudentKey;
 import com.forteach.websocket.service.teacher.push.repeat.JoinStuRepeat;
 import lombok.extern.slf4j.Slf4j;

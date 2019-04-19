@@ -5,6 +5,7 @@ import com.forteach.websocket.service.Key.MoreQueKey;
 import com.forteach.websocket.common.QuestionType;
 import com.forteach.websocket.domain.BigQuestion;
 import com.forteach.websocket.repository.BigQuestionRepository;
+import com.forteach.websocket.service.Key.SingleQueKey;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -40,9 +41,9 @@ public class MoreQuestService {
      * @return
      */
     public BigQuestion getBigQuestion(String questionId) {
-        String key = MoreQueKey.QuestionsNow(questionId);
+        String key = SingleQueKey.questionsNow(questionId);
         return stringRedisTemplate.hasKey(key) ? JSON.parseObject(stringRedisTemplate.opsForValue()
-                .get(MoreQueKey.QuestionsNow(questionId)), BigQuestion.class) : bigQuestionRepository
+                .get(key), BigQuestion.class) : bigQuestionRepository
                 .findById(questionId)
                 .orElse(new BigQuestion());
     }

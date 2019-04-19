@@ -1,6 +1,6 @@
 package com.forteach.websocket.service.teacher.push.repeat;
 
-import com.forteach.websocket.common.ClassRoomKey;
+import com.forteach.websocket.service.Key.ClassRoomKey;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import javax.annotation.Resource;

@@ -1,6 +1,6 @@
 package com.forteach.websocket.service.impl;
 
-import com.forteach.websocket.common.ClassRoomKey;
+import com.forteach.websocket.service.Key.ClassRoomKey;
 import com.forteach.websocket.domain.AchieveRaise;
 import com.forteach.websocket.domain.Students;
 import com.forteach.websocket.service.Key.AchieveRaiseKey;

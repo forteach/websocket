@@ -13,22 +13,10 @@ public class AchieveAnswerKey {
      */
     public static final String ASK_CIRCLE_ANSWER_DID = "2";
 
-    /**
-     * 互动提问hash前缀(习题库\头脑风暴等。。。)
-     */
-    public static final String CLASSROOM_ASK_NOW= "now";
 
     //刷新清除场景命名问题回答场景
     public static final String CLASSROOM_CLEAR_TAG_ANSWER="answer";
 
-    /**
-     * 课堂题目当前前缀
-     *
-     * @return now+课堂Id=map
-     */
-    public static String QuestionsIdNow(String circleId) {
-        return CLASSROOM_ASK_NOW.concat(circleId);
-    }
 
     /**
      * 课堂当前道题目回答前缀
