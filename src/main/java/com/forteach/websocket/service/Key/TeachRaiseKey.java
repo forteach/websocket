@@ -6,12 +6,8 @@ package com.forteach.websocket.service.Key;
  * @version: V1.0
  * @date: 2018/11/9 11:03
  */
-public class AchieveRaiseKey {
+public class TeachRaiseKey {
 
-    /**
-     * 互动提问hash前缀(习题库\头脑风暴等。。。)
-     */
-    public static final String CLASSROOM_ASK_NOW = "now";
 
     /**
      * 互动提问hash前缀(习题库\头脑风暴等。。。)
@@ -23,13 +19,16 @@ public class AchieveRaiseKey {
 
 
     /**
-     * 课堂题目当前前缀
-     *
-     * @return now+课堂Id=map
+     * 加入课堂，已推送过的学生题目回答
+     * @param circleId
+     * @param questionId
+     * @param pushType   推送：push  拉取：pull
+     * @return
      */
-    public static String QuestionsIdNow(String circleId) {
-        return CLASSROOM_ASK_NOW.concat(circleId);
+    public static String getJoinTuisongRaiseKey(String circleId,String questionId,String pushType){
+        return  pushType.concat(circleId.concat(questionId).concat(ClassRoomKey.ROOM_JOIN_RAISE_TS));
     }
+
 
     /**
      * 课堂互动前缀
@@ -37,7 +36,7 @@ public class AchieveRaiseKey {
      * @return 问题前缀+课堂+问题类型+回答方式  题目列表List
      */
     public static String askTypeQuestionsId(final String questionType, String circleId, String interactive) {
-        return circleId.concat(AchieveRaiseKey.CLASSROOM_ASK_QUESTIONS_ID).concat(questionType.concat(interactive));
+        return circleId.concat(TeachRaiseKey.CLASSROOM_ASK_QUESTIONS_ID).concat(questionType.concat(interactive));
     }
 
     /**

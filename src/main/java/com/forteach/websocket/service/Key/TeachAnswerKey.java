@@ -6,7 +6,7 @@ package com.forteach.websocket.service.Key;
  * @version: V1.0
  * @date: 2018/11/9 11:03
  */
-public class AchieveAnswerKey {
+public class TeachAnswerKey {
 
     /**
      * 已回答
@@ -15,8 +15,30 @@ public class AchieveAnswerKey {
 
 
     //刷新清除场景命名问题回答场景
-    public static final String CLASSROOM_CLEAR_TAG_ANSWER="answer";
+    public static final String CLEAR_TAG_ANSWER="answer";
 
+    //批改
+    public static final String PIGAI="pigai";
+
+    //回答列表
+    public static final String ANSWER_LIST="answerlist";
+
+
+    /**
+     * 加入课堂，已推送过得学生回答
+     */
+    public static final String ROOM_JOIN_ANSW_TS = "RoomJoinAnsw";
+
+    /**
+     * 加入课堂，已推送过的学生题目回答
+     * @param circleId
+     * @param questionId
+     * @param pushType  推送类型  pushQe：提问   pushAw：回答
+     * @return
+     */
+    public static String getJoinTuisongAnswerKey(String circleId,String questionId,String pushType){
+        return pushType.concat(circleId.concat(questionId).concat(ROOM_JOIN_ANSW_TS));
+    }
 
     /**
      * 课堂当前道题目回答前缀
@@ -26,7 +48,7 @@ public class AchieveAnswerKey {
      * @return 单个题目ID+前缀+学生编号=题目答案  Hashmap
      */
     public static String answerTypeQuestionsId(final String circleId,String questionId,String typeName) {
-        return questionId.concat("answer").concat(typeName).concat(circleId);
+        return questionId.concat(CLEAR_TAG_ANSWER).concat(typeName).concat(circleId);
     }
 
     /**
@@ -37,7 +59,7 @@ public class AchieveAnswerKey {
      * @return 单个题目ID+前缀+学生编号=题目答案=Hashmap
      */
     public static String piGaiTypeQuestionsId(final String circleId,String questionId,String typeName) {
-        return questionId.concat("pigai").concat(typeName).concat(circleId);
+        return questionId.concat(PIGAI).concat(typeName).concat(circleId);
     }
 
     /**
@@ -49,7 +71,7 @@ public class AchieveAnswerKey {
      */
     public static String answerTypeQuestStuList(final String circleId,String questionId,String typeName) {
         //TODO 需要处理为空??
-        return questionId.concat("answerlist").concat(typeName).concat(circleId);
+        return questionId.concat(ANSWER_LIST).concat(typeName).concat(circleId);
     }
 
 }

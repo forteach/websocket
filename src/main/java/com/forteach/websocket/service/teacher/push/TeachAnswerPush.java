@@ -1,7 +1,7 @@
 package com.forteach.websocket.service.teacher.push;
 
 import com.forteach.websocket.domain.*;
-import com.forteach.websocket.service.Key.AchieveAnswerKey;
+import com.forteach.websocket.service.Key.TeachAnswerKey;
 import com.forteach.websocket.service.impl.AchieveAnswerService;
 import com.forteach.websocket.service.impl.ClassStudentService;
 import com.forteach.websocket.service.impl.StudentsService;
@@ -23,7 +23,7 @@ import static com.forteach.websocket.service.WsService.SESSION_MAP;
  */
 @Slf4j
 @Component
-public class AchieveAnswerPush {
+public class TeachAnswerPush {
 
     @Resource
     private ClassStudentService classStudentService;
@@ -123,7 +123,7 @@ public class AchieveAnswerPush {
                 //获得学生的批改结果
                 String piGaiResult=achieveAnswerService.piGaiResult(uCircle,questionId,type.name(),stuid);
                 //创建学生回答推送对象
-                return new CircleAnswer(uCircle,questionId,student, AchieveAnswerKey.ASK_CIRCLE_ANSWER_DID, askAnswerInfo,piGaiResult);
+                return new CircleAnswer(uCircle,questionId,student, TeachAnswerKey.ASK_CIRCLE_ANSWER_DID, askAnswerInfo,piGaiResult);
 
             }).collect(Collectors.toList());
         }

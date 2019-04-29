@@ -33,7 +33,24 @@ public class SingleQueKey {
      */
     public static final String CLASSROOM_ASK_QUESTIONS_ID = "ask";
 
+    /**
+     * 加入课堂，已推送过得学生回答
+     */
+    public static final String ROOM_JOIN_SINGLE_TS = "RoomJoinSingle";
 
+    //刷新清除场景命名问题单题目场景
+    public static final String CLEAR_TAG_SINGLE = "single";
+
+    /**
+     * 加入课堂，已推送过的学生题目回答
+     * @param circleId
+     * @param questionId
+     * @param pushType  推送类型  pushQe：提问   pushAw：回答
+     * @return
+     */
+    public static String getJoinTuiSongSingleKey(String circleId,String questionId,String pushType){
+        return pushType.concat(circleId.concat(questionId).concat(ROOM_JOIN_SINGLE_TS));
+    }
 
     //缓存当前已发布的题目题干内容，不分课堂。
     public static String questionsNow(String questionId) {

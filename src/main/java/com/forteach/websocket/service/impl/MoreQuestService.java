@@ -56,7 +56,7 @@ public class MoreQuestService {
      * @param circleId
      * @return
      */
-    public List<String> getNowMoreQuestId(QuestionType type, String circleId) {
+        public List<String> getNowMoreQuestId(QuestionType type, String circleId) {
         String key = MoreQueKey.bookTypeQuestionsList(type.name(),circleId);
         return stringRedisTemplate.opsForList().range(key, 0, -1);
     }

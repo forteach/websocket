@@ -18,7 +18,13 @@ public class MoreQueKey {
      */
     public static final String CLASSROOM_BOOK_NOW = "nowBook";
 
+    /**
+     * 加入课堂，已推送过得学生回答
+     */
+    public static final String ROOM_JOIN_MORE_TS = "RoomJoinMore";
 
+    //刷新清除场景命名问题多题目场景
+    public static final String CLASSROOM_CLEAR_TAG_MORE = "more";
     /**
      * 课堂多题目活动互动前缀
      *
@@ -35,6 +41,17 @@ public class MoreQueKey {
      */
     public static String questionsBookNowMap(final String typeName, final String circleId) {
         return CLASSROOM_BOOK_NOW.concat(circleId).concat(typeName);
+    }
+
+    /**
+     * 加入课堂，已推送过的学生题目回答
+     * @param circleId
+     * @param questionId
+     * @param pushType  推送类型  pushQe：提问   pushAw：回答
+     * @return
+     */
+    public static String getJoinTuiSongMoreKey(String circleId,String questionId,String pushType){
+        return pushType.concat(circleId.concat(questionId).concat(ROOM_JOIN_MORE_TS));
     }
 
 }

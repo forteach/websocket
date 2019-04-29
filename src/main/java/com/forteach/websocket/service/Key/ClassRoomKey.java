@@ -43,10 +43,6 @@ public class ClassRoomKey {
      */
     public static final String ROOM_JOIN_STU_TS = "RoomJoinStu";
 
-    /**
-     * 加入课堂，已推送过得学生回答
-     */
-    public static final String ROOM_JOIN_ANSW_TS = "RoomJoinAnsw";
 
     /**
      * 加入课堂，已推送过得学生回答
@@ -111,24 +107,6 @@ public class ClassRoomKey {
         return circleId.concat(ClassRoomKey.ROOM_JOIN_STU_TS);
     }
 
-    /**
-     * 加入课堂，已推送过的学生题目回答
-     * @param circleId
-     * @param questionId
-     * @return
-     */
-    public static String getJoinTuisongAnswerKey(String circleId,String questionId){
-        return circleId.concat(questionId).concat(ClassRoomKey.ROOM_JOIN_ANSW_TS);
-    }
 
-    /**
-     * 加入课堂，已推送过的学生题目回答
-     * @param circleId
-     * @param questionId
-     * @return
-     */
-    public static String getJoinTuisongRaiseKey(String circleId,String questionId){
-        return circleId.concat(questionId).concat(ClassRoomKey.ROOM_JOIN_RAISE_TS);
-    }
 
 }

@@ -9,6 +9,16 @@ import java.util.concurrent.TimeUnit;
 
 public abstract class AbsRepeatPush {
 
+    /**
+     * 拉取操作
+     */
+    public static final String ASK_PUSH = "push";
+
+    /**
+     * 推送操作
+     */
+    public static final String ASK_PULL = "pull";
+
     @Resource
     private StringRedisTemplate stringRedisTemplate;
 

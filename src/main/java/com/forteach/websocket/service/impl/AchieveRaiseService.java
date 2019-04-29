@@ -3,7 +3,8 @@ package com.forteach.websocket.service.impl;
 import com.forteach.websocket.service.Key.ClassRoomKey;
 import com.forteach.websocket.domain.AchieveRaise;
 import com.forteach.websocket.domain.Students;
-import com.forteach.websocket.service.Key.AchieveRaiseKey;
+import com.forteach.websocket.service.Key.TeachRaiseKey;
+import com.forteach.websocket.service.Key.SingleQueKey;
 import com.forteach.websocket.service.teacher.push.repeat.RaiseRepeat;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
@@ -38,6 +39,7 @@ public class AchieveRaiseService {
     @Resource
     private RaiseRepeat riseRepeat;
 
+
     /**
      * 获得当前课堂提问的题目ID
      *
@@ -45,7 +47,7 @@ public class AchieveRaiseService {
      * @return
      */
     public String getNowQuestionId(String circleId) {
-        return hashOperations.get(AchieveRaiseKey.QuestionsIdNow(circleId), "questionId");
+        return hashOperations.get(SingleQueKey.questionsIdNow(circleId), "questionId");
     }
 
     /**
@@ -55,7 +57,7 @@ public class AchieveRaiseService {
      * @return
      */
     public String getNoQuestionType(String circleId) {
-        return hashOperations.get(AchieveRaiseKey.QuestionsIdNow(circleId), "questionType");
+        return hashOperations.get(SingleQueKey.questionsIdNow(circleId), "questionType");
     }
 
 
@@ -88,7 +90,7 @@ public class AchieveRaiseService {
      */
     public List<Students> getRaiseStu(String circleId, String questId, String typeName, String teacherId) {
         //获得随机数状态,页面刷新会改变随机数状态
-        String radonTag = stringRedisTemplate.opsForValue().get(ClassRoomKey.getOpenClassRandomTag(circleId, teacherId, AchieveRaiseKey.CLASSROOM_CLEAR_TAG_RAISE));
+        String radonTag = stringRedisTemplate.opsForValue().get(ClassRoomKey.getOpenClassRandomTag(circleId, teacherId, TeachRaiseKey.CLASSROOM_CLEAR_TAG_RAISE));
         //随机数改变，过滤已发送过的学生
         if (radonTag.equals(ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES)) {
             //清除推送学生数据，改变随机值状态也N
@@ -107,7 +109,7 @@ public class AchieveRaiseService {
      * @return
      */
     public List<Students> raiseStudents(String circleId, String questId, String questionType) {
-        return stringRedisTemplate.opsForSet().members(AchieveRaiseKey.askTypeQuestionsId(questionType, circleId, AchieveRaiseKey.CLASSROOM_CLEAR_TAG_RAISE, questId))
+        return stringRedisTemplate.opsForSet().members(TeachRaiseKey.askTypeQuestionsId(questionType, circleId, TeachRaiseKey.CLASSROOM_CLEAR_TAG_RAISE, questId))
                 .stream()
                 .filter(id -> riseRepeat.answerHasJoin(circleId, questId, id))
                 .map(id -> riseRepeat.joinAnswer(circleId, questId, id))

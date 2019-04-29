@@ -1,7 +1,7 @@
 package com.forteach.websocket.service.teacher.push.repeat;
 
 
-import com.forteach.websocket.service.Key.AchieveRaiseKey;
+import com.forteach.websocket.service.Key.TeachRaiseKey;
 import com.forteach.websocket.service.Key.ClassRoomKey;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,7 @@ public class RaiseRepeat extends AbsRepeatPush {
      * @return
      */
     public boolean answerHasJoin(String circleId,String questionId,String stuId){
-        final String key =ClassRoomKey.getJoinTuisongRaiseKey(circleId,questionId);
+        final String key = TeachRaiseKey.getJoinTuisongRaiseKey(circleId,questionId,ASK_PUSH);
         return hasJoin(key,stuId);
     }
 
@@ -31,7 +31,7 @@ public class RaiseRepeat extends AbsRepeatPush {
      * @return
      */
     public String joinAnswer(String circleId,String questionId, String stuId){
-        final String key =ClassRoomKey.getJoinTuisongRaiseKey(circleId,questionId);
+        final String key = TeachRaiseKey.getJoinTuisongRaiseKey(circleId,questionId,ASK_PUSH);
         return join(key,stuId);
     }
 
@@ -42,8 +42,8 @@ public class RaiseRepeat extends AbsRepeatPush {
      * @param teacherId
      */
     public void clearAnswer(final String circleId,String questionId,final String teacherId){
-        final String delKey =ClassRoomKey.getJoinTuisongRaiseKey(circleId,questionId);
-        final String tagKey =ClassRoomKey.getOpenClassRandomTag(circleId,teacherId, AchieveRaiseKey.CLASSROOM_CLEAR_TAG_RAISE);
+        final String delKey = TeachRaiseKey.getJoinTuisongRaiseKey(circleId,questionId,ASK_PUSH);
+        final String tagKey =ClassRoomKey.getOpenClassRandomTag(circleId,teacherId, TeachRaiseKey.CLASSROOM_CLEAR_TAG_RAISE);
         clearJoinTuiSong(delKey,tagKey);
     }
 }

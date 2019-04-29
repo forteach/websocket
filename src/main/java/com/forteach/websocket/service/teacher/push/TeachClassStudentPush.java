@@ -23,7 +23,7 @@ import static com.forteach.websocket.service.WsService.SESSION_MAP;
  */
 @Slf4j
 @Component
-public class ClassStudentPush {
+public class TeachClassStudentPush {
 
     @Resource
     private TeacherService teacherService;

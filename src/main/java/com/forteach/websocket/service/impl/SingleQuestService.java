@@ -6,12 +6,16 @@ import com.forteach.websocket.common.QuestionType;
 import com.forteach.websocket.domain.BigQuestion;
 import com.forteach.websocket.repository.BigQuestionRepository;
 import com.forteach.websocket.service.Key.SingleQueKey;
+import com.forteach.websocket.service.Key.TeachAnswerKey;
+import com.forteach.websocket.service.student.push.repeat.SingleQueRepeat;
+import com.forteach.websocket.service.teacher.push.repeat.AnswerRepeat;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,6 +38,9 @@ public class SingleQuestService {
 
     @Resource
     private BigQuestionRepository bigQuestionRepository;
+
+    @Resource
+    private SingleQueRepeat singleQueRepeat;
 
     /**
      * 获得题目内容
@@ -105,4 +112,40 @@ public class SingleQuestService {
     public String getRoomTeacherId(String circleId) {
         return stringRedisTemplate.opsForValue().get(ClassRoomKey.getRoomTeacherKey(circleId));
     }
+
+    /**
+     * 获得已经接受推送的学生ID
+     *
+     * @param circleId  课堂编号
+     * @param teacherId 教师编号
+     * @return
+     */
+    public String getSingleStu(final String circleId, final String questId, final String stuId, final String teacherId) {
+        //获得随机数状态,页面刷新会改变随机数状态
+        String radonTag = stringRedisTemplate.opsForValue().get(ClassRoomKey.getOpenClassRandomTag(circleId, teacherId, SingleQueKey.CLEAR_TAG_SINGLE));
+        //随机数改变，过滤已发送过的学生
+        if (ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES.equals(radonTag)) {
+            //清除推送学生数据，改变随机值状态也N
+            singleQueRepeat.clear(circleId, questId, teacherId);
+        }
+        //推送学生信息
+        return getSingleStudent(circleId, questId, stuId);
+    }
+    /**
+     * 获取问题已回答的学生id
+     *
+     * @param circleId
+     * @param questId
+     * @param stuId  接受题目学生的ID
+     * @return
+     */
+    public String getSingleStudent(String circleId, String questId, String stuId) {
+        //获得学生回答顺序列表
+        return Arrays.asList(stuId)
+                .stream()
+                .filter(id -> singleQueRepeat.hasJoin(circleId, questId, id))
+                .map(id -> singleQueRepeat.join(circleId, questId, id))
+                .collect(Collectors.joining());
+    }
+
 }

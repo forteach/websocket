@@ -1,14 +1,16 @@
-package com.forteach.websocket.service.teacher.push.repeat;
+package com.forteach.websocket.service.student.push.repeat;
 
+import com.forteach.websocket.service.Key.MoreQueKey;
 import com.forteach.websocket.service.Key.TeachAnswerKey;
 import com.forteach.websocket.service.Key.ClassRoomKey;
+import com.forteach.websocket.service.teacher.push.repeat.AbsRepeatPush;
 import org.springframework.stereotype.Service;
 
 /**
- * 题目回答去重过滤
+ * 拉取题目回答去重过滤
  */
 @Service
-public class AnswerRepeat extends AbsRepeatPush {
+public class MoreQueRepeat extends AbsRepeatPush {
 
     /**
      * 判断题目是否已经加入推送缓存
@@ -17,8 +19,8 @@ public class AnswerRepeat extends AbsRepeatPush {
      * @param stuId
      * @return
      */
-    public boolean answerHasJoin(String circleId,String questionId,String stuId){
-        final String key = TeachAnswerKey.getJoinTuisongAnswerKey(circleId,questionId,ASK_PUSH);
+    public boolean moreQueHasJoin(String circleId,String questionId,String stuId){
+        final String key = MoreQueKey.getJoinTuiSongMoreKey(circleId,questionId,ASK_PULL);
         return hasJoin(key,stuId);
     }
 
@@ -30,7 +32,7 @@ public class AnswerRepeat extends AbsRepeatPush {
      * @return
      */
     public String joinAnswer(String circleId,String questionId, String stuId){
-        final String key = TeachAnswerKey.getJoinTuisongAnswerKey(circleId,questionId,ASK_PUSH);
+        final String key = MoreQueKey.getJoinTuiSongMoreKey(circleId,questionId,ASK_PULL);
         return join(key,stuId);
     }
 
@@ -41,8 +43,8 @@ public class AnswerRepeat extends AbsRepeatPush {
      * @param teacherId
      */
     public void clearAnswer(final String circleId,String questionId,final String teacherId){
-        final String delKey = TeachAnswerKey.getJoinTuisongAnswerKey(circleId,questionId,ASK_PUSH);
-        final String tagKey =ClassRoomKey.getOpenClassRandomTag(circleId,teacherId, TeachAnswerKey.CLEAR_TAG_ANSWER);
+        final String delKey = MoreQueKey.getJoinTuiSongMoreKey(circleId,questionId,ASK_PULL);
+        final String tagKey =ClassRoomKey.getOpenClassRandomTag(circleId,teacherId, MoreQueKey.CLASSROOM_CLEAR_TAG_MORE);
         clearJoinTuiSong(delKey,tagKey);
     }
 }

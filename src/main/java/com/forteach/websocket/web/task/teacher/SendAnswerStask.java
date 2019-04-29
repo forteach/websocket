@@ -2,8 +2,7 @@ package com.forteach.websocket.web.task.teacher;
 
 import com.forteach.websocket.domain.ToTeacherPush;
 import com.forteach.websocket.service.WsService;
-import com.forteach.websocket.service.impl.ClassStudentService;
-import com.forteach.websocket.service.teacher.push.AchieveAnswerPush;
+import com.forteach.websocket.service.teacher.push.TeachAnswerPush;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -26,7 +25,7 @@ public class SendAnswerStask {
 
     //课堂加入学生学生推送
     @Resource
-    private AchieveAnswerPush achieveAnswerPush ;
+    private TeachAnswerPush achieveAnswerPush ;
 
     /**
      * 每隔１秒遍历发送一次在redis

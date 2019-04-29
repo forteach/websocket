@@ -3,7 +3,7 @@ package com.forteach.websocket.web.task.teacher;
 import com.forteach.websocket.domain.ToTeacherPush;
 import com.forteach.websocket.service.WsService;
 import com.forteach.websocket.service.impl.ClassStudentService;
-import com.forteach.websocket.service.teacher.push.ClassStudentPush;
+import com.forteach.websocket.service.teacher.push.TeachClassStudentPush;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -32,7 +32,7 @@ public class ClassStudentStask {
      * 课堂加入学生学生推送
      */
     @Resource
-    private ClassStudentPush classStudentPush;
+    private TeachClassStudentPush classStudentPush;
 
     /**
      * 每隔１秒遍历发送一次在redis 推送的教师相关信息

@@ -76,6 +76,8 @@ public class SingleQuestionPush {
                         .filter(id -> !id.equals(teacherId))
                         .filter(id -> null != SESSION_MAP.get(id))
                         .filter(id -> SESSION_MAP.get(id).isOpen())
+//                        .map(id->singleQuestService.getSingleStu(circleId,questId,id,teacherId))
+//                        .filter(Objects::nonNull)
                         //创建推送数据
                         .map(uid -> TStudentToPush(uid, questId, interactive, category))
                         .filter(Objects::nonNull)
