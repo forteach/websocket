@@ -25,6 +25,12 @@ public class MoreQueKey {
 
     //刷新清除场景命名问题多题目场景
     public static final String CLASSROOM_CLEAR_TAG_MORE = "more";
+
+    /**
+     * 互动方式为练习
+     */
+    public static final String CLASSROOM_BOOK_QUESTIONS_ID = "book";
+
     /**
      * 课堂多题目活动互动前缀
      *

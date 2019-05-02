@@ -4,7 +4,10 @@ import com.forteach.websocket.service.Key.ClassRoomKey;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
+
 import javax.annotation.Resource;
+import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,6 +43,15 @@ public class ClassStudentService {
     public List<String> getOpenRooms() {
         return stringRedisTemplate.opsForSet().members(ClassRoomKey.OPEN_CLASSROOM)
                 .stream().collect(Collectors.toList());
+    }
+
+    /**
+     * 设置当前课堂当前活动主题
+     * @param circleId
+     */
+    public String getInteractionType(String circleId){
+        final String key= ClassRoomKey.getInteractionType(circleId);
+        return stringRedisTemplate.opsForValue().get(key);
     }
 
 

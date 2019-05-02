@@ -1,6 +1,7 @@
 package com.forteach.websocket.web.task.teacher;
 
 import com.forteach.websocket.domain.ToTeacherPush;
+import com.forteach.websocket.service.Key.ClassRoomKey;
 import com.forteach.websocket.service.WsService;
 import com.forteach.websocket.service.impl.ClassStudentService;
 import com.forteach.websocket.service.teacher.push.TeachClassStudentPush;
@@ -58,15 +59,18 @@ public class ClassStudentStask {
      * @param teacherId
      */
     private void pushClassStudent(final String circleId, final String teacherId) {
-        try {
-            // 获取redis中待推送的数据
-            List<ToTeacherPush> pushList = classStudentPush.getClassStudent(circleId, teacherId);
-            if (pushList != null && pushList.size() != 0) {
-                //处理推送
-                wsService.processTeacher(pushList);
+        if(classStudentService.getInteractionType(circleId).equals(ClassRoomKey.CLASSROOM_JOIN_QUESTIONS_ID)){
+            try {
+                // 获取redis中待推送的数据
+                List<ToTeacherPush> pushList = classStudentPush.getClassStudent(circleId, teacherId);
+                if (pushList != null && pushList.size() != 0) {
+                    //处理推送
+                    wsService.processTeacher(pushList);
+                }
+            } catch (Exception e) {
+                log.error(" refreshInfo Task error {} {}", e.getMessage(), e);
             }
-        } catch (Exception e) {
-            log.error(" refreshInfo Task error {} {}", e.getMessage(), e);
         }
+
     }
 }

@@ -1,7 +1,9 @@
 package com.forteach.websocket.web.task.teacher;
 
 import com.forteach.websocket.domain.ToTeacherPush;
+import com.forteach.websocket.service.Key.SingleQueKey;
 import com.forteach.websocket.service.WsService;
+import com.forteach.websocket.service.impl.ClassStudentService;
 import com.forteach.websocket.service.teacher.push.TeachRaisePush;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -19,6 +21,9 @@ import java.util.Objects;
 @Slf4j
 @Component
 public class SendRaiseStask {
+
+    @Resource
+    private ClassStudentService classStudentService;
 
     @Resource
     private WsService wsService;
@@ -49,18 +54,20 @@ public class SendRaiseStask {
     /**
      * 推动当前加入课堂的学生信息,推送给老师
      *
-     * @param circleid
+     * @param circleId
      */
-    private void pushRaiseStudent(final String circleid) {
-        try {
-            // 获取redis中待推送的数据
-            List<ToTeacherPush> pushList = achieveRaisePush.getAchieveRaise(circleid);
-            if (pushList != null && pushList.size()>0) {
-                //处理推送
-                wsService.processTeacher(pushList);
+    private void pushRaiseStudent(final String circleId) {
+        if(classStudentService.getInteractionType(circleId).equals(SingleQueKey.CLASSROOM_ASK_QUESTIONS_ID)) {
+            try {
+                // 获取redis中待推送的数据
+                List<ToTeacherPush> pushList = achieveRaisePush.getAchieveRaise(circleId);
+                if (pushList != null && pushList.size() > 0) {
+                    //处理推送
+                    wsService.processTeacher(pushList);
+                }
+            } catch (Exception e) {
+                log.error(" refreshInfo Task error {} {}", e.getMessage(), e);
             }
-        } catch (Exception e) {
-            log.error(" refreshInfo Task error {} {}", e.getMessage(), e);
         }
     }
 }
