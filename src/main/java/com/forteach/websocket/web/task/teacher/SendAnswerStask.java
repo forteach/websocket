@@ -41,11 +41,11 @@ public class SendAnswerStask {
         achieveAnswerPush.getOpenRooms()
                 .stream()
                 .filter(Objects::nonNull)
-                .peek(c -> {
-                    if (log.isDebugEnabled()) {
-                        log.debug("发送给老师课堂 : circleId : [{}]", c);
-                    }
-                })
+//                .peek(c -> {
+//                    if (log.isDebugEnabled()) {
+//                        log.debug("发送给老师课堂 : circleId : [{}]", c);
+//                    }
+//                })
                 .forEach(circleId -> pushClassStudent(circleId)
                 );
     }

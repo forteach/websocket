@@ -1,12 +1,9 @@
 package com.forteach.websocket.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.forteach.websocket.service.Key.TeachAnswerKey;
-import com.forteach.websocket.service.Key.TeachRaiseKey;
-import com.forteach.websocket.service.Key.ClassRoomKey;
+import com.forteach.websocket.service.Key.*;
 import com.forteach.websocket.domain.ToStudentPush;
 import com.forteach.websocket.domain.ToTeacherPush;
-import com.forteach.websocket.service.Key.ClassStudentKey;
 import com.forteach.websocket.service.WsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
@@ -87,12 +84,16 @@ public class WsServiceImpl implements WsService {
                stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid, ClassStudentKey.CLASSROOM_CLEAR_TAG_JION),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES, Duration.ofSeconds(60*60*2));
                stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid, TeachAnswerKey.CLEAR_TAG_ANSWER),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES, Duration.ofSeconds(60*60*2));
                stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid, TeachRaiseKey.CLASSROOM_CLEAR_TAG_RAISE),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES, Duration.ofSeconds(60*60*2));
+               stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid, SingleQueKey.CLEAR_TAG_SINGLE),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES, Duration.ofSeconds(60*60*2));
+               stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid,  MoreQueKey.CLASSROOM_CLEAR_TAG_MORE),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES, Duration.ofSeconds(60*60*2));
            }
         }else{
 
               stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid,ClassStudentKey.CLASSROOM_CLEAR_TAG_JION),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_NO, Duration.ofSeconds(60*60*2));
               stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid, TeachAnswerKey.CLEAR_TAG_ANSWER),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_NO, Duration.ofSeconds(60*60*2));
               stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid, TeachRaiseKey.CLASSROOM_CLEAR_TAG_RAISE),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_NO, Duration.ofSeconds(60*60*2));
+            stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid, SingleQueKey.CLEAR_TAG_SINGLE),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_NO, Duration.ofSeconds(60*60*2));
+            stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid,  MoreQueKey.CLASSROOM_CLEAR_TAG_MORE),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_NO, Duration.ofSeconds(60*60*2));
         }
         //设置缓存随机数
         stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandom(circle,uid),random, Duration.ofSeconds(60*60*2));

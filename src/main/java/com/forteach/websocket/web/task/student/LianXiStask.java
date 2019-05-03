@@ -44,11 +44,11 @@ public class LianXiStask {
         moreQuestionPush.getOpenRooms()
                 .stream()
                 .filter(Objects::nonNull)
-                .peek(c -> {
-                    if (log.isDebugEnabled()) {
-                        log.debug("推送的学生相关信息 circleId : [{}]", c);
-                    }
-                })
+//                .peek(c -> {
+//                    if (log.isDebugEnabled()) {
+//                        log.debug("推送的学生相关信息 circleId : [{}]", c);
+//                    }
+//                })
                 .forEach(circleid -> pushLianXiStudent(circleid)
                 );
     }

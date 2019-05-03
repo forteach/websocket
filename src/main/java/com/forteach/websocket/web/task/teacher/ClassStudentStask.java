@@ -43,11 +43,11 @@ public class ClassStudentStask {
         classStudentService.getOpenRooms()
                 .stream()
                 .filter(Objects::nonNull)
-                .peek(c -> {
-                    if (log.isDebugEnabled()) {
-                        log.debug("推送的教师课堂 circleId : [{}]", c);
-                    }
-                })
+//                .peek(c -> {
+//                    if (log.isDebugEnabled()) {
+//                        log.debug("推送的教师课堂 circleId : [{}]", c);
+//                    }
+//                })
                 .forEach(circleId -> pushClassStudent(circleId, classStudentService.getRoomTeacherId(circleId))
                 );
     }

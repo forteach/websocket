@@ -117,35 +117,37 @@ public class SingleQuestService {
      * 获得已经接受推送的学生ID
      *
      * @param circleId  课堂编号
-     * @param teacherId 教师编号
+     * @param stuId 学生接受端编号
      * @return
      */
-    public String getSingleStu(final String circleId, final String questId, final String stuId, final String teacherId) {
+    public boolean getSingleStu(final String circleId, final String questId, final String stuId) {
         //获得随机数状态,页面刷新会改变随机数状态
-        String radonTag = stringRedisTemplate.opsForValue().get(ClassRoomKey.getOpenClassRandomTag(circleId, teacherId, SingleQueKey.CLEAR_TAG_SINGLE));
+        String radonTag = stringRedisTemplate.opsForValue().get(ClassRoomKey.getOpenClassRandomTag(circleId, stuId, SingleQueKey.CLEAR_TAG_SINGLE));
         //随机数改变，过滤已发送过的学生
         if (ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES.equals(radonTag)) {
             //清除推送学生数据，改变随机值状态也N
-            singleQueRepeat.clear(circleId, questId, teacherId);
+            singleQueRepeat.clear(circleId, questId, stuId);
         }
         //推送学生信息
         return getSingleStudent(circleId, questId, stuId);
     }
+
     /**
-     * 获取问题已回答的学生id
+     * 获取问题已回答的学生id是否已经加入推送列表
      *
      * @param circleId
      * @param questId
      * @param stuId  接受题目学生的ID
      * @return
      */
-    public String getSingleStudent(String circleId, String questId, String stuId) {
-        //获得学生回答顺序列表
-        return Arrays.asList(stuId)
-                .stream()
-                .filter(id -> singleQueRepeat.hasJoin(circleId, questId, id))
-                .map(id -> singleQueRepeat.join(circleId, questId, id))
-                .collect(Collectors.joining());
+    public boolean getSingleStudent(String circleId, String questId, String stuId) {
+        //判断是否已经加入推送列表
+       boolean result= !singleQueRepeat.hasJoin(circleId, questId, stuId);
+        if(result){
+            //没有加入，就加入推送列表
+            singleQueRepeat.join(circleId, questId, stuId);
+        }
+        return result;
     }
 
 }

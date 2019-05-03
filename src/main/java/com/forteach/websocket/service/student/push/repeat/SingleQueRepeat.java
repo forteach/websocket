@@ -37,14 +37,14 @@ public class SingleQueRepeat extends AbsRepeatPush {
     }
 
     /**
-     * 清楚课堂题目举手学生推送缓存
+     * 清除课堂题目举手学生推送缓存  （学生是接收端，刷新重新接受）
      * @param circleId
      * @param questionId
-     * @param teacherId
+     * @param stuId
      */
-    public void clear(final String circleId,String questionId,final String teacherId){
+    public void clear(final String circleId,String questionId,final String stuId){
         final String delKey = SingleQueKey.getJoinTuiSongSingleKey(circleId,questionId,ASK_PULL);
-        final String tagKey =ClassRoomKey.getOpenClassRandomTag(circleId,teacherId, SingleQueKey.CLEAR_TAG_SINGLE);
+        final String tagKey =ClassRoomKey.getOpenClassRandomTag(circleId,stuId, SingleQueKey.CLEAR_TAG_SINGLE);
         clearJoinTuiSong(delKey,tagKey);
     }
 }

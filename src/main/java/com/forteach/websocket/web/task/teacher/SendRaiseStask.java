@@ -42,11 +42,11 @@ public class SendRaiseStask {
         achieveRaisePush.getOpenRooms()
                 .stream()
                 .filter(Objects::nonNull)
-                .peek(c -> {
-                    if (log.isDebugEnabled()) {
-                        log.debug("发送给老师课堂 : circleId : [{}]", c);
-                    }
-                })
+//                .peek(c -> {
+//                    if (log.isDebugEnabled()) {
+//                        log.debug("发送给老师课堂 : circleId : [{}]", c);
+//                    }
+//                })
                 .forEach(circleId -> pushRaiseStudent(circleId)
                 );
     }
@@ -57,6 +57,7 @@ public class SendRaiseStask {
      * @param circleId
      */
     private void pushRaiseStudent(final String circleId) {
+        String r=classStudentService.getInteractionType(circleId);
         if(classStudentService.getInteractionType(circleId).equals(SingleQueKey.CLASSROOM_ASK_QUESTIONS_ID)) {
             try {
                 // 获取redis中待推送的数据

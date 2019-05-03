@@ -76,8 +76,9 @@ public class SingleQuestionPush {
                         .filter(id -> !id.equals(teacherId))
                         .filter(id -> null != SESSION_MAP.get(id))
                         .filter(id -> SESSION_MAP.get(id).isOpen())
-//                        .map(id->singleQuestService.getSingleStu(circleId,questId,id,teacherId))
-//                        .filter(Objects::nonNull)
+                        .filter(Objects::nonNull)
+                        //过滤重复推送的学生
+                        .filter(stuId->singleQuestService.getSingleStu(circleId,questId,stuId))
                         //创建推送数据
                         .map(uid -> TStudentToPush(uid, questId, interactive, category))
                         .filter(Objects::nonNull)
@@ -87,8 +88,11 @@ public class SingleQuestionPush {
                 return Arrays.asList(stus.split(",")).stream()
                         .filter(id -> null != SESSION_MAP.get(id))
                         .filter(id -> SESSION_MAP.get(id).isOpen())
+                        .filter(Objects::nonNull)
+                        //过滤重复推送的学生
+                        .filter(stuId->singleQuestService.getSingleStu(circleId,questId,stuId))
                         //创建推送数据
-                        .map(uid -> TStudentToPush(uid, questId, interactive, category))
+                        .map(stuId -> TStudentToPush(stuId, questId, interactive, category))
                         .filter(Objects::nonNull)
                         .collect(Collectors.toList());
             }

@@ -58,6 +58,10 @@ public class MoreQuestionPush {
         return Arrays.asList(stus.split(",")).stream()
                 .filter(id -> null != SESSION_MAP.get(id))
                 .filter(id -> SESSION_MAP.get(id).isOpen())
+                //TODO 需要创建练习册的临时唯一标识ID
+//                .filter(Objects::nonNull)
+//                //过滤重复推送的学生
+//                .filter(stuId->moreQuestService.filterStu(circleId,questId,stuId,teacherId))
                 //创建推送数据
                 .map(uid -> TStudentToPush(uid, questionIdList))
                 .filter(Objects::nonNull)

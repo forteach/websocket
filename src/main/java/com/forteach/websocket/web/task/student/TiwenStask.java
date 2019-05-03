@@ -43,11 +43,11 @@ public class TiwenStask {
         singleQuestionPush.getOpenRooms()
                 .stream()
                 .filter(Objects::nonNull)
-                .peek(c -> {
-                    if (log.isDebugEnabled()) {
-                        log.debug("推送的学生相关信息 circleId : [{}]", c);
-                    }
-                })
+//                .peek(c -> {
+//                    if (log.isDebugEnabled()) {
+//                        log.debug("推送的学生相关信息 circleId : [{}]", c);
+//                    }
+//                })
                 .forEach(circleid -> pushTiwenStudent(circleid)
                 );
     }
@@ -57,7 +57,7 @@ public class TiwenStask {
     /**
      * 提问任务推送
      *
-     * @param circleid
+     * @param circleId
      */
     private void pushTiwenStudent(final String circleId) {
         if(classStudentService.getInteractionType(circleId).equals(SingleQueKey.CLASSROOM_ASK_QUESTIONS_ID)) {
