@@ -43,6 +43,8 @@ public class MoreQuestionPush {
      * @return
      */
     public List<ToStudentPush> moreQuestion(final String circleId, final QuestionType type) {
+        //练习册子的唯一ID
+       String bookId= moreQuestService.getMoreQuestBookId(type, circleId);
 
         //获得当前课堂发布多题目列表（比如：练习册、调查等类型发布）
         final List<String> questionIdList = moreQuestService.getNowMoreQuestId(type, circleId);
@@ -59,9 +61,9 @@ public class MoreQuestionPush {
                 .filter(id -> null != SESSION_MAP.get(id))
                 .filter(id -> SESSION_MAP.get(id).isOpen())
                 //TODO 需要创建练习册的临时唯一标识ID
-//                .filter(Objects::nonNull)
-//                //过滤重复推送的学生
-//                .filter(stuId->moreQuestService.filterStu(circleId,questId,stuId,teacherId))
+                .filter(Objects::nonNull)
+                //过滤重复推送的练习册ID
+                .filter(stuId->moreQuestService.filterStu(circleId,bookId,stuId))
                 //创建推送数据
                 .map(uid -> TStudentToPush(uid, questionIdList))
                 .filter(Objects::nonNull)

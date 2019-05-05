@@ -112,4 +112,15 @@ public class MoreQuestService {
         return hashOperations.get(MoreQueKey.questionsBookNowMap(type.name(),circleId), "selected");
     }
 
+    /**
+     * 获得当前开课课堂多题列表的唯一ID
+     * @param type 课堂问题活动  练习册 、调查
+     * @param circleId
+     * @return
+     */
+    public String getMoreQuestBookId(QuestionType type,String circleId) {
+        return hashOperations.get(MoreQueKey.questionsBookNowMap(type.name(),circleId), "questBookId");
+    }
+
+
 }
