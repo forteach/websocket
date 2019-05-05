@@ -21,7 +21,8 @@ public class SingleQueRepeat extends AbsRepeatPush {
      */
     public boolean hasJoin(String circleId,String questionId,String stuId){
         final String key = SingleQueKey.getJoinTuiSongSingleKey(circleId,questionId,ASK_PULL);
-        return hasJoin(key,stuId);
+        boolean result=hasJoin(key,stuId);
+        return result;
     }
 
     /**

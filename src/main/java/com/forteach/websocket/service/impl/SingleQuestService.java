@@ -142,7 +142,7 @@ public class SingleQuestService {
      */
     public boolean getSingleStudent(String circleId, String questId, String stuId) {
         //判断是否已经加入推送列表
-       boolean result= !singleQueRepeat.hasJoin(circleId, questId, stuId);
+       boolean result= singleQueRepeat.hasJoin(circleId, questId, stuId);
         if(result){
             //没有加入，就加入推送列表
             singleQueRepeat.join(circleId, questId, stuId);

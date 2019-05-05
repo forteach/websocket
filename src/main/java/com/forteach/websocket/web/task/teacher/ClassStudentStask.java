@@ -59,7 +59,7 @@ public class ClassStudentStask {
      * @param teacherId
      */
     private void pushClassStudent(final String circleId, final String teacherId) {
-        if(classStudentService.getInteractionType(circleId).equals(ClassRoomKey.CLASSROOM_JOIN_QUESTIONS_ID)){
+//        if(classStudentService.getInteractionType(circleId).equals(ClassRoomKey.CLASSROOM_JOIN_QUESTIONS_ID)){
             try {
                 // 获取redis中待推送的数据
                 List<ToTeacherPush> pushList = classStudentPush.getClassStudent(circleId, teacherId);
@@ -72,5 +72,5 @@ public class ClassStudentStask {
             }
         }
 
-    }
+//    }
 }
