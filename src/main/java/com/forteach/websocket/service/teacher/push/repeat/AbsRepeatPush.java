@@ -23,15 +23,12 @@ public abstract class AbsRepeatPush {
     private StringRedisTemplate stringRedisTemplate;
 
     public boolean hasJoin(String key, String value) {
-//        System.out.println(key);
+
         boolean result=stringRedisTemplate.hasKey(key);
         if(result){
-//            System.out.println("member---------"+value);
-//            System.out.println("memberresult---------"+stringRedisTemplate.opsForSet().isMember(key,value).booleanValue());
             result= stringRedisTemplate.opsForSet().isMember(key,value).booleanValue();
         }
             return !result;
-
 
     }
 

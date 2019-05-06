@@ -45,16 +45,16 @@ public class MoreQuestService {
      * @param stuId 学生接收端编号
      * @return
      */
-    public boolean filterStu(final String circleId, final String questId, final String stuId) {
+    public boolean filterStu(final String circleId, final String bookId, final String stuId) {
         //获得随机数状态,页面刷新会改变随机数状态
         String radonTag = stringRedisTemplate.opsForValue().get(ClassRoomKey.getOpenClassRandomTag(circleId, stuId, SingleQueKey.CLEAR_TAG_SINGLE));
         //随机数改变，过滤已发送过的学生
         if (ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES.equals(radonTag)) {
             //清除推送学生数据，改变随机值状态也N
-            moreQueRepeat.clear(circleId, questId, stuId);
+            moreQueRepeat.clear(circleId, bookId, stuId);
         }
         //推送学生信息
-        return getMoreStudent(circleId, questId, stuId);
+        return getMoreStudent(circleId, bookId, stuId);
     }
 
     /**
@@ -67,7 +67,7 @@ public class MoreQuestService {
      */
     public boolean getMoreStudent(String circleId, String questId, String stuId) {
         //判断是否已经加入推送列表
-        boolean result= !moreQueRepeat.hasJoin(circleId, questId, stuId);
+        boolean result= moreQueRepeat.hasJoin(circleId, questId, stuId);
         if(result){
             //没有加入，就加入推送列表
             moreQueRepeat.join(circleId, questId, stuId);
