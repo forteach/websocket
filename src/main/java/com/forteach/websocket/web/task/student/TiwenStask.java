@@ -60,7 +60,7 @@ public class TiwenStask {
      * @param circleId
      */
     private void pushTiwenStudent(final String circleId) {
-        if(classStudentService.getInteractionType(circleId).equals(SingleQueKey.CLASSROOM_ASK_QUESTIONS_ID)) {
+        if(classStudentService.getInteractionType(circleId).equals(QuestionType.TiWen.name())) {
             try {
                 //获得需要推送的题目信息
                 final List<ToStudentPush> pushList = singleQuestionPush.singleQuestion(circleId, QuestionType.TiWen);

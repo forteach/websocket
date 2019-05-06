@@ -1,8 +1,7 @@
 package com.forteach.websocket.web.task.teacher;
 
+import com.forteach.websocket.common.QuestionType;
 import com.forteach.websocket.domain.ToTeacherPush;
-import com.forteach.websocket.service.Key.ClassRoomKey;
-import com.forteach.websocket.service.Key.SingleQueKey;
 import com.forteach.websocket.service.WsService;
 import com.forteach.websocket.service.impl.ClassStudentService;
 import com.forteach.websocket.service.teacher.push.TeachAnswerPush;
@@ -56,7 +55,7 @@ public class SendAnswerStask {
      * @param circleId
      */
     private void pushClassStudent(final String circleId) {
-        if(classStudentService.getInteractionType(circleId).equals(SingleQueKey.CLASSROOM_ASK_QUESTIONS_ID)) {
+        if(classStudentService.getInteractionType(circleId).equals(QuestionType.TiWen.name())) {
             try {
                 // 获取redis中待推送的数据
                 List<ToTeacherPush> pushList = achieveAnswerPush.getAchieveAnswer(circleId);

@@ -8,25 +8,28 @@ package com.forteach.websocket.service.Key;
  */
 public class TeachRaiseKey {
 
-
     /**
      * 互动提问hash前缀(习题库\头脑风暴等。。。)
      */
-    public static final String CLASSROOM_ASK_QUESTIONS_ID = "ask";
+    public static final String CLASSROOM_ASK_QUESTIONS_ID = "Ask";
 
     //刷新清除场景命名问题举手场景
-    public static final String CLASSROOM_CLEAR_TAG_RAISE = "raise";
-
+    public static final String CLASSROOM_CLEAR_TAG_RAISE = "Raise";
 
     /**
-     * 加入课堂，已推送过的学生题目回答
+     * 加入课堂，已推送过得学生回答
+     */
+    public static final String ROOM_JOIN_RAISE_TS = "JoinRaise";
+
+    /**
+     * 教师端获得举手推送的集合SET列表
      * @param circleId
      * @param questionId
      * @param pushType   推送：push  拉取：pull
      * @return
      */
     public static String getJoinTuisongRaiseKey(String circleId,String questionId,String pushType){
-        return  pushType.concat(circleId.concat(questionId).concat(ClassRoomKey.ROOM_JOIN_RAISE_TS));
+        return  circleId.concat(questionId).concat(ROOM_JOIN_RAISE_TS).concat(pushType);
     }
 
 
@@ -36,7 +39,7 @@ public class TeachRaiseKey {
      * @return 问题前缀+课堂+问题类型+回答方式  题目列表List
      */
     public static String askTypeQuestionsId(final String questionType, String circleId, String interactive) {
-        return circleId.concat(TeachRaiseKey.CLASSROOM_ASK_QUESTIONS_ID).concat(questionType.concat(interactive));
+        return circleId.concat(CLASSROOM_ASK_QUESTIONS_ID).concat(questionType.concat(interactive));
     }
 
     /**

@@ -81,7 +81,7 @@ public class WsServiceImpl implements WsService {
            if(!radon.equals(random) )
            {
                 //随机数已经改变
-               stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid, ClassStudentKey.CLASSROOM_CLEAR_TAG_JION),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES, Duration.ofSeconds(60*60*2));
+//               stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid, ClassStudentKey.CLASSROOM_CLEAR_TAG_JION),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES, Duration.ofSeconds(60*60*2));
                stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid, TeachAnswerKey.CLEAR_TAG_ANSWER),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES, Duration.ofSeconds(60*60*2));
                stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid, TeachRaiseKey.CLASSROOM_CLEAR_TAG_RAISE),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES, Duration.ofSeconds(60*60*2));
                stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid, SingleQueKey.CLEAR_TAG_SINGLE),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES, Duration.ofSeconds(60*60*2));
@@ -89,7 +89,7 @@ public class WsServiceImpl implements WsService {
            }
         }else{
 
-              stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid,ClassStudentKey.CLASSROOM_CLEAR_TAG_JION),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_NO, Duration.ofSeconds(60*60*2));
+//              stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid,ClassStudentKey.CLASSROOM_CLEAR_TAG_JION),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_NO, Duration.ofSeconds(60*60*2));
               stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid, TeachAnswerKey.CLEAR_TAG_ANSWER),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_NO, Duration.ofSeconds(60*60*2));
               stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid, TeachRaiseKey.CLASSROOM_CLEAR_TAG_RAISE),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_NO, Duration.ofSeconds(60*60*2));
             stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTag(circle,uid, SingleQueKey.CLEAR_TAG_SINGLE),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_NO, Duration.ofSeconds(60*60*2));

@@ -62,7 +62,7 @@ public class SingleQuestionPush {
             //获得当前题目选中的学生
             final String stus = singleQuestService.getQuestNoReceiveSelectStu(circleId);
 
-            //获得当前题目的交互方式  选人 抢答
+            //获得当前题目的交互方式  选人 抢答、举手
             final String interactive = singleQuestService.getNowQuestInteractive(circleId);
             //人员参与 小组 个人
             final String category = singleQuestService.getNowQuestCategory(circleId);
@@ -78,7 +78,7 @@ public class SingleQuestionPush {
                         .filter(id -> SESSION_MAP.get(id).isOpen())
                         .filter(Objects::nonNull)
                         //过滤重复推送的学生
-                        .filter(stuId->singleQuestService.getSingleStu(circleId,questId,stuId))
+                        .filter(stuId->singleQuestService.getSingleStu(circleId,questId,stuId,interactive))
                         //创建推送数据
                         .map(uid -> TStudentToPush(uid, questId, interactive, category))
                         .filter(Objects::nonNull)
@@ -90,7 +90,7 @@ public class SingleQuestionPush {
                         .filter(id -> SESSION_MAP.get(id).isOpen())
                         .filter(Objects::nonNull)
                         //过滤重复推送的学生
-                        .filter(stuId->singleQuestService.getSingleStu(circleId,questId,stuId))
+                        .filter(stuId->singleQuestService.getSingleStu(circleId,questId,stuId,interactive))
                         //创建推送数据
                         .map(stuId -> TStudentToPush(stuId, questId, interactive, category))
                         .filter(Objects::nonNull)

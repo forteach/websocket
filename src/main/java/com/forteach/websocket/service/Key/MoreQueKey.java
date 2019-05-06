@@ -11,12 +11,12 @@ public class MoreQueKey {
     /**
      * 互动练习册发布
      */
-    public static final String CLASSROOM_BOOK_QUESTIONS_LIST = "bookList";
+    public static final String CLASSROOM_BOOK_QUESTIONS_LIST = "BookList";
 
     /**
      * 课堂练习册
      */
-    public static final String CLASSROOM_BOOK_NOW = "nowBook";
+    public static final String CLASSROOM_BOOK_NOW = "NowBook";
 
     /**
      * 加入课堂，已推送过得学生回答
@@ -24,12 +24,12 @@ public class MoreQueKey {
     public static final String ROOM_JOIN_MORE_TS = "RoomJoinMore";
 
     //刷新清除场景命名问题多题目场景
-    public static final String CLASSROOM_CLEAR_TAG_MORE = "more";
+    public static final String CLASSROOM_CLEAR_TAG_MORE = "More";
 
     /**
      * 互动方式为练习
      */
-    public static final String CLASSROOM_BOOK_QUESTIONS_ID = "book";
+    public static final String CLASSROOM_BOOK_QUESTIONS_ID = "Book";
 
     /**
      * 课堂多题目活动互动前缀
@@ -46,7 +46,7 @@ public class MoreQueKey {
      * @return now+课堂Id=map
      */
     public static String questionsBookNowMap(final String typeName, final String circleId) {
-        return CLASSROOM_BOOK_NOW.concat(circleId).concat(typeName);
+        return circleId.concat(CLASSROOM_BOOK_NOW).concat(typeName);
     }
 
     /**
@@ -57,7 +57,7 @@ public class MoreQueKey {
      * @return
      */
     public static String getJoinTuiSongMoreKey(String circleId,String questionId,String pushType){
-        return pushType.concat(circleId.concat(questionId).concat(ROOM_JOIN_MORE_TS));
+        return circleId.concat(questionId).concat(ROOM_JOIN_MORE_TS).concat(pushType);
     }
 
 }

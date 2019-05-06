@@ -17,8 +17,8 @@ public class AnswerRepeat extends AbsRepeatPush {
      * @param stuId
      * @return
      */
-    public boolean answerHasJoin(String circleId,String questionId,String stuId){
-        final String key = TeachAnswerKey.getJoinTuisongAnswerKey(circleId,questionId,ASK_PUSH);
+    public boolean answerHasJoin(String circleId,String questionId,String stuId,String questionType){
+        final String key = TeachAnswerKey.getJoinTuisongAnswerKey(circleId,questionId,ASK_PUSH,questionType);
         return hasJoin(key,stuId);
     }
 
@@ -29,8 +29,8 @@ public class AnswerRepeat extends AbsRepeatPush {
      * @param stuId
      * @return
      */
-    public String joinAnswer(String circleId,String questionId, String stuId){
-        final String key = TeachAnswerKey.getJoinTuisongAnswerKey(circleId,questionId,ASK_PUSH);
+    public String joinAnswer(String circleId,String questionId, String stuId,String questionType){
+        final String key = TeachAnswerKey.getJoinTuisongAnswerKey(circleId,questionId,ASK_PUSH,questionType);
         return join(key,stuId);
     }
 
@@ -40,8 +40,8 @@ public class AnswerRepeat extends AbsRepeatPush {
      * @param questionId
      * @param teacherId
      */
-    public void clearAnswer(final String circleId,String questionId,final String teacherId){
-        final String delKey = TeachAnswerKey.getJoinTuisongAnswerKey(circleId,questionId,ASK_PUSH);
+    public void clearAnswer(final String circleId,String questionId,final String teacherId,String questionType){
+        final String delKey = TeachAnswerKey.getJoinTuisongAnswerKey(circleId,questionId,ASK_PUSH,questionType);
         final String tagKey =ClassRoomKey.getOpenClassRandomTag(circleId,teacherId, TeachAnswerKey.CLEAR_TAG_ANSWER);
         clearJoinTuiSong(delKey,tagKey);
     }

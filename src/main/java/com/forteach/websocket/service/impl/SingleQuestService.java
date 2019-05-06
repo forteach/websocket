@@ -6,16 +6,12 @@ import com.forteach.websocket.common.QuestionType;
 import com.forteach.websocket.domain.BigQuestion;
 import com.forteach.websocket.repository.BigQuestionRepository;
 import com.forteach.websocket.service.Key.SingleQueKey;
-import com.forteach.websocket.service.Key.TeachAnswerKey;
 import com.forteach.websocket.service.student.push.repeat.SingleQueRepeat;
-import com.forteach.websocket.service.teacher.push.repeat.AnswerRepeat;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -120,16 +116,16 @@ public class SingleQuestService {
      * @param stuId 学生接受端编号
      * @return
      */
-    public boolean getSingleStu(final String circleId, final String questId, final String stuId) {
+    public boolean getSingleStu(final String circleId, final String questId, final String stuId,String interactive) {
         //获得随机数状态,页面刷新会改变随机数状态
         String radonTag = stringRedisTemplate.opsForValue().get(ClassRoomKey.getOpenClassRandomTag(circleId, stuId, SingleQueKey.CLEAR_TAG_SINGLE));
         //随机数改变，过滤已发送过的学生
         if (ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES.equals(radonTag)) {
             //清除推送学生数据，改变随机值状态也N
-            singleQueRepeat.clear(circleId, questId, stuId);
+            singleQueRepeat.clear(circleId, questId, stuId,interactive);
         }
         //推送学生信息
-        return getSingleStudent(circleId, questId, stuId);
+        return getSingleStudent(circleId, questId, stuId,interactive);
     }
 
     /**
@@ -140,12 +136,12 @@ public class SingleQuestService {
      * @param stuId  接受题目学生的ID
      * @return
      */
-    public boolean getSingleStudent(String circleId, String questId, String stuId) {
+    public boolean getSingleStudent(String circleId, String questId, String stuId,String interactive) {
         //判断是否已经加入推送列表
-       boolean result= singleQueRepeat.hasJoin(circleId, questId, stuId);
+       boolean result= singleQueRepeat.hasJoin(circleId, questId, stuId,interactive);
         if(result){
             //没有加入，就加入推送列表
-            singleQueRepeat.join(circleId, questId, stuId);
+            singleQueRepeat.join(circleId, questId, stuId,interactive);
         }
         return result;
     }

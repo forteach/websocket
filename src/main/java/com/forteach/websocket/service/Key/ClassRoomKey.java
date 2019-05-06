@@ -11,7 +11,7 @@ public class ClassRoomKey {
     /**
      * 当前课堂当前互动名称
      */
-    public static final String CLASSROOM_NOW_INTERACT= "nowInteract";
+    public static final String CLASSROOM_NOW_INTERACT= "NowInteract";
 
     /**
      * 课堂SCOKET随机数YES状态,改变状态
@@ -49,15 +49,6 @@ public class ClassRoomKey {
     public static final String ROOM_JOIN_STU_TS = "RoomJoinStu";
 
 
-    /**
-     * 加入课堂，已推送过得学生回答
-     */
-    public static final String ROOM_JOIN_RAISE_TS = "RoomJoinRaise";
-
-    /**
-     * 互动方式为加入学生
-     */
-    public static final String CLASSROOM_JOIN_QUESTIONS_ID = "joinStu";
 
     /**
      * 设置当前活动KEY
@@ -65,7 +56,7 @@ public class ClassRoomKey {
      * @return
      */
     public static String getInteractionType(final String circleId) {
-        return CLASSROOM_NOW_INTERACT.concat(circleId);
+        return circleId.concat(CLASSROOM_NOW_INTERACT);
     }
 
 
@@ -87,7 +78,7 @@ public class ClassRoomKey {
      * @return
      */
     public static String getOpenClassRandomTag(String circleId,String uid,String tagType){
-        return circleId.concat(OPEN_CLASSROOM_RANDOM.concat(tagType).concat("tag")).concat(uid);
+        return circleId.concat(OPEN_CLASSROOM_RANDOM.concat(tagType).concat("Tag")).concat(uid);
     }
 
     /**
@@ -97,16 +88,6 @@ public class ClassRoomKey {
      */
     public static String getInteractiveIdQra(String circleId){
         return circleId.concat(ClassRoomKey.CLASS_ROOM_QR_CODE_PREFIX);
-    }
-
-    /**
-     * 课堂创建信息
-     * @param teacherId
-     * @return
-     */
-    public static String getRoomKey(String teacherId){
-
-        return ClassRoomKey.INTERACTIVE_CLASSROOM.concat(teacherId);
     }
 
     /**
@@ -126,7 +107,5 @@ public class ClassRoomKey {
     public static String getJoinTuisongStuKey(String circleId){
         return circleId.concat(ClassRoomKey.ROOM_JOIN_STU_TS);
     }
-
-
 
 }

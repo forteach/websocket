@@ -51,16 +51,16 @@ public class AchieveAnswerService {
      * @param teacherId 教师编号
      * @return
      */
-    public List<String> getAnswerStu(String circleId, String questId, String typeName, String teacherId) {
+    public List<String> getAnswerStu(String circleId, String questId, String questionType, String teacherId) {
         //获得随机数状态,页面刷新会改变随机数状态
         String radonTag = stringRedisTemplate.opsForValue().get(ClassRoomKey.getOpenClassRandomTag(circleId, teacherId, TeachAnswerKey.CLEAR_TAG_ANSWER));
         //随机数改变，过滤已发送过的学生
         if (ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES.equals(radonTag)) {
             //清除推送学生数据，改变随机值状态也N
-            answerRepeat.clearAnswer(circleId, questId, teacherId);
+            answerRepeat.clearAnswer(circleId, questId, teacherId,questionType);
         }
         //推送学生信息
-        return getAnswerStudent(circleId, questId, typeName);
+        return getAnswerStudent(circleId, questId, questionType);
     }
 
     /**
@@ -68,15 +68,15 @@ public class AchieveAnswerService {
      *
      * @param circleId
      * @param questId
-     * @param typeName
+     * @param questionType
      * @return
      */
-    public List<String> getAnswerStudent(String circleId, String questId, String typeName) {
+    public List<String> getAnswerStudent(String circleId, String questId, String questionType) {
         //获得学生回答顺序列表
-        return stringRedisTemplate.opsForList().range(TeachAnswerKey.answerTypeQuestStuList(circleId, questId, typeName), 0, -1)
+        return stringRedisTemplate.opsForList().range(TeachAnswerKey.answerTypeQuestStuList(circleId, questId, questionType), 0, -1)
                 .stream()
-                .filter(id -> answerRepeat.answerHasJoin(circleId, questId, id))
-                .map(id -> answerRepeat.joinAnswer(circleId, questId, id))
+                .filter(id -> answerRepeat.answerHasJoin(circleId, questId, id,questionType))
+                .map(id -> answerRepeat.joinAnswer(circleId, questId, id,questionType))
                 .collect(Collectors.toList());
     }
 
