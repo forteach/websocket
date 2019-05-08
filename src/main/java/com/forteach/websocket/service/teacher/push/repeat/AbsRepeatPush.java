@@ -12,12 +12,12 @@ public abstract class AbsRepeatPush {
     /**
      * 拉取操作
      */
-    public static final String ASK_PUSH = "push";
+    public static final String ASK_PUSH = "Push";
 
     /**
      * 推送操作
      */
-    public static final String ASK_PULL = "pull";
+    public static final String ASK_PULL = "Pull";
 
     @Resource
     private StringRedisTemplate stringRedisTemplate;
