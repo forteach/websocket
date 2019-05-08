@@ -45,8 +45,8 @@ public class TeachAnswerPush {
         //构建推送对象信息集合
         return Arrays.asList(teachseId).stream()
                 .filter(Objects::nonNull)
-                .filter(id -> null != SESSION_MAP.get(id))
-                .filter(id -> SESSION_MAP.get(id).isOpen())
+//                .filter(id -> null != SESSION_MAP.get(id))
+//                .filter(id -> SESSION_MAP.get(id).isOpen())
                 .map(tid->buildTeacherToPush(tid,circleId))
                 //推送数据为空的话，终止流 achieveAnswer
                 .filter(obj-> obj != null && obj.getAchieveAnswer()!=null)

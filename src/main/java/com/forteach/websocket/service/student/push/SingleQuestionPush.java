@@ -74,8 +74,8 @@ public class SingleQuestionPush {
                 //给所有加入课堂的学生推送题目
                 return singleQuestService.getClassStus(circleId).stream()
                         .filter(id -> !id.equals(teacherId))
-                        .filter(id -> null != SESSION_MAP.get(id))
-                        .filter(id -> SESSION_MAP.get(id).isOpen())
+//                        .filter(id -> null != SESSION_MAP.get(id))
+//                        .filter(id -> SESSION_MAP.get(id).isOpen())
                         .filter(Objects::nonNull)
                         //过滤重复推送的学生
                         .filter(stuId->singleQuestService.getSingleStu(circleId,questId,stuId,interactive))
@@ -86,9 +86,9 @@ public class SingleQuestionPush {
             } else {
                 //给老师所选的人员推送题目
                 return Arrays.asList(stus.split(",")).stream()
-                        .filter(id -> null != SESSION_MAP.get(id))
-                        .filter(id -> SESSION_MAP.get(id).isOpen())
-                        .filter(Objects::nonNull)
+//                        .filter(id -> null != SESSION_MAP.get(id))
+//                        .filter(id -> SESSION_MAP.get(id).isOpen())
+//                        .filter(Objects::nonNull)
                         //过滤重复推送的学生
                         .filter(stuId->singleQuestService.getSingleStu(circleId,questId,stuId,interactive))
                         //创建推送数据
