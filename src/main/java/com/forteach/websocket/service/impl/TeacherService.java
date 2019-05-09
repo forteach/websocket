@@ -1,7 +1,6 @@
 package com.forteach.websocket.service.impl;
 
 import com.forteach.websocket.service.Key.ClassRoomKey;
-import com.forteach.websocket.service.Key.ClassStudentKey;
 import com.forteach.websocket.service.teacher.push.repeat.JoinStuRepeat;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -39,9 +38,12 @@ public class TeacherService {
      */
     public List<String> getInteractiveStudents(final String circleId, final String teacherId) {
         //获得随机数状态,页面刷新会改变随机数状态
-        String radonTag=stringRedisTemplate.opsForValue().get(ClassRoomKey.getOpenClassRandomTag(circleId,teacherId, ClassStudentKey.CLASSROOM_CLEAR_TAG_JION));
+//        String radonTag=stringRedisTemplate.opsForValue().get(ClassRoomKey.getOpenClassRandomTag(circleId,teacherId, ClassStudentKey.CLASSROOM_CLEAR_TAG_JION));
         //随机数改变，清除已发送学生的缓存信息
-        if(ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES.equals(radonTag)) {
+        String key=ClassRoomKey.getOpenClassRandomTagChange(circleId);
+        Boolean bl= stringRedisTemplate.opsForSet().isMember(key,teacherId);
+        //随机数改变，过滤已发送过的学生
+        if (bl.booleanValue()) {
             //清除推送学生数据，改变随机值状态也N，未改变状态
             joinStuRepeat.clearJoinStu(circleId,teacherId);
         }
@@ -73,6 +75,5 @@ public class TeacherService {
     public List<String> getOpenRooms() {
         return classStudentService.getOpenRooms();
     }
-
 
 }

@@ -54,5 +54,12 @@ public class ClassStudentService {
         return stringRedisTemplate.opsForValue().get(key);
     }
 
-
+    /**
+     * 设置当前课堂当前活动主题
+     * @param circleId
+     */
+    public Boolean isInteractionType(String circleId){
+        final String key= ClassRoomKey.getInteractionType(circleId);
+        return stringRedisTemplate.hasKey(key);
+    }
 }

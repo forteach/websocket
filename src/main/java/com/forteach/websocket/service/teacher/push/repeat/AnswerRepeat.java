@@ -42,7 +42,7 @@ public class AnswerRepeat extends AbsRepeatPush {
      */
     public void clearAnswer(final String circleId,String questionId,final String teacherId,String questionType){
         final String delKey = TeachAnswerKey.getJoinTuisongAnswerKey(circleId,questionId,ASK_PUSH,questionType);
-        final String tagKey =ClassRoomKey.getOpenClassRandomTag(circleId,teacherId, TeachAnswerKey.CLEAR_TAG_ANSWER);
-        clearJoinTuiSong(delKey,tagKey);
+        final String tagKey =ClassRoomKey.getOpenClassRandomTagChange(circleId);
+        clearJoinTuiSong(delKey,tagKey,teacherId);
     }
 }

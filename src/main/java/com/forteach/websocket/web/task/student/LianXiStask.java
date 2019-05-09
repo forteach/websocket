@@ -60,13 +60,13 @@ public class LianXiStask {
      * @param circleId
      */
     private void pushLianXiStudent(final String circleId) {
-        if(classStudentService.getInteractionType(circleId).equals(MoreQueKey.CLASSROOM_BOOK_QUESTIONS_ID)) {
+        if(classStudentService.getInteractionType(circleId).equals(QuestionType.LianXi.name())) {
             try {
                 //获得需要推送的题目信息
-                final List<ToStudentPush> pushList = moreQuestionPush.moreQuestion(circleId, QuestionType.LianXi);
+                final List<ToStudentPush> pushList = moreQuestionPush.moreQuestion(circleId, QuestionType.LianXi.name());
                 if (pushList != null && pushList.size() != 0) {
                     if (log.isInfoEnabled()) {
-                        log.info("练习信息　:　[{}]", JSON.toJSONString(pushList));
+                        log.info("学生接收练习信息　:　[{}]", JSON.toJSONString(pushList));
                     }
                     //处理推送
                     wsService.processStudent(pushList);

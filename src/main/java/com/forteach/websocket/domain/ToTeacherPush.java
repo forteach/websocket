@@ -57,5 +57,8 @@ public class ToTeacherPush {
     private AchieveBookAnswer achieveBookAnswer;
 
 
-
+    /**
+     * 题目活动类型   练习 提问  任务。。。
+     */
+    private String questionType;
 }

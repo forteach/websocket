@@ -1,6 +1,6 @@
 package com.forteach.websocket.service.student.push;
 
-import com.forteach.websocket.common.QuestionType;
+import cn.hutool.core.util.StrUtil;
 import com.forteach.websocket.domain.*;
 import com.forteach.websocket.service.impl.ClassStudentService;
 import com.forteach.websocket.service.impl.MoreQuestService;
@@ -39,33 +39,33 @@ public class MoreQuestionPush {
     /**
      *
      * @param circleId 课堂ID
-     * @param type  课堂活动类型  练习、问卷
+     * @param questionType  课堂活动类型  练习、问卷
      * @return
      */
-    public List<ToStudentPush> moreQuestion(final String circleId, final QuestionType type) {
+    public List<ToStudentPush> moreQuestion(final String circleId, final String questionType ) {
         //练习册子的唯一ID
-       String bookId= moreQuestService.getMoreQuestBookId(type, circleId);
+       String bookId= moreQuestService.getMoreQuestBookId(questionType, circleId);
 
         //获得当前课堂发布多题目列表（比如：练习册、调查等类型发布）
-        final List<String> questionIdList = moreQuestService.getNowMoreQuestId(type, circleId);
+        final List<String> questionIdList = moreQuestService.getNowMoreQuestId(questionType, circleId);
         if (questionIdList == null || questionIdList.size() == 0) {
             return null;
         }
         //获得当前多题目列表选中的学生
-        final String stus = moreQuestService.getMoreQuestNoReceiveSelectStu(type,circleId);
-        if (stus == null || stus.equals("")) {
+        final String stus = moreQuestService.getMoreQuestNoReceiveSelectStu(questionType,circleId);
+        if (StrUtil.isBlank(stus)) {
             return null;
         }
         //给老师所选的人员推送题目
         return Arrays.asList(stus.split(",")).stream()
-                .filter(id -> null != SESSION_MAP.get(id))
-                .filter(id -> SESSION_MAP.get(id).isOpen())
+//                .filter(id -> null != SESSION_MAP.get(id))
+//                .filter(id -> SESSION_MAP.get(id).isOpen())
                 //TODO 需要创建练习册的临时唯一标识ID
                 .filter(Objects::nonNull)
                 //过滤重复推送的练习册ID
-                .filter(stuId->moreQuestService.filterStu(circleId,bookId,stuId))
+                .filter(stuId->moreQuestService.filterStu(circleId,bookId,stuId,questionType))
                 //创建推送数据
-                .map(uid -> TStudentToPush(uid, questionIdList))
+                .map(uid -> TStudentToPush(uid, questionIdList,questionType))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
@@ -79,11 +79,12 @@ public class MoreQuestionPush {
      * @param moreQuestId 多题目编号
      * @return
      */
-    private ToStudentPush TStudentToPush(String uid, List<String> moreQuestId) {
+    private ToStudentPush TStudentToPush(String uid, List<String> moreQuestId,String questionType) {
         return ToStudentPush.builder()
                 .uid(uid)
                 //推送的题目列表
                 .askBook(achieveQuestion(moreQuestId))
+                .questionType(questionType)
                 .build();
     }
 

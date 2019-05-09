@@ -1,6 +1,7 @@
 package com.forteach.websocket.service.teacher.push.repeat;
 
 import com.forteach.websocket.service.Key.ClassRoomKey;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import javax.annotation.Resource;
@@ -22,6 +23,7 @@ public abstract class AbsRepeatPush {
     @Resource
     private StringRedisTemplate stringRedisTemplate;
 
+
     public boolean hasJoin(String key, String value) {
 
         boolean result=stringRedisTemplate.hasKey(key);
@@ -39,14 +41,24 @@ public abstract class AbsRepeatPush {
          return value;
     }
 
-
-    public void clearJoinTuiSong(String delKey, String tagKey) {
+   //教师清除题目Id相关的所有学生推送数据
+    public void clearJoinTuiSong(String delKey, String tagKey,String teacherId) {
         //删除已发送缓存列表
         if(stringRedisTemplate.hasKey(delKey)){
             stringRedisTemplate.delete(delKey);
         }
-        //修改随机数标记为N未变动
-        stringRedisTemplate.opsForValue().set(tagKey, ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_NO,Duration.ofHours(2));
+        //删除随机数变动用户数据
+        stringRedisTemplate.opsForSet().remove(tagKey, teacherId);
+
+    }
+
+    //学生清除题目Id推送数据
+    public void clearStuJoinTuiSong(String delKey, String tagKey,String studentId) {
+        //删除已发送缓存列表
+        stringRedisTemplate.opsForSet().remove(delKey,studentId);
+
+        //删除随机数变动用户数据
+       stringRedisTemplate.opsForSet().remove(tagKey, studentId);
 
     }
 }

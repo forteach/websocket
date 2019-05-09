@@ -1,5 +1,6 @@
 package com.forteach.websocket.web.task.teacher;
 
+import com.alibaba.fastjson.JSON;
 import com.forteach.websocket.common.QuestionType;
 import com.forteach.websocket.domain.ToTeacherPush;
 import com.forteach.websocket.service.WsService;
@@ -63,6 +64,9 @@ public class SendRaiseStask {
                 // 获取redis中待推送的数据
                 List<ToTeacherPush> pushList = achieveRaisePush.getAchieveRaise(circleId);
                 if (pushList != null && pushList.size() > 0) {
+                    if (log.isInfoEnabled()) {
+                        log.info("教师举手信息　:　[{}]", JSON.toJSONString(pushList));
+                    }
                     //处理推送
                     wsService.processTeacher(pushList);
                 }

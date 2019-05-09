@@ -13,15 +13,15 @@ public class ClassRoomKey {
      */
     public static final String CLASSROOM_NOW_INTERACT= "NowInteract";
 
-    /**
-     * 课堂SCOKET随机数YES状态,改变状态
-     */
-    public static final String OPEN_CLASSROOM_RANDOM_TAG_YES = "Y";
-
-    /**
-     * 课堂SCOKET随机数NO状态，未改变状态
-     */
-    public static final String OPEN_CLASSROOM_RANDOM_TAG_NO = "N";
+//    /**
+//     * 课堂SCOKET随机数YES状态,改变状态
+//     */
+//    public static final String OPEN_CLASSROOM_RANDOM_TAG_YES = "Y";
+//
+//    /**
+//     * 课堂SCOKET随机数NO状态，未改变状态
+//     */
+//    public static final String OPEN_CLASSROOM_RANDOM_TAG_NO = "N";
 
     /**
      * 课堂相关信息ID-Redis的编码前缀
@@ -79,6 +79,25 @@ public class ClassRoomKey {
      */
     public static String getOpenClassRandomTag(String circleId,String uid,String tagType){
         return circleId.concat(OPEN_CLASSROOM_RANDOM.concat(tagType).concat("Tag")).concat(uid);
+    }
+
+//    /**
+//     * 获得scoket连接的随机数改变的用户  SET
+//     * @param circleId
+//     * @param tagType 清空标记的场景类型 加入学生  举手  回答
+//     * @return
+//     */
+//    public static String getOpenClassRandomTagChange(String circleId,String tagType){
+//        return circleId.concat(OPEN_CLASSROOM_RANDOM.concat(tagType).concat("Tag"));
+//    }
+
+    /**
+     * 获得scoket连接的随机数改变的用户  SET
+     * @param circleId
+     * @return
+     */
+    public static String getOpenClassRandomTagChange(String circleId){
+        return circleId.concat(OPEN_CLASSROOM_RANDOM.concat("Tag"));
     }
 
     /**

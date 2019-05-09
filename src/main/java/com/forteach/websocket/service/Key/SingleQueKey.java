@@ -43,8 +43,8 @@ public class SingleQueKey {
      * @param pushType  推送类型  pushQe：提问   pushAw：回答
      * @return
      */
-    public static String getJoinTuiSongSingleKey(String circleId,String questionId,String interactive,String pushType){
-        return circleId.concat(questionId).concat(interactive).concat(ROOM_JOIN_SINGLE_TS).concat(pushType);
+    public static String getJoinTuiSongSingleKey(String circleId,String questionId,String interactive,String pushType,String questionType){
+        return circleId.concat(questionId).concat(interactive).concat(ROOM_JOIN_SINGLE_TS).concat(questionType).concat(pushType);
     }
 
     //缓存当前已发布的题目题干内容，不分课堂。

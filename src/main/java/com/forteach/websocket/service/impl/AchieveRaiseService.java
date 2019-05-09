@@ -90,9 +90,12 @@ public class AchieveRaiseService {
      */
     public List<Students> getRaiseStu(String circleId, String questId, String typeName, String teacherId) {
         //获得随机数状态,页面刷新会改变随机数状态
-        String radonTag = stringRedisTemplate.opsForValue().get(ClassRoomKey.getOpenClassRandomTag(circleId, teacherId, TeachRaiseKey.CLASSROOM_CLEAR_TAG_RAISE));
+//        String radonTag = stringRedisTemplate.opsForValue().get(ClassRoomKey.getOpenClassRandomTag(circleId, teacherId, TeachRaiseKey.CLASSROOM_CLEAR_TAG_RAISE));
         //随机数改变，过滤已发送过的学生
-        if (radonTag.equals(ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES)) {
+        String key=ClassRoomKey.getOpenClassRandomTagChange(circleId);
+        Boolean bl= stringRedisTemplate.opsForSet().isMember(key,teacherId);
+        //随机数改变，过滤已发送过的学生
+        if (bl.booleanValue()) {
             //清除推送学生数据，改变随机值状态也N
             riseRepeat.clearAnswer(circleId, questId, teacherId);
         }

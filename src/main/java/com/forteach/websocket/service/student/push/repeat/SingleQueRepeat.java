@@ -18,8 +18,8 @@ public class SingleQueRepeat extends AbsRepeatPush {
      * @param stuId
      * @return
      */
-    public boolean hasJoin(String circleId,String questionId,String stuId,String interactive){
-        final String key = SingleQueKey.getJoinTuiSongSingleKey(circleId,questionId,interactive,ASK_PULL);
+    public boolean hasJoin(String circleId,String questionId,String stuId,String interactive,String questionType){
+        final String key = SingleQueKey.getJoinTuiSongSingleKey(circleId,questionId,interactive,ASK_PULL,questionType);
         boolean result=hasJoin(key,stuId);
         return result;
     }
@@ -31,8 +31,8 @@ public class SingleQueRepeat extends AbsRepeatPush {
      * @param stuId
      * @return
      */
-    public String join(String circleId,String questionId, String stuId,String interactive){
-        final String key = SingleQueKey.getJoinTuiSongSingleKey(circleId,questionId,interactive,ASK_PULL);
+    public String join(String circleId,String questionId, String stuId,String interactive,String questionType){
+        final String key = SingleQueKey.getJoinTuiSongSingleKey(circleId,questionId,interactive,ASK_PULL,questionType);
         return join(key,stuId);
     }
 
@@ -41,11 +41,11 @@ public class SingleQueRepeat extends AbsRepeatPush {
      * @param circleId
      * @param questionId
      * @param interactive  选人、举手、抢答
-     * @param stuId
      */
-    public void clear(final String circleId,String questionId,final String stuId,final String interactive){
-        final String delKey = SingleQueKey.getJoinTuiSongSingleKey(circleId,interactive,questionId,ASK_PULL);
-        final String tagKey =ClassRoomKey.getOpenClassRandomTag(circleId,stuId, SingleQueKey.CLEAR_TAG_SINGLE);
-        clearJoinTuiSong(delKey,tagKey);
+    public void clear(final String circleId,String questionId,final String interactive,String studentId,String questionType){
+        final String delKey = SingleQueKey.getJoinTuiSongSingleKey(circleId,questionId,interactive,ASK_PULL,questionType);
+//        final String tagKey =ClassRoomKey.getOpenClassRandomTag(circleId,stuId, SingleQueKey.CLEAR_TAG_SINGLE);
+        final String tagKey =ClassRoomKey.getOpenClassRandomTagChange(circleId);
+        clearStuJoinTuiSong(delKey,tagKey,studentId);
     }
 }

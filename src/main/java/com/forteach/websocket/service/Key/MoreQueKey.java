@@ -56,8 +56,8 @@ public class MoreQueKey {
      * @param pushType  推送类型  pushQe：提问   pushAw：回答
      * @return
      */
-    public static String getJoinTuiSongMoreKey(String circleId,String questionId,String pushType){
-        return circleId.concat(questionId).concat(ROOM_JOIN_MORE_TS).concat(pushType);
+    public static String getJoinTuiSongMoreKey(String circleId,String questionId,String pushType,String questionType){
+        return circleId.concat(questionId).concat(ROOM_JOIN_MORE_TS).concat(questionType).concat(pushType);
     }
 
 }

@@ -78,9 +78,9 @@ public class SingleQuestionPush {
 //                        .filter(id -> SESSION_MAP.get(id).isOpen())
                         .filter(Objects::nonNull)
                         //过滤重复推送的学生
-                        .filter(stuId->singleQuestService.getSingleStu(circleId,questId,stuId,interactive))
+                        .filter(stuId->singleQuestService.getSingleStu(circleId,questId,stuId,interactive,type.name()))
                         //创建推送数据
-                        .map(uid -> TStudentToPush(uid, questId, interactive, category))
+                        .map(uid -> TStudentToPush(uid, questId, interactive, category,type.name()))
                         .filter(Objects::nonNull)
                         .collect(Collectors.toList());
             } else {
@@ -90,9 +90,9 @@ public class SingleQuestionPush {
 //                        .filter(id -> SESSION_MAP.get(id).isOpen())
 //                        .filter(Objects::nonNull)
                         //过滤重复推送的学生
-                        .filter(stuId->singleQuestService.getSingleStu(circleId,questId,stuId,interactive))
+                        .filter(stuId->singleQuestService.getSingleStu(circleId,questId,stuId,interactive,type.name()))
                         //创建推送数据
-                        .map(stuId -> TStudentToPush(stuId, questId, interactive, category))
+                        .map(stuId -> TStudentToPush(stuId, questId, interactive, category,type.name()))
                         .filter(Objects::nonNull)
                         .collect(Collectors.toList());
             }
@@ -110,14 +110,16 @@ public class SingleQuestionPush {
      * @param questid     题目编号
      * @param interactive 交互方式  选人、举手、抢答
      * @param category    小组 个人
+     *@param questionType   提问  任务  练习。。。。
      * @return
      */
-    private ToStudentPush TStudentToPush(String uid, String questid, String interactive, String category) {
+    private ToStudentPush TStudentToPush(String uid, String questid, String interactive, String category,String questionType) {
 
         //是学生推送学生信息
             return ToStudentPush.builder()
                     .uid(uid)
                     .askQuestion(achieveQuestion(questid, interactive, category))
+                    .questionType(questionType)
                     .build();
     }
 

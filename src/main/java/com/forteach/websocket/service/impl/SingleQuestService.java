@@ -116,16 +116,18 @@ public class SingleQuestService {
      * @param stuId 学生接受端编号
      * @return
      */
-    public boolean getSingleStu(final String circleId, final String questId, final String stuId,String interactive) {
+    public boolean getSingleStu(final String circleId, final String questId, final String stuId,String interactive,String questionType) {
         //获得随机数状态,页面刷新会改变随机数状态
-        String radonTag = stringRedisTemplate.opsForValue().get(ClassRoomKey.getOpenClassRandomTag(circleId, stuId, SingleQueKey.CLEAR_TAG_SINGLE));
+//        String radonTag = stringRedisTemplate.opsForValue().get(ClassRoomKey.getOpenClassRandomTag(circleId, stuId, SingleQueKey.CLEAR_TAG_SINGLE));
+        String key=ClassRoomKey.getOpenClassRandomTagChange(circleId);
+        Boolean bl= stringRedisTemplate.opsForSet().isMember(key,stuId);
         //随机数改变，过滤已发送过的学生
-        if (ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES.equals(radonTag)) {
+        if (bl.booleanValue()) {
             //清除推送学生数据，改变随机值状态也N
-            singleQueRepeat.clear(circleId, questId, stuId,interactive);
+            singleQueRepeat.clear(circleId, questId, interactive,stuId,questionType);
         }
         //推送学生信息
-        return getSingleStudent(circleId, questId, stuId,interactive);
+        return getSingleStudent(circleId, questId, stuId,interactive,questionType);
     }
 
     /**
@@ -136,12 +138,12 @@ public class SingleQuestService {
      * @param stuId  接受题目学生的ID
      * @return
      */
-    public boolean getSingleStudent(String circleId, String questId, String stuId,String interactive) {
+    public boolean getSingleStudent(String circleId, String questId, String stuId,String interactive,String questionType) {
         //判断是否已经加入推送列表
-       boolean result= singleQueRepeat.hasJoin(circleId, questId, stuId,interactive);
+       boolean result= singleQueRepeat.hasJoin(circleId, questId, stuId,interactive,questionType);
         if(result){
             //没有加入，就加入推送列表
-            singleQueRepeat.join(circleId, questId, stuId,interactive);
+            singleQueRepeat.join(circleId, questId, stuId,interactive,questionType);
         }
         return result;
     }

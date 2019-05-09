@@ -18,8 +18,8 @@ public class MoreQueRepeat extends AbsRepeatPush {
      * @param stuId
      * @return
      */
-    public boolean hasJoin(String circleId,String questionId,String stuId){
-        final String key = MoreQueKey.getJoinTuiSongMoreKey(circleId,questionId,ASK_PULL);
+    public boolean hasJoin(String circleId,String questionId,String stuId,String questionType){
+        final String key = MoreQueKey.getJoinTuiSongMoreKey(circleId,questionId,ASK_PULL,questionType);
         return hasJoin(key,stuId);
     }
 
@@ -30,8 +30,8 @@ public class MoreQueRepeat extends AbsRepeatPush {
      * @param stuId
      * @return
      */
-    public String join(String circleId,String questionId, String stuId){
-        final String key = MoreQueKey.getJoinTuiSongMoreKey(circleId,questionId,ASK_PULL);
+    public String join(String circleId,String questionId, String stuId,String questionType){
+        final String key = MoreQueKey.getJoinTuiSongMoreKey(circleId,questionId,ASK_PULL,questionType);
         return join(key,stuId);
     }
 
@@ -41,9 +41,9 @@ public class MoreQueRepeat extends AbsRepeatPush {
      * @param questionId
      * @param stuId
      */
-    public void clear(final String circleId,String questionId,final String stuId){
-        final String delKey = MoreQueKey.getJoinTuiSongMoreKey(circleId,questionId,ASK_PULL);
-        final String tagKey =ClassRoomKey.getOpenClassRandomTag(circleId,stuId, MoreQueKey.CLASSROOM_CLEAR_TAG_MORE);
-        clearJoinTuiSong(delKey,tagKey);
+    public void clear(final String circleId,String questionId,final String stuId,String questionType){
+        final String delKey = MoreQueKey.getJoinTuiSongMoreKey(circleId,questionId,ASK_PULL,questionType);
+        final String tagKey =ClassRoomKey.getOpenClassRandomTagChange(circleId);
+        clearStuJoinTuiSong(delKey,tagKey,stuId);
     }
 }

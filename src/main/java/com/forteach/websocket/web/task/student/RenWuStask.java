@@ -3,13 +3,13 @@ package com.forteach.websocket.web.task.student;
 import com.alibaba.fastjson.JSON;
 import com.forteach.websocket.common.QuestionType;
 import com.forteach.websocket.domain.ToStudentPush;
-import com.forteach.websocket.service.Key.SingleQueKey;
 import com.forteach.websocket.service.WsService;
 import com.forteach.websocket.service.impl.ClassStudentService;
 import com.forteach.websocket.service.student.push.SingleQuestionPush;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Objects;
@@ -22,7 +22,7 @@ import java.util.Objects;
  */
 @Slf4j
 @Component
-public class TiwenStask {
+public class RenWuStask {
 
     @Resource
     private ClassStudentService classStudentService;
@@ -37,7 +37,7 @@ public class TiwenStask {
      * 每隔１秒遍历发送一次在redis 推送的学生相关信息
      *
      */
-    @Scheduled(initialDelay = 1000 * 2, fixedDelay = 1000)
+    @Scheduled(initialDelay = 1000 * 2, fixedDelay = 5000)
     public void refreshStudentInfo() {
         //获得正在开课的课堂ID
         singleQuestionPush.getOpenRooms()
@@ -60,13 +60,13 @@ public class TiwenStask {
      * @param circleId
      */
     private void pushTiwenStudent(final String circleId) {
-        if(classStudentService.getInteractionType(circleId).equals(QuestionType.TiWen.name())) {
+        if(classStudentService.getInteractionType(circleId).equals(QuestionType.RenWu.name())) {
             try {
                 //获得需要推送的题目信息
-                final List<ToStudentPush> pushList = singleQuestionPush.singleQuestion(circleId, QuestionType.TiWen);
+                final List<ToStudentPush> pushList = singleQuestionPush.singleQuestion(circleId, QuestionType.RenWu);
                 if (pushList != null && pushList.size() != 0) {
                     if (log.isInfoEnabled()) {
-                        log.info("学生接收提问信息　:　[{}]", JSON.toJSONString(pushList));
+                        log.info("学生接收任务信息　:　[{}]", JSON.toJSONString(pushList));
                     }
                     //处理推送
                     wsService.processStudent(pushList);

@@ -1,5 +1,6 @@
 package com.forteach.websocket.web.task.teacher;
 
+import com.alibaba.fastjson.JSON;
 import com.forteach.websocket.common.QuestionType;
 import com.forteach.websocket.domain.ToTeacherPush;
 import com.forteach.websocket.service.WsService;
@@ -55,11 +56,15 @@ public class SendAnswerStask {
      * @param circleId
      */
     private void pushClassStudent(final String circleId) {
-        if(classStudentService.getInteractionType(circleId).equals(QuestionType.TiWen.name())) {
+        if(classStudentService.isInteractionType(circleId).booleanValue()) {
             try {
+                String  questionType=classStudentService.getInteractionType(circleId);
                 // 获取redis中待推送的数据
-                List<ToTeacherPush> pushList = achieveAnswerPush.getAchieveAnswer(circleId);
+                List<ToTeacherPush> pushList = achieveAnswerPush.getAchieveAnswer(circleId,questionType);
                 if (pushList != null && pushList.size() > 0) {
+                    if (log.isInfoEnabled()) {
+                        log.info("教师回答信息　:　[{}]", JSON.toJSONString(pushList));
+                    }
                     //处理推送
                     wsService.processTeacher(pushList);
                 }

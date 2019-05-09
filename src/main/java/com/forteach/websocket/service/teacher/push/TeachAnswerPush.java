@@ -40,14 +40,14 @@ public class TeachAnswerPush {
         return classStudentService.getOpenRooms();
     }
 
-    public List<ToTeacherPush> getAchieveAnswer(String circleId) {
+    public List<ToTeacherPush> getAchieveAnswer(String circleId,final String questionType) {
         final String teachseId=classStudentService.getRoomTeacherId(circleId);
         //构建推送对象信息集合
         return Arrays.asList(teachseId).stream()
                 .filter(Objects::nonNull)
 //                .filter(id -> null != SESSION_MAP.get(id))
 //                .filter(id -> SESSION_MAP.get(id).isOpen())
-                .map(tid->buildTeacherToPush(tid,circleId))
+                .map(tid->buildTeacherToPush(tid,circleId,questionType))
                 //推送数据为空的话，终止流 achieveAnswer
                 .filter(obj-> obj != null && obj.getAchieveAnswer()!=null)
                 .collect(Collectors.toList());
@@ -60,16 +60,17 @@ public class TeachAnswerPush {
      *teachseId 接受推送的教师
      * @return
      */
-    public ToTeacherPush buildTeacherToPush(final String teacherId,final String circleId) {
+    public ToTeacherPush buildTeacherToPush(final String teacherId,final String circleId,final String questionType) {
 
         if(StringUtil.isNotEmpty(teacherId)){
-            AchieveAnswer achieveAnswer=achieveAnswer(circleId);
+            AchieveAnswer achieveAnswer=achieveAnswer(circleId,questionType);
             if(achieveAnswer!=null)   {
                 //创建回答信息
                 return ToTeacherPush.builder()
                         .uid(teacherId)
                         //学生回答信息(BigQuestion)
                         .achieveAnswer(achieveAnswer)
+                        .questionType(questionType)
                         .build();
             }
         }
@@ -81,13 +82,13 @@ public class TeachAnswerPush {
      *
      * @return
      */
-    public AchieveAnswer achieveAnswer(final String circleId) {
+    public AchieveAnswer achieveAnswer(final String circleId,String questionType) {
         //获得回答cut随机值
 //        String uRandom = "";
         //获得题目ID
         final String questionId =achieveAnswerService.getNowQuestionId(circleId);
         //获得学生的回答信息
-        List<Students> students = peopleAnswer(circleId, questionId, QuestionType.TiWen);
+        List<Students> students = peopleAnswer(circleId, questionId, questionType);
         if(students!=null&&students.size()>0) {
             return buildAchieveAnswer(students);
         }
@@ -112,16 +113,16 @@ public class TeachAnswerPush {
      * @param questionId
      * @return
      */
-    private List<Students> peopleAnswer(final String uCircle, final String questionId, final QuestionType type) {
+    private List<Students> peopleAnswer(final String uCircle, final String questionId, final String questionType) {
         if(StringUtil.isNotEmpty(questionId)){
             final String teacherId=classStudentService.getRoomTeacherId(uCircle);
-            return achieveAnswerService.getAnswerStu(uCircle,questionId,type.name(),teacherId).stream().map(stuid -> {
+            return achieveAnswerService.getAnswerStu(uCircle,questionId,questionType,teacherId).stream().map(stuid -> {
                 //查询redis 筛选是否回答情况
                 Students student = studentsService.findStudentsBrief(stuid);
                 //学生回答的答案
-                String askAnswerInfo=achieveAnswerService.getQuestAnswer(uCircle,questionId,type.name(),stuid);
+                String askAnswerInfo=achieveAnswerService.getQuestAnswer(uCircle,questionId,questionType,stuid);
                 //获得学生的批改结果
-                String piGaiResult=achieveAnswerService.piGaiResult(uCircle,questionId,type.name(),stuid);
+                String piGaiResult=achieveAnswerService.piGaiResult(uCircle,questionId,questionType,stuid);
                 //创建学生回答推送对象
                 return new CircleAnswer(uCircle,questionId,student, TeachAnswerKey.ASK_CIRCLE_ANSWER_DID, askAnswerInfo,piGaiResult);
 

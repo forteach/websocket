@@ -45,16 +45,17 @@ public class MoreQuestService {
      * @param stuId 学生接收端编号
      * @return
      */
-    public boolean filterStu(final String circleId, final String bookId, final String stuId) {
-        //获得随机数状态,页面刷新会改变随机数状态
-        String radonTag = stringRedisTemplate.opsForValue().get(ClassRoomKey.getOpenClassRandomTag(circleId, stuId, SingleQueKey.CLEAR_TAG_SINGLE));
+    public boolean filterStu(final String circleId, final String bookId, final String stuId,final String questionType) {
         //随机数改变，过滤已发送过的学生
-        if (ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES.equals(radonTag)) {
+        String key=ClassRoomKey.getOpenClassRandomTagChange(circleId);
+        Boolean bl= stringRedisTemplate.opsForSet().isMember(key,stuId);
+        //随机数改变，过滤已发送过的学生
+        if (bl.booleanValue()) {
             //清除推送学生数据，改变随机值状态也N
-            moreQueRepeat.clear(circleId, bookId, stuId);
+            moreQueRepeat.clear(circleId, bookId, stuId,questionType);
         }
         //推送学生信息
-        return getMoreStudent(circleId, bookId, stuId);
+        return getMoreStudent(circleId, bookId, stuId,questionType);
     }
 
     /**
@@ -65,12 +66,12 @@ public class MoreQuestService {
      * @param stuId  接受题目学生的ID
      * @return
      */
-    public boolean getMoreStudent(String circleId, String questId, String stuId) {
+    public boolean getMoreStudent(String circleId, String questId, String stuId,final String questionType) {
         //判断是否已经加入推送列表
-        boolean result= moreQueRepeat.hasJoin(circleId, questId, stuId);
+        boolean result= moreQueRepeat.hasJoin(circleId, questId, stuId,questionType);
         if(result){
             //没有加入，就加入推送列表
-            moreQueRepeat.join(circleId, questId, stuId);
+            moreQueRepeat.join(circleId, questId, stuId,questionType);
         }
         return result;
     }
@@ -93,33 +94,33 @@ public class MoreQuestService {
     /**
      * 获得当前课堂活动的多题目列表
      *
-     * @param type     课堂问题活动  练习册 、调查
+     * @param questionType     课堂问题活动  练习册 、调查
      * @param circleId
      * @return
      */
-        public List<String> getNowMoreQuestId(QuestionType type, String circleId) {
-        String key = MoreQueKey.bookTypeQuestionsList(type.name(),circleId);
+        public List<String> getNowMoreQuestId(String questionType, String circleId) {
+        String key = MoreQueKey.bookTypeQuestionsList(questionType,circleId);
         return stringRedisTemplate.opsForList().range(key, 0, -1);
     }
 
     /**
      * 获得当前开课课堂多题列表，未收到推送标记的学生列表
-     * @param type 课堂问题活动  练习册 、调查
+     * @param questionType 课堂问题活动  练习册 、调查
      * @param circleId
      * @return
      */
-    public String getMoreQuestNoReceiveSelectStu(QuestionType type,String circleId) {
-        return hashOperations.get(MoreQueKey.questionsBookNowMap(type.name(),circleId), "selected");
+    public String getMoreQuestNoReceiveSelectStu(String questionType,String circleId) {
+        return hashOperations.get(MoreQueKey.questionsBookNowMap(questionType,circleId), "selected");
     }
 
     /**
      * 获得当前开课课堂多题列表的唯一ID
-     * @param type 课堂问题活动  练习册 、调查
+     * @param questionType 课堂问题活动  练习册 、调查
      * @param circleId
      * @return
      */
-    public String getMoreQuestBookId(QuestionType type,String circleId) {
-        return hashOperations.get(MoreQueKey.questionsBookNowMap(type.name(),circleId), "questBookId");
+    public String getMoreQuestBookId(String  questionType,String circleId) {
+        return hashOperations.get(MoreQueKey.questionsBookNowMap(questionType,circleId), "questBookId");
     }
 
 
