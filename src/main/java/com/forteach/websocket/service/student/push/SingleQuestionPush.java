@@ -72,6 +72,7 @@ public class SingleQuestionPush {
             //根据所选的学生，对比Session数据是否在线，并获得学生推送详情
             if (intarcet.equals(SingleQueKey.ASK_INTERACTIVE_RAISE) && StrUtil.isBlank(stus)) {
                 //给所有加入课堂的学生推送题目
+//                System.out.println(singleQuestService.getClassStus(circleId).size());
                 return singleQuestService.getClassStus(circleId).stream()
                         .filter(id -> !id.equals(teacherId))
 //                        .filter(id -> null != SESSION_MAP.get(id))

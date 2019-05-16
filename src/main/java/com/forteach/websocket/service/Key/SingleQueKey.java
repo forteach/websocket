@@ -9,9 +9,9 @@ package com.forteach.websocket.service.Key;
 public class SingleQueKey {
 
     /**
-     * 提问交互举手
+     * 提问交互举手,不能改成首字母大写
      */
-    public static final String ASK_INTERACTIVE_RAISE = "Raise";
+    public static final String ASK_INTERACTIVE_RAISE = "raise";
 
     /**
      * 提问 选中

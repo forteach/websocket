@@ -119,6 +119,7 @@ public class SingleQuestService {
     public boolean getSingleStu(final String circleId, final String questId, final String stuId,String interactive,String questionType) {
         //获得随机数状态,页面刷新会改变随机数状态
 //        String radonTag = stringRedisTemplate.opsForValue().get(ClassRoomKey.getOpenClassRandomTag(circleId, stuId, SingleQueKey.CLEAR_TAG_SINGLE));
+//        System.out.println("*************************************"+stuId);
         String key=ClassRoomKey.getOpenClassRandomTagChange(circleId);
         Boolean bl= stringRedisTemplate.opsForSet().isMember(key,stuId);
         //随机数改变，过滤已发送过的学生
