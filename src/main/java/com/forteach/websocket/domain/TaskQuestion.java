@@ -14,4 +14,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @Document(collection = "taskQuestion")
 public class TaskQuestion extends QuestionExamEntity {
+    public TaskQuestion() {
+    }
 }

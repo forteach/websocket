@@ -119,7 +119,7 @@ public class SingleQuestionPush {
         //是学生推送学生信息
             return ToStudentPush.builder()
                     .uid(uid)
-                    .askQuestion(achieveQuestion(questid, interactive, category))
+                    .askQuestion(achieveQuestion(questid, interactive, category,questionType))
                     .questionType(questionType)
                     .build();
     }
@@ -132,25 +132,20 @@ public class SingleQuestionPush {
      * @param category    个人、小组回答
      * @return 返回题目信息
      */
-    public AskQuestion achieveQuestion(String questionId, String interactive, String category) {
-        //前端发送过来的时间阀值
-        String cut = "";
-        //创建题目信息
-        OptQuestion optQuestion = selected(singleQuestService.getBigQuestion(questionId));
+    public AskQuestion achieveQuestion(String questionId, String interactive, String category,String questionType) {
+        OptQuestion optQuestion =null;
+        switch (questionType){
+            case "TiWen":
+                //创建题目信息
+                 optQuestion = new OptQuestion(SingleQueKey.ASK_QUESTIONS_SELECTED, singleQuestService.getBigQuestion(questionId));
+            case "RenWu":
+                //创建题目信息
+                optQuestion = new OptQuestion(SingleQueKey.ASK_QUESTIONS_SELECTED, singleQuestService.getTaskQuestion(questionId));
+        }
+
         //返回提问信息
-        return buildAskQuestion(cut, optQuestion, interactive, category);
+        return buildAskQuestion("", optQuestion, interactive, category);
     }
-
-    /**
-     * 选人方式题目推送
-     *
-     * @param bigQuestion
-     * @return
-     */
-    private OptQuestion selected(BigQuestion bigQuestion) {
-        return new OptQuestion(SingleQueKey.ASK_QUESTIONS_SELECTED, bigQuestion);
-    }
-
 
     /**
      * 构建提问问题返回值

@@ -1,6 +1,8 @@
 package com.forteach.websocket.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.forteach.websocket.domain.TaskQuestion;
+import com.forteach.websocket.repository.TaskQuestionRepository;
 import com.forteach.websocket.service.Key.ClassRoomKey;
 import com.forteach.websocket.common.QuestionType;
 import com.forteach.websocket.domain.BigQuestion;
@@ -36,10 +38,13 @@ public class SingleQuestService {
     private BigQuestionRepository bigQuestionRepository;
 
     @Resource
+    private TaskQuestionRepository taskQuestionRepository;
+
+    @Resource
     private SingleQueRepeat singleQueRepeat;
 
     /**
-     * 获得题目内容
+     * 获得提问题目内容  TIWEN
      * @param questionId
      * @return
      */
@@ -47,6 +52,17 @@ public class SingleQuestService {
         String key= SingleQueKey.questionsNow(questionId);
        return stringRedisTemplate.hasKey(key) ? JSON.parseObject(stringRedisTemplate.opsForValue()
                .get(SingleQueKey.questionsNow(questionId)),BigQuestion.class) : bigQuestionRepository.findById(questionId).orElse(new BigQuestion());
+    }
+
+    /**
+     * 获得任务题目内容  任务
+     * @param questionId
+     * @return
+     */
+    public TaskQuestion getTaskQuestion(String questionId){
+        String key= SingleQueKey.questionsNow(questionId);
+        return stringRedisTemplate.hasKey(key) ? JSON.parseObject(stringRedisTemplate.opsForValue()
+                .get(SingleQueKey.questionsNow(questionId)),TaskQuestion.class) : taskQuestionRepository.findById(questionId).orElse(new TaskQuestion());
     }
 
 
