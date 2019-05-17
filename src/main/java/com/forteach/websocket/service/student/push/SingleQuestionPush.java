@@ -138,13 +138,17 @@ public class SingleQuestionPush {
             case "TiWen":
                 //创建题目信息
                  optQuestion = new OptQuestion(SingleQueKey.ASK_QUESTIONS_SELECTED, singleQuestService.getBigQuestion(questionId));
+                //返回提问信息
+                return buildAskQuestion("", optQuestion, interactive, category);
             case "RenWu":
                 //创建题目信息
                 optQuestion = new OptQuestion(SingleQueKey.ASK_QUESTIONS_SELECTED, singleQuestService.getTaskQuestion(questionId));
+                //返回提问信息
+                return buildAskQuestion("taskQuestion","", optQuestion, interactive, category);
         }
 
         //返回提问信息
-        return buildAskQuestion("", optQuestion, interactive, category);
+        return null;
     }
 
     /**
@@ -158,6 +162,22 @@ public class SingleQuestionPush {
     private AskQuestion buildAskQuestion(String cut, OptQuestion optQuestion, String interactive, String category) {
         if (optQuestion != null) {
             return new AskQuestion<>(cut, optQuestion, interactive, category);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 构建提问问题返回值
+     *
+     * @param cut
+     * @param optQuestion
+     * @param interactive
+     * @return
+     */
+    private AskQuestion buildAskQuestion(String modle,String cut, OptQuestion optQuestion, String interactive, String category) {
+        if (optQuestion != null) {
+            return new AskQuestion<>(modle,cut, optQuestion, interactive, category);
         } else {
             return null;
         }

@@ -33,9 +33,9 @@ public class ToStudentPush {
     private AskSurvey askSurvey;
 
     /**
-     * 学生习题任务
+     * 学生习题任务(TaskQuestion)
      */
-    private AskTask askTask;
+    private AskQuestion askTask;
 
     /**
      * 习题册(练习册)

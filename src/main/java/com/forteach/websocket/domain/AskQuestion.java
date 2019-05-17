@@ -43,5 +43,11 @@ public class AskQuestion<T> {
         this.participate = participate;
     }
 
-
+    public AskQuestion(String model, String cut, T bigQuestion, String participate, String category) {
+        this.model = model;
+        this.cut = cut;
+        this.bigQuestion = bigQuestion;
+        this.participate = participate;
+        this.category = category;
+    }
 }
