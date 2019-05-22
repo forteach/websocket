@@ -38,7 +38,7 @@ public class LianXiStask {
     /**
      * 每隔１秒遍历发送一次在redis 推送的学生相关信息
      */
-    @Scheduled(initialDelay = 1000 * 2, fixedDelay = 10000)
+    @Scheduled(initialDelay = 1000 * 2, fixedDelay = 1000)
     public void refreshStudentInfo() {
         //获得正在开课的课堂ID
         moreQuestionPush.getOpenRooms()
