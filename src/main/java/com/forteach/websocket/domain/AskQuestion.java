@@ -14,7 +14,7 @@ public class AskQuestion<T> {
     /**
      * 问题
      */
-    private String model = "questions";
+    private String model;
 
     /**
      * 提交答案所需cut值
@@ -36,12 +36,12 @@ public class AskQuestion<T> {
     public AskQuestion() {
     }
 
-    public AskQuestion(String cut, T bigQuestion, String participate, String category) {
-        this.category = category;
-        this.cut = cut;
-        this.bigQuestion = bigQuestion;
-        this.participate = participate;
-    }
+//    public AskQuestion(String cut, T bigQuestion, String participate, String category) {
+//        this.category = category;
+//        this.cut = cut;
+//        this.bigQuestion = bigQuestion;
+//        this.participate = participate;
+//    }
 
     public AskQuestion(String model, String cut, T bigQuestion, String participate, String category) {
         this.model = model;
