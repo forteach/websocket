@@ -77,8 +77,8 @@ public class ClassRoomKey {
      * @param tagType 清空标记的场景类型 加入学生  举手  回答
      * @return
      */
-    public static String getOpenClassRandomTag(String circleId,String uid,String tagType){
-        return circleId.concat(OPEN_CLASSROOM_RANDOM.concat(tagType).concat("Tag")).concat(uid);
+    public static String getOpenClassRandomTag(String circleId,String tagType){
+        return circleId.concat(OPEN_CLASSROOM_RANDOM.concat(tagType).concat("Tag"));
     }
 
 //    /**
