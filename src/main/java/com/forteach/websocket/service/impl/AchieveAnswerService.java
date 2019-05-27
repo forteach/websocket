@@ -54,8 +54,8 @@ public class AchieveAnswerService {
     public List<String> getAnswerStu(String circleId, String questId, String questionType, String teacherId) {
         //获得随机数状态,页面刷新会改变随机数状态
 //        String radonTag = stringRedisTemplate.opsForValue().get(ClassRoomKey.getOpenClassRandomTag(circleId, teacherId, TeachAnswerKey.CLEAR_TAG_ANSWER));
-        //随机数改变，过滤已发送过的学生
-        String key=ClassRoomKey.getOpenClassRandomTagChange(circleId);
+        //随机数改变，过滤已发送过回答信息的学生
+        String key=ClassRoomKey.getOpenClassRandomTag(circleId,TeachAnswerKey.CLEAR_TAG_ANSWER);
         Boolean bl= stringRedisTemplate.opsForSet().isMember(key,teacherId);
         //随机数改变，过滤已发送过的学生
         if (bl.booleanValue()) {

@@ -80,9 +80,11 @@ public class WsServiceImpl implements WsService {
            //两次随机数不相等
            if(!radon.equals(random) )
            {
-                //随机数已经改变
+                //TODO 随机数已经改变,清空已发送数据  范围：回答、加入学生、单一任务
                stringRedisTemplate.opsForSet().add(ClassRoomKey.getOpenClassRandomTag(circle,ClassStudentKey.CLASSROOM_CLEAR_TAG_JION),uid);
                stringRedisTemplate.opsForSet().add(ClassRoomKey.getOpenClassRandomTagChange(circle),uid);
+               stringRedisTemplate.opsForSet().add(ClassRoomKey.getOpenClassRandomTag(circle,TeachAnswerKey.CLEAR_TAG_ANSWER),uid);
+
 //               stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTagChange(circle,uid, TeachRaiseKey.CLASSROOM_CLEAR_TAG_RAISE),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES, Duration.ofSeconds(60*60*2));
 //               stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTagChange(circle,uid, SingleQueKey.CLEAR_TAG_SINGLE),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES, Duration.ofSeconds(60*60*2));
 //               stringRedisTemplate.opsForValue().set(ClassRoomKey.getOpenClassRandomTagChange(circle,uid,  MoreQueKey.CLASSROOM_CLEAR_TAG_MORE),ClassRoomKey.OPEN_CLASSROOM_RANDOM_TAG_YES, Duration.ofSeconds(60*60*2));

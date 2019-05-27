@@ -73,7 +73,7 @@ public class ClassRoomKey {
     /**
      * 获得用户scoket连接的随机数改变状态
      * @param circleId
-     * @param uid
+     * @param tagType
      * @param tagType 清空标记的场景类型 加入学生  举手  回答
      * @return
      */

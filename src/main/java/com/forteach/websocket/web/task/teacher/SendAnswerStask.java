@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * @Description:推送学生回答问题的答案
+ * @Description:推送学生回答问题的答案，推送对象是老师
  * @author: liu zhenming
  * @version: V1.0
  * @date: 2018/12/27  14:42
