@@ -110,4 +110,15 @@ public class AchieveAnswerService {
     }
 
 
+
+    /**
+     * 课堂当前道题目回答前缀
+     * sutId  学生ID
+     * questionId 问题ID
+     * questionType  题目互动方式  提问、联练习。。。。
+     * @return 单个题目ID+前缀+学生编号=题目答案  Hashmap
+     */
+    public String answerFileTypeQuestionsId(final String circleId, final String questionId, final String questionType) {
+        return circleId.concat(questionId).concat("AnswerFile").concat(questionType);
+    }
 }

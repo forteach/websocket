@@ -1,9 +1,12 @@
 package com.forteach.websocket.domain;
 
+import com.forteach.websocket.web.vo.DataDatumVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
+
+import java.util.List;
 
 /**
  * @Description: 学生答题情况
@@ -36,12 +39,18 @@ public class CircleAnswer extends Students {
      */
     private String piGaiResult;
 
-    public CircleAnswer(String circleId,String questionId,Students students, String state, String askAnswerInfo,String piGaiResult) {
+    /**
+     * 附件信息
+     */
+    private List<DataDatumVo> fileList;
+
+    public CircleAnswer(String circleId,String questionId,Students students, String state, String askAnswerInfo,String piGaiResult, List<DataDatumVo> fileList) {
         BeanUtils.copyProperties(students, this);
         this.circleId=circleId;
         this.questionId=questionId;
         this.piGaiResult=piGaiResult;
         this.state = state;
         this.askAnswerInfo = askAnswerInfo;
+        this.fileList = fileList;
     }
 }

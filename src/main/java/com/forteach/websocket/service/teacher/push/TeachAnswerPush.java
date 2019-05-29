@@ -1,11 +1,13 @@
 package com.forteach.websocket.service.teacher.push;
 
+import com.alibaba.fastjson.JSONObject;
 import com.forteach.websocket.domain.*;
 import com.forteach.websocket.service.Key.TeachAnswerKey;
 import com.forteach.websocket.service.impl.AchieveAnswerService;
 import com.forteach.websocket.service.impl.ClassStudentService;
 import com.forteach.websocket.service.impl.StudentsService;
 import com.forteach.websocket.util.StringUtil;
+import com.forteach.websocket.web.vo.DataDatumVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
@@ -123,8 +125,10 @@ public class TeachAnswerPush {
                 String askAnswerInfo=achieveAnswerService.getQuestAnswer(uCircle,questionId,questionType,stuid);
                 //获得学生的批改结果
                 String piGaiResult=achieveAnswerService.piGaiResult(uCircle,questionId,questionType,stuid);
+                //题目回答的附件信息
+                List<DataDatumVo> fileList = JSONObject.parseArray(achieveAnswerService.answerFileTypeQuestionsId(uCircle, questionId, questionType), DataDatumVo.class);
                 //创建学生回答推送对象
-                return new CircleAnswer(uCircle,questionId,student, TeachAnswerKey.ASK_CIRCLE_ANSWER_DID, askAnswerInfo,piGaiResult);
+                return new CircleAnswer(uCircle,questionId,student, TeachAnswerKey.ASK_CIRCLE_ANSWER_DID, askAnswerInfo,piGaiResult, fileList);
 
             }).collect(Collectors.toList());
         }
