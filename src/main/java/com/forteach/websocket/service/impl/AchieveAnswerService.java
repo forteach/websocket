@@ -1,9 +1,11 @@
 package com.forteach.websocket.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.forteach.websocket.service.Key.ClassRoomKey;
 import com.forteach.websocket.service.Key.TeachAnswerKey;
 import com.forteach.websocket.service.Key.SingleQueKey;
 import com.forteach.websocket.service.teacher.push.repeat.AnswerRepeat;
+import com.forteach.websocket.web.vo.DataDatumVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -118,7 +120,20 @@ public class AchieveAnswerService {
      * questionType  题目互动方式  提问、联练习。。。。
      * @return 单个题目ID+前缀+学生编号=题目答案  Hashmap
      */
-    public String answerFileTypeQuestionsId(final String circleId, final String questionId, final String questionType) {
+    private String answerFileTypeQuestionsId(final String circleId, final String questionId, final String questionType) {
         return circleId.concat(questionId).concat("AnswerFile").concat(questionType);
+    }
+
+    /**
+     * 查找学生回答的附件信息
+     * @param circleId
+     * @param questionId
+     * @param questionType
+     * @param studentId
+     * @return
+     */
+    public List<DataDatumVo> findFileList(final String circleId, final String questionId, final String questionType, final String studentId){
+        String key = answerFileTypeQuestionsId(circleId, questionId, questionType);
+        return JSONObject.parseArray(hashOperations.get(key, studentId), DataDatumVo.class);
     }
 }

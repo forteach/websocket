@@ -126,7 +126,7 @@ public class TeachAnswerPush {
                 //获得学生的批改结果
                 String piGaiResult=achieveAnswerService.piGaiResult(uCircle,questionId,questionType,stuid);
                 //题目回答的附件信息
-                List<DataDatumVo> fileList = JSONObject.parseArray(achieveAnswerService.answerFileTypeQuestionsId(uCircle, questionId, questionType), DataDatumVo.class);
+                List<DataDatumVo> fileList = achieveAnswerService.findFileList(uCircle, questionId, questionType, stuid);
                 //创建学生回答推送对象
                 return new CircleAnswer(uCircle,questionId,student, TeachAnswerKey.ASK_CIRCLE_ANSWER_DID, askAnswerInfo,piGaiResult, fileList);
 
