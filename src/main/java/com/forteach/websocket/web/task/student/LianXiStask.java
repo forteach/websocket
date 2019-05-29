@@ -60,7 +60,7 @@ public class LianXiStask {
      * @param circleId
      */
     private void pushLianXiStudent(final String circleId) {
-        if(classStudentService.getInteractionType(circleId).equals(QuestionType.LianXi.name())) {
+        if(QuestionType.LianXi.name().equals(classStudentService.getInteractionType(circleId))) {
             try {
                 //获得需要推送的题目信息
                 final List<ToStudentPush> pushList = moreQuestionPush.moreQuestion(circleId, QuestionType.LianXi.name());

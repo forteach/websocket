@@ -58,8 +58,7 @@ public class SendRaiseStask {
      * @param circleId
      */
     private void pushRaiseStudent(final String circleId) {
-        String r=classStudentService.getInteractionType(circleId);
-        if(classStudentService.getInteractionType(circleId).equals(QuestionType.TiWen.name())) {
+        if(QuestionType.TiWen.name().equals(classStudentService.getInteractionType(circleId))) {
             try {
                 // 获取redis中待推送的数据
                 List<ToTeacherPush> pushList = achieveRaisePush.getAchieveRaise(circleId);
