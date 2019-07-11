@@ -37,14 +37,14 @@ public class CircleAnswer extends Students {
     /**
      * 批改结果
      */
-    private String piGaiResult;
+    private boolean piGaiResult;
 
     /**
      * 附件信息
      */
     private List<DataDatumVo> fileList;
 
-    public CircleAnswer(String circleId,String questionId,Students students, String state, String askAnswerInfo,String piGaiResult, List<DataDatumVo> fileList) {
+    public CircleAnswer(String circleId,String questionId,Students students, String state, String askAnswerInfo,boolean piGaiResult, List<DataDatumVo> fileList) {
         BeanUtils.copyProperties(students, this);
         this.circleId=circleId;
         this.questionId=questionId;
