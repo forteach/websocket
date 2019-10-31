@@ -51,7 +51,7 @@ public class SingleQuestService {
     public BigQuestion getBigQuestion(String questionId){
         String key= SingleQueKey.questionsNow(questionId);
        return stringRedisTemplate.hasKey(key) ? JSON.parseObject(stringRedisTemplate.opsForValue()
-               .get(SingleQueKey.questionsNow(questionId)),BigQuestion.class) : bigQuestionRepository.findById(questionId).orElse(new BigQuestion());
+               .get(SingleQueKey.questionsNow(questionId)),BigQuestion.class) : bigQuestionRepository.findById(questionId).orElseGet(BigQuestion::new);
     }
 
     /**
@@ -62,7 +62,7 @@ public class SingleQuestService {
     public TaskQuestion getTaskQuestion(String questionId){
         String key= SingleQueKey.questionsNow(questionId);
         return stringRedisTemplate.hasKey(key) ? JSON.parseObject(stringRedisTemplate.opsForValue()
-                .get(SingleQueKey.questionsNow(questionId)),TaskQuestion.class) : taskQuestionRepository.findById(questionId).orElse(new TaskQuestion());
+                .get(SingleQueKey.questionsNow(questionId)),TaskQuestion.class) : taskQuestionRepository.findById(questionId).orElseGet(TaskQuestion::new);
     }
 
 

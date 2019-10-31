@@ -87,7 +87,7 @@ public class MoreQuestService {
         return stringRedisTemplate.hasKey(key) ? JSON.parseObject(stringRedisTemplate.opsForValue()
                 .get(key), BigQuestion.class) : bigQuestionRepository
                 .findById(questionId)
-                .orElse(new BigQuestion());
+                .orElseGet(BigQuestion::new);
     }
 
 
