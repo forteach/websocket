@@ -128,7 +128,7 @@ public class TeachAnswerPush {
                 //题目回答的附件信息
                 List<DataDatumVo> fileList = achieveAnswerService.findFileList(uCircle, questionId, questionType, stuid);
                 //创建学生回答推送对象
-                return new CircleAnswer(uCircle,questionId,student, TeachAnswerKey.ASK_CIRCLE_ANSWER_DID, askAnswerInfo,piGaiResult, fileList);
+                return new CircleAnswer(uCircle,questionId,student, TeachAnswerKey.ASK_CIRCLE_ANSWER_DID, askAnswerInfo,"true".equals(piGaiResult) ? true : false, fileList);
 
             }).collect(Collectors.toList());
         }
