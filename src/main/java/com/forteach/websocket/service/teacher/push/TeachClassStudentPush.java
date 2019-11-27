@@ -51,7 +51,7 @@ public class TeachClassStudentPush {
                 .filter(obj -> obj != null && obj.getAchieveJoin() != null)
                 .peek(t -> {
                     if (log.isDebugEnabled()){
-                        log.debug("老师推送的对象信息 : [{}]", t);
+                        log.debug("老师推送的对象信息 : [{}]", t.toString());
                     }
                 })
                 .collect(Collectors.toList());
