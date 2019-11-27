@@ -192,40 +192,52 @@ public class WsServiceImpl implements WsService {
             //学生举手信息
             if (effective && toPush.getAchieveRaise() != null) {
                 session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAchieveRaise()));
-                log.info("推送给老师 举手 uid [{}]", toPush.getUid());
+                log.debug("推送给老师 举手 uid [{}]", toPush.getUid());
             }
             //实时学生问卷答案
             if (effective && toPush.getAchieveAnswer() != null) {
                 session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAchieveAnswer()));
-                log.info("推送给老师 学生回答情况 uid [{}]", toPush.getUid());
+                if (log.isDebugEnabled()){
+                    log.debug("推送给老师 学生回答情况 uid [{}]", toPush.getUid());
+                }
             }
             //头学生加入信息
             if (effective && toPush.getAchieveJoin() != null) {
                 session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAchieveJoin()));
-                log.info("推送给老师 学生加入情况 uid [{}]", toPush.getUid());
+                if (log.isDebugEnabled()) {
+                    log.debug("推送给老师 学生加入情况 uid [{}]", toPush.getUid());
+                }
             }
             //实时学生问卷答案
             if (effective && toPush.getAchieveSurveyAnswer() != null) {
                 session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAchieveSurveyAnswer()));
-                log.info("推送给老师 学生问卷答案 uid [{}]", toPush.getUid());
+                if (log.isDebugEnabled()){
+                    log.debug("推送给老师 学生问卷答案 uid [{}]", toPush.getUid());
+                }
             }
             //头脑风暴答案
             if (effective && toPush.getAchieveBrainstormAnswer() != null) {
                 session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAchieveBrainstormAnswer()));
-                log.info("推送给老师 学生头脑风暴答案 uid [{}]", toPush.getUid());
+                if (log.isDebugEnabled()){
+                    log.debug("推送给老师 学生头脑风暴答案 uid [{}]", toPush.getUid());
+                }
             }
             //任务答案
             if (effective && toPush.getAchieveTaskAnswer() != null) {
                 session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAchieveTaskAnswer()));
-                log.info("推送给老师 学生任务答案 uid [{}]", toPush.getUid());
+                if (log.isDebugEnabled()){
+                    log.debug("推送给老师 学生任务答案 uid [{}]", toPush.getUid());
+                }
             }
             //习题答案
             if (effective && toPush.getAchieveBookAnswer() != null) {
                 session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAchieveBookAnswer()));
-                log.info("推送给老师 习题答案 uid [{}]", toPush.getUid());
+                if (log.isDebugEnabled()){
+                    log.debug("推送给老师 习题答案 uid [{}]", toPush.getUid());
+                }
             }
         } catch (IOException e) {
-            log.error(">>> sendTeacherMessage 时失败，[{}]", e.getMessage());
+            log.error("---> sendTeacherMessage 时失败，[{}]", e.getMessage());
         }
     }
 
@@ -241,33 +253,33 @@ public class WsServiceImpl implements WsService {
             //提问问题(BigQuestion)
             if (effective && toPush.getAskQuestion() != null) {
                 session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAskQuestion()));
-                log.info("推送给学生 问题 uid [{}]", toPush.getUid());
+                log.info("推送给学生 问题 uid : [{}], askQuestion : [{}]", toPush.getUid(), toPush.getAskQuestion().toString());
             }
             //学生习题任务
             if (effective && toPush.getAskTask() != null) {
                 session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAskTask()));
-                log.info("推送给学生 任务问题 uid [{}]", toPush.getUid());
+                log.info("推送给学生 任务问题 uid : [{}], askTask : [{}]", toPush.getUid(), toPush.getAskTask().toString());
 
             }
             //习题册(练习册)
             if (effective && toPush.getAskBook() != null) {
                 session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAskBook()));
-                log.info("推送给学生 练习册问题 uid [{}]", toPush.getUid());
+                log.info("推送给学生 练习册问题 uid : [{}], askBook : [{}]", toPush.getUid(), toPush.getAskBook().toString());
 
             }
             //头脑风暴
             if (effective && toPush.getAskBrainstorm() != null) {
                 session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAskBrainstorm()));
-                log.info("推送给学生 头脑风暴问题 uid [{}]", toPush.getUid());
+                log.info("推送给学生 头脑风暴问题 uid : [{}], askBrainstorm : [{}]", toPush.getUid(), toPush.getAskBrainstorm().toString());
 
             }
             //学生获取问卷问题
             if (effective && toPush.getAskSurvey() != null) {
                 session.getBasicRemote().sendText(JSON.toJSONString(toPush.getAskSurvey()));
-                log.info("推送给学生 问卷问题 uid [{}]", toPush.getUid());
+                log.info("推送给学生 问卷问题 uid : [{}], askSurvey : [{}]", toPush.getUid(), toPush.getAskSurvey().toString());
             }
         } catch (IOException e) {
-            log.error(">>> sendStudentMessage 时失败，[{}]", e.getMessage());
+            log.error(" >>> sendStudentMessage fail : [{}]", e.getMessage());
         }
     }
 
