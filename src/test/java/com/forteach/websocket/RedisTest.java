@@ -14,9 +14,10 @@ import javax.annotation.Resource;
  * @author: liu zhenming
  * @version: V1.0
  * @date: 2018/12/26  10:49
+ * @see <a href="https://www.w3xue.com/exp/article/20192/20723.html">issues</a>
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class RedisTest {
 
     @Resource
